@@ -12,9 +12,9 @@ export function IntakeReview() {
   const vitals = intakeDraft.vitals || {};
 
   return (
-    <div className="flex flex-col justify-between h-full px-12 py-8 bg-canvas overflow-y-auto font-sans select-none">
+    <div className="flex flex-col h-full px-12 py-8 bg-canvas select-none">
       {/* Header */}
-      <div className="text-center">
+      <div className="text-center shrink-0">
         <h1 className="text-3xl font-extrabold text-slate-900 leading-tight">
           Step 5 of 5: Review & Send to Triage Nurse
         </h1>
@@ -167,13 +167,13 @@ export function IntakeReview() {
       </div>
 
       {/* Confirmation & Submission Zone */}
-      <div className="w-full max-w-4xl mx-auto flex items-center justify-between pt-4 border-t border-slate-200">
+      <div className="w-full max-w-4xl mx-auto flex items-center justify-between mt-auto pt-4 border-t border-slate-200 shrink-0">
         <Button
           variant="outline"
           size="md"
           icon={ArrowLeft}
           onClick={() => setKioskStep('pain-duration')}
-          className="px-6"
+          className="px-8 py-3.5 text-sm font-bold"
         >
           Back / Balik
         </Button>
@@ -188,7 +188,7 @@ export function IntakeReview() {
           size="lg"
           icon={Check}
           onClick={submitKioskIntake}
-          className="px-10 py-4 text-lg font-bold shadow-xl bg-brand-green hover:bg-brand-green-hover"
+          className="px-10 py-4 text-base font-black shadow-xl bg-brand-green hover:bg-brand-green-hover"
         >
           {kioskLanguage === 'hil'
             ? 'IPASA SA NURSE / SEND TO NURSE >'

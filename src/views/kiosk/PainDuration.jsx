@@ -76,9 +76,9 @@ export function PainDuration() {
   };
 
   return (
-    <div className="flex flex-col justify-between h-full px-12 py-8 bg-canvas overflow-y-auto font-sans select-none">
+    <div className="flex flex-col h-full px-12 py-8 bg-canvas select-none">
       {/* Header */}
-      <div className="text-center">
+      <div className="text-center shrink-0">
         <h1 className="text-3xl font-extrabold text-slate-900 leading-tight">
           Step 4 of 5: Severity & Automated Vital Signs
         </h1>
@@ -305,13 +305,13 @@ export function PainDuration() {
       </div>
 
       {/* Navigation Buttons (Step 4 -> Step 5 Review) */}
-      <div className="w-full max-w-4xl mx-auto flex items-center justify-between pt-4 border-t border-slate-200">
+      <div className="w-full max-w-4xl mx-auto flex items-center justify-between mt-auto pt-4 border-t border-slate-200 shrink-0">
         <Button
           variant="outline"
           size="md"
           icon={ArrowLeft}
           onClick={() => setKioskStep('body-map')}
-          className="px-6"
+          className="px-8 py-3.5 text-sm font-bold"
         >
           Back / Balik
         </Button>
@@ -321,7 +321,7 @@ export function PainDuration() {
           size="lg"
           trailingIcon={ArrowRight}
           onClick={() => setKioskStep('review')}
-          className="px-10 py-4 text-lg font-bold shadow-lg"
+          className="px-10 py-4 text-base font-black shadow-lg bg-brand-green"
         >
           Next: Review Summary
         </Button>

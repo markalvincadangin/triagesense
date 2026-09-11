@@ -81,7 +81,7 @@ Color application in hospital interfaces must never be decorative or blindly imp
                        │ Ticket Slit    [FINGER  ]  │  ◄── Center: Thermal Ticket Dispenser
                        ├────────────────────────────┤
                        │   -^v^- VITAL SIGNS        │  ◄── Lower Cabinet Door
-                       │         SENSORS (OPTIONAL) │      (Bio-telemetry Expansion Module)
+                       │         SENSORS            │      (Bio-telemetry Expansion Module)
                        ├────────────────────────────┤
                        │ ══════════════════════════ │  ◄── Weighted Pedestal Base (600×380mm)
                        └────────────────────────────┘

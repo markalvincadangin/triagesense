@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { DemoControls } from './DemoControls';
-import { KioskEnclosure } from '../kiosk/KioskEnclosure';
+import { KioskEnclosure, TOTEM_WIDTH, TOTEM_HEIGHT } from '../kiosk/KioskEnclosure';
 
 export function ViewportFrame({ kioskContent, adminContent }) {
   const { viewMode } = useTriage();
@@ -23,36 +23,41 @@ export function ViewportFrame({ kioskContent, adminContent }) {
 
   const { width: winW, height: winH } = dimensions;
 
-  // 1. Standalone Kiosk Scaling (Totem: 1140px × 2248px)
-  const padH = 40;
-  const padW = 40;
+  // 1. STANDALONE KIOSK SCALING (Canonical Totem: TOTEM_WIDTH × TOTEM_HEIGHT)
+  // Guarantees zero vertical/horizontal overflow with balanced surrounding margins
+  const kioskPadY = 48; // 24px top & bottom margin
+  const kioskPadX = 48; // 24px left & right margin
   const standaloneKioskScale = Math.min(
-    (winH - padH) / 2248,
-    (winW - padW) / 1140,
-    1.0
+    (winH - kioskPadY) / TOTEM_HEIGHT,
+    (winW - kioskPadX) / TOTEM_WIDTH
   );
 
-  // 2. Dual View Scaling (Hierarchy: Kiosk ~26-28% width, Staff Portal ~72-74% width)
-  const dualPad = 40;
-  const targetKioskWidth = Math.max(winW * 0.27, 280);
-  const dualKioskScale = Math.min(
-    targetKioskWidth / 1140,
-    (winH - dualPad) / 2248
-  );
-  const actualDualKioskWidth = 1140 * dualKioskScale;
+  // 2. DUAL VIEW BALANCED SCALING (~26% Kiosk / ~74% Staff Portal)
+  // Optimizes heights, gaps, and widths simultaneously for zero clipping
+  const dualPadY = 56; // 28px top & bottom margin
+  const dualPadX = 64; // 32px left & right margin
+  const availH = Math.max(winH - dualPadY, 300);
+  const availW = Math.max(winW - dualPadX, 600);
+  const dualGap = 36; // Gap between kiosk totem and staff workstation
 
-  // Remaining width for Staff Portal (1920px × 1080px)
-  const remainingAdminWidth = winW - actualDualKioskWidth - 64; // gap & padding allowance
-  const dualAdminScale = Math.min(
-    remainingAdminWidth / 1920,
-    (winH - dualPad) / 1080
-  );
+  // Target heights for visual balance in dual mode
+  let dualKioskScale = (availH * 0.96) / TOTEM_HEIGHT;
+  let dualAdminScale = (availH * 0.88) / 1080;
+
+  // Verify total horizontal width fits available canvas
+  const totalWidthNeeded = (TOTEM_WIDTH * dualKioskScale) + dualGap + (1920 * dualAdminScale);
+  if (totalWidthNeeded > availW) {
+    const widthShrinkRatio = availW / totalWidthNeeded;
+    dualKioskScale *= widthShrinkRatio;
+    dualAdminScale *= widthShrinkRatio;
+  }
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden select-none bg-gradient-to-b from-[#E6EBE8] via-[#F2F5F3] to-[#E3E8E5] font-sans">
+    <div className="relative w-screen h-screen overflow-hidden select-none bg-gradient-to-b from-[#E2E8E5] via-[#EDF2EF] to-[#DFE6E2] font-sans">
+      
       {/* 1. STANDALONE PATIENT KIOSK MODE */}
       {viewMode === 'kiosk' && (
-        <div className="w-full h-full flex items-center justify-center p-4">
+        <div className="w-full h-full flex items-center justify-center p-4 overflow-hidden">
           <KioskEnclosure scale={standaloneKioskScale}>
             {kioskContent}
           </KioskEnclosure>
@@ -66,18 +71,19 @@ export function ViewportFrame({ kioskContent, adminContent }) {
         </div>
       )}
 
-      {/* 3. DUAL VIEW (PHYSICAL CONTEXT HIERARCHY: ~28% KIOSK / ~72% STAFF PORTAL) */}
+      {/* 3. DUAL VIEW (PHYSICAL CONTEXT HIERARCHY: BALANCED & OPTIMIZED VIEWPORT) */}
       {viewMode === 'split' && (
-        <div className="w-full h-full flex items-center justify-between px-8 py-6 gap-8 overflow-hidden">
-          {/* Left Column: Freestanding Portrait Kiosk (~28% width hierarchy) */}
+        <div className="w-full h-full flex items-center justify-center px-8 py-4 gap-9 overflow-hidden">
+          
+          {/* Left Column: Freestanding Portrait Kiosk (Auto-scaled to fit viewport) */}
           <div className="flex items-center justify-center shrink-0">
             <KioskEnclosure scale={dualKioskScale}>
               {kioskContent}
             </KioskEnclosure>
           </div>
 
-          {/* Right Column: Widescreen Clinical Workstation (~72% width hierarchy) */}
-          <div className="flex-1 h-full flex items-center justify-center">
+          {/* Right Column: Widescreen Clinical Workstation (Auto-scaled & centered) */}
+          <div className="flex items-center justify-center shrink-0">
             <div
               style={{
                 width: `${1920 * dualAdminScale}px`,
@@ -102,10 +108,11 @@ export function ViewportFrame({ kioskContent, adminContent }) {
               </div>
             </div>
           </div>
+
         </div>
       )}
 
-      {/* Discreet Floating Presentation Controller (Top-Right Pill, Hidden Dropdown by Default) */}
+      {/* Turbopack-Style Draggable Demo Controls */}
       <DemoControls />
     </div>
   );

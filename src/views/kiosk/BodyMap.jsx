@@ -8,19 +8,9 @@ export function BodyMap() {
   const { intakeDraft, toggleBodyLocation, setKioskStep } = useTriage();
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        height: '100%',
-        padding: '32px 48px',
-        backgroundColor: 'var(--color-bg-canvas)',
-        overflowY: 'auto'
-      }}
-    >
+    <div className="flex flex-col h-full px-12 py-8 bg-canvas select-none">
       {/* Header */}
-      <div style={{ textAlign: 'center' }}>
+      <div className="text-center mb-4 shrink-0">
         <h1
           style={{
             fontSize: '32px',
@@ -50,25 +40,14 @@ export function BodyMap() {
         />
       </div>
 
-      {/* Navigation Buttons */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          maxWidth: '840px',
-          width: '100%',
-          margin: '20px auto 0',
-          paddingTop: '20px',
-          borderTop: '1px solid var(--color-border)'
-        }}
-      >
+      {/* Navigation Buttons (Docked cleanly at bottom) */}
+      <div className="w-full max-w-4xl mx-auto mt-auto pt-4 border-t border-slate-200 flex items-center justify-between shrink-0">
         <Button
           variant="outline"
           size="md"
           icon={ArrowLeft}
           onClick={() => setKioskStep('symptoms')}
-          style={{ width: '180px' }}
+          className="px-8 py-3.5 text-sm font-bold"
         >
           Back / Balik
         </Button>
@@ -78,7 +57,7 @@ export function BodyMap() {
           size="lg"
           trailingIcon={ArrowRight}
           onClick={() => setKioskStep('pain-duration')}
-          style={{ width: '280px' }}
+          className="px-10 py-4 text-base font-black shadow-lg bg-brand-green"
         >
           Next: Pain & Duration
         </Button>
