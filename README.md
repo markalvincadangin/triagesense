@@ -4,9 +4,11 @@
 
 ---
 
-## 🌐 Live Prototype Demo
+## 🌐 Live Prototype Demos & Links
 
-* **Public Cloudflare Tunnel**: [https://forgotten-forests-passengers-poem.trycloudflare.com](https://forgotten-forests-passengers-poem.trycloudflare.com)
+* **Permanent Live Prototype (GitHub Pages)**: [https://markalvincadangin.github.io/triagesense/](https://markalvincadangin.github.io/triagesense/)
+* **Temporary Cloudflare Tunnel**: [https://forgotten-forests-passengers-poem.trycloudflare.com](https://forgotten-forests-passengers-poem.trycloudflare.com)
+* **GitHub Repository**: [https://github.com/markalvincadangin/triagesense](https://github.com/markalvincadangin/triagesense)
 * **Local Development**: `http://localhost:5173/`
 
 > **Academic Notice**: This is an interactive high-fidelity frontend prototype developed for CIT 213 Human-Computer Interaction 2. All patient records, vitals, and operational metrics are illustrative simulated demo datasets.
