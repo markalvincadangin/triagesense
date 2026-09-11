@@ -26,17 +26,20 @@ import {
 // ─── Screen name maps for navigation & labels ───────────────────────────────
 const KIOSK_SCREENS = [
   { key: 'welcome', label: 'Welcome' },
+  { key: 'language', label: 'Language Select' },
+  { key: 'identification', label: 'ID Method' },
   { key: 'patient-info', label: 'Patient Info' },
   { key: 'symptoms', label: 'Symptoms' },
   { key: 'body-map', label: 'Body Map' },
   { key: 'pain-duration', label: 'Pain & Pulse' },
+  { key: 'additional-details', label: 'Extra Details' },
   { key: 'review', label: 'Review & Send' },
-  { key: 'confirmation', label: 'Ticket Confirmation' }
+  { key: 'confirmation', label: 'Confirmation' }
 ];
 
 const ADMIN_SCREENS = [
-  { key: 'live-queue', label: 'Patient Triage Chart' },
-  { key: 'patient-dossier', label: 'Patient Assessment' },
+  { key: 'live-queue', label: 'Live Triage Queue' },
+  { key: 'patient-dossier', label: 'Patient Triage Chart' },
   { key: 'emergency-console', label: 'Emergency Calls' },
   { key: 'patient-directory', label: 'Patient Records' },
   { key: 'analytics', label: 'ED Analytics' },
