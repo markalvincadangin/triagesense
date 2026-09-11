@@ -173,7 +173,7 @@ export function Symptoms() {
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('welcome')}
+          onClick={() => setKioskStep('patient-info')}
           className="px-8 py-3.5 text-sm font-bold"
         >
           Back / Balik

@@ -36,7 +36,7 @@ export function IntakeReview() {
                 <span>Patient Identification</span>
               </div>
               <button
-                onClick={() => setKioskStep('welcome')}
+                onClick={() => setKioskStep('patient-info')}
                 className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-brand-green"
               >
                 <Edit3 size={13} />

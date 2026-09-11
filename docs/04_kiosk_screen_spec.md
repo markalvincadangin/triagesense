@@ -131,25 +131,50 @@ To ensure total inclusivity across Western Visayas demographics (elderly patient
 
 ## 5. Detailed 5-Step Screen Specification
 
-### Step 1: Welcome & Identify (`Welcome.jsx`)
-- **Stage in Stepper**: `(1) Identify`
+### Start Screen: Welcome & Reassurance (`Welcome.jsx`)
+- **Visual Design & Atmosphere**: Clean, uncluttered, reassuring attract screen eliminating cognitive tunneling under acute patient distress.
 - **Header Components**:
   - WVSU Medical Center official logo & seal.
-  - In-place dialect pills (`Hiligaynon`, `English`, `Filipino`, `Cebuano`).
+  - In-place dialect pills (`Hiligaynon`, `English`, `Filipino`, `Cebuano`) located exclusively in the header to eliminate redundant duplicate controls.
   - Text-to-Speech read-aloud toggle (`<Volume2 />`).
-  - Red Emergency Assistance button (`<AlertCircle /> Request Immediate Assistance`).
+  - Red Emergency Assistance button (`<AlertCircle /> Help / Tabang`).
 - **Core Screen Content**:
-  - Hero headline: *"Emergency Patient Check-in"* (localized).
-  - Subtitle: *"Tap an option to begin. You will be registered in the triage queue immediately."*
-  - **Quick Scan Barcode/QR Card**: One-tap simulation to scan Hospital ID, PhilHealth QR, or National ID.
-  - **Manual Demographics Card**:
-    - Full Name input with inline `<Mic /> Voice Dictate` button.
-    - Date of Birth (`YYYY-MM-DD`).
-    - Gender selector chips (`Male`, `Female`, `Other`).
-    - Contact Phone number (`09XX-XXX-XXXX`).
-  - **Demo Quick-Fill Shortcut**: `[ <Sparkles /> Autofill Test Patient ]` for rapid demonstration.
-- **Bottom Action Bar**:
-  - Fixed bottom bar with prominent `[ CONTINUE TO SYMPTOMS > ]` button ($64\text{px}$ height, emerald green `#006B3F`).
+  - Official WVSUMC Seal ($96 \times 96\text{px}$) with green/gold hospital identity.
+  - Hero Title: *"Welcome to TriageSense ED Intake"* (dynamically localized).
+  - Subtitle: *"Emergency Department Patient Intake & Triage Support • Iloilo City"*.
+  - Reassurance Note: *"Self-service intake connects you directly to the clinical triage nurse."*
+  - **Primary Hero Action Button (Fitts's Law Target)**:
+    - Giant, unmissable high-affordance button: `[ <ArrowRight /> START EMERGENCY INTAKE / MAGSUGOD > ]` ($84\text{px}$ height, `#006B3F` Emerald fill, bold 24px font).
+    - Advances directly to Step 1: Patient Identification (`patient-info`).
+  - **Fast-Track Secondary Options**:
+    - `[ <QrCode /> Scan ID / Card (PhilHealth / Hospital ID) ]` — instant one-tap ID simulation.
+    - `[ <Sparkles /> Demo Autofill (Test Patient) ]` — rapid test patient evaluation.
+  - **Life-Threatening Emergency Warning Box**:
+    - High-salience red alert card: *"Severe chest pain, profuse bleeding, or difficulty breathing? Press for immediate emergency nurse response."*
+    - Two-stage confirmation modal with 60-second cooldown lock.
+
+---
+
+### Step 1: Patient Identification (`PatientInfo.jsx`)
+- **Stage in Stepper**: `(1) Identify` (Step 1 of 5).
+- **Header Prompt**: *"Step 1 of 5: Patient Identification"* | *"Please enter patient details for official hospital triage registration."*
+- **Accessible & Empathetic UI Features (Persona & HFE Grounded)**:
+  - **Full Name Input**:
+    - Oversized touch input ($56\text{px}$ height, 18px text, high-contrast borders).
+    - Integrated Web Speech API **`<Mic /> Voice Dictate`** button directly on the field for patients with tremors, hand injuries, or illiteracy (*Tatay Ernesto*, *Bea*).
+  - **Date of Birth & Age Indicator**:
+    - Visual date selector with real-time computed **Age Badge** (e.g., `Age 42`).
+  - **Gender Selection Chips**:
+    - Large tactile touch buttons ($64\text{px}$ touch target): `[ Male / Lalaki ]`, `[ Female / Babaye ]`, `[ Other / Iban ]`.
+  - **Contact Phone Number**:
+    - Touch-optimized input with numeric mask (`09XX-XXX-XXXX`).
+  - **ID Scan & Demo Shortcuts**:
+    - Secondary strip offering quick scan or demo fill.
+  - **Error Prevention**:
+    - Shake-animated validation alert if full name is missing.
+- **Navigation Controls**:
+  - `[ < Back to Home ]` returns to `welcome`.
+  - `[ Next: Select Symptoms > ]` advances to Step 2: `symptoms`.
 
 ---
 

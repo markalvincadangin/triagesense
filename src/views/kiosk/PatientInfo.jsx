@@ -1,24 +1,98 @@
 import React, { useState } from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
-import { User, Calendar, Phone, ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
+import {
+  User,
+  Calendar,
+  Phone,
+  ArrowRight,
+  ArrowLeft,
+  Sparkles,
+  Mic,
+  MicOff,
+  QrCode,
+  CheckCircle2,
+  AlertCircle
+} from 'lucide-react';
 
 export function PatientInfo() {
-  const { intakeDraft, updateDraftPatientInfo, setKioskStep } = useTriage();
+  const {
+    intakeDraft,
+    updateDraft,
+    updateDraftPatientInfo,
+    setKioskStep,
+    kioskLanguage
+  } = useTriage();
+
   const [errorMsg, setErrorMsg] = useState('');
+  const [isDictating, setIsDictating] = useState(false);
+  const [scanFeedback, setScanFeedback] = useState(false);
 
   const patient = intakeDraft.patientInfo || {};
 
-  const handleNext = () => {
-    if (!patient.fullName || patient.fullName.trim().length === 0) {
-      setErrorMsg('Please enter your name or use the Demo Fill button to proceed.');
-      return;
+  // Compute age from date of birth
+  const computeAge = (dobString) => {
+    if (!dobString) return null;
+    const birthDate = new Date(dobString);
+    if (isNaN(birthDate.getTime())) return null;
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
     }
+    return age >= 0 ? age : null;
+  };
+
+  const calculatedAge = computeAge(patient.dob);
+
+  // Web Speech API Voice Dictation
+  const handleVoiceDictate = () => {
+    if (!isDictating) {
+      setIsDictating(true);
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.lang = kioskLanguage === 'hil' ? 'fil-PH' : kioskLanguage === 'fil' ? 'fil-PH' : 'en-US';
+        recognition.onresult = (e) => {
+          const transcript = e.results[0][0].transcript;
+          updateDraftPatientInfo({ fullName: transcript });
+          setIsDictating(false);
+          setErrorMsg('');
+        };
+        recognition.onerror = () => setIsDictating(false);
+        recognition.onend = () => setIsDictating(false);
+        recognition.start();
+      } else {
+        // Fallback simulation
+        setTimeout(() => {
+          updateDraftPatientInfo({ fullName: 'Ramon S. Gonzales' });
+          setIsDictating(false);
+          setErrorMsg('');
+        }, 1500);
+      }
+    } else {
+      setIsDictating(false);
+    }
+  };
+
+  const handleSimulateScan = () => {
+    setScanFeedback(true);
+    updateDraft({ identification: 'PhilHealth QR' });
+    updateDraftPatientInfo({
+      fullName: 'Maria Elena C. Lopez',
+      dob: '1978-08-14',
+      gender: 'Female',
+      contact: '0917-882-9014'
+    });
     setErrorMsg('');
-    setKioskStep('symptoms');
+    setTimeout(() => {
+      setScanFeedback(false);
+    }, 1200);
   };
 
   const handleDemoFill = () => {
+    updateDraft({ identification: 'Hospital ID' });
     updateDraftPatientInfo({
       fullName: 'Juan Dela Cruz',
       dob: '1956-04-12',
@@ -28,177 +102,135 @@ export function PatientInfo() {
     setErrorMsg('');
   };
 
+  const handleNext = () => {
+    if (!patient.fullName || patient.fullName.trim().length === 0) {
+      setErrorMsg(
+        kioskLanguage === 'hil'
+          ? 'Palihog isulat ang imo ngalan ukon gamita ang mikropono para magpadayon.'
+          : 'Please enter patient name or tap the microphone to dictate.'
+      );
+      return;
+    }
+    setErrorMsg('');
+    setKioskStep('symptoms');
+  };
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        height: '100%',
-        padding: '36px 48px',
-        backgroundColor: 'var(--color-bg-canvas)',
-        overflowY: 'auto'
-      }}
-    >
-      {/* Header */}
-      <div style={{ textAlign: 'center' }}>
-        <h1
-          style={{
-            fontSize: '32px',
-            fontWeight: '800',
-            color: 'var(--color-text-primary)'
-          }}
-        >
-          Basic Patient Information
+    <div className="flex flex-col h-full px-12 py-8 bg-canvas select-none font-sans">
+      
+      {/* 1. Header Prompt */}
+      <div className="text-center mb-6 shrink-0">
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+          {kioskLanguage === 'hil'
+            ? 'Tikang 1 sang 5: Impormasyon sang Pasyente'
+            : 'Step 1 of 5: Patient Identification'}
         </h1>
-        <h2
-          style={{
-            fontSize: '18px',
-            fontWeight: '500',
-            color: 'var(--color-text-secondary)',
-            marginTop: '4px'
-          }}
-        >
-          Palihog isulat ang imo impormasyon para sa opisyal nga rekord
+        <h2 className="text-base font-semibold text-slate-600 mt-1">
+          {kioskLanguage === 'hil'
+            ? 'Palihog isulat ang impormasyon para sa opisyal nga rekord sang ospital'
+            : 'Please enter patient details for official hospital triage registration'}
         </h2>
       </div>
 
-      {/* Form Container */}
-      <div
-        style={{
-          maxWidth: '680px',
-          width: '100%',
-          margin: '0 auto',
-          backgroundColor: 'var(--color-bg-surface)',
-          padding: '32px',
-          borderRadius: 'var(--radius-xl)',
-          border: '1.5px solid var(--color-border)',
-          boxShadow: 'var(--shadow-card)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '22px'
-        }}
-      >
-        {/* Full Name Input */}
+      {/* 2. Main Accessible Form Card */}
+      <div className="w-full max-w-3xl mx-auto bg-white p-8 rounded-3xl border border-slate-200 shadow-md flex flex-col gap-6">
+        
+        {/* Full Name Input with Speech-to-Text Voice Dictation */}
         <div>
-          <label
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontSize: '16px',
-              fontWeight: '700',
-              color: 'var(--color-text-primary)',
-              marginBottom: '8px'
-            }}
-          >
-            <User size={18} color="var(--color-wvsu-primary)" />
-            <span>Full Name / Bug-os nga Ngalan:</span>
-            <span style={{ color: 'var(--color-emergency)', fontSize: '14px' }}>*Required</span>
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="flex items-center gap-2 text-base font-extrabold text-slate-900">
+              <User size={18} className="text-[#006B3F]" />
+              <span>Full Name / Bug-os nga Ngalan:</span>
+              <span className="text-xs font-bold text-red-600">*Required</span>
+            </label>
+            
+            {/* Voice Dictate Accessibility Button */}
+            <button
+              type="button"
+              onClick={handleVoiceDictate}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
+                isDictating
+                  ? 'bg-red-50 border-red-500 text-red-700 animate-pulse'
+                  : 'bg-emerald-50 border-emerald-300 text-[#006B3F] hover:bg-emerald-100'
+              }`}
+            >
+              {isDictating ? <MicOff size={14} /> : <Mic size={14} />}
+              <span>{isDictating ? 'Listening (Speak now)...' : 'Voice Dictate'}</span>
+            </button>
+          </div>
+
           <input
             type="text"
-            placeholder="e.g. Juan Dela Cruz"
+            placeholder={kioskLanguage === 'hil' ? 'Halimbawa: Juan Dela Cruz' : 'e.g. Juan Dela Cruz'}
             value={patient.fullName || ''}
             onChange={(e) => {
               updateDraftPatientInfo({ fullName: e.target.value });
               if (errorMsg) setErrorMsg('');
             }}
-            style={{
-              width: '100%',
-              height: '60px',
-              padding: '0 20px',
-              borderRadius: 'var(--radius-md)',
-              border: errorMsg ? '2px solid var(--color-emergency)' : '1.5px solid var(--color-border)',
-              fontSize: '18px',
-              fontFamily: 'var(--font-family)',
-              backgroundColor: 'var(--color-bg-canvas)'
-            }}
+            className={`w-full h-14 px-5 rounded-2xl border-2 text-lg font-bold transition-all focus:outline-none ${
+              errorMsg
+                ? 'border-red-500 bg-red-50/40 focus:ring-2 focus:ring-red-400'
+                : 'border-slate-300 bg-slate-50 focus:border-[#006B3F] focus:bg-white focus:ring-2 focus:ring-emerald-400/20'
+            }`}
           />
         </div>
 
-        {/* Date of Birth & Gender Row */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+        {/* Date of Birth & Age Indicator */}
+        <div className="grid grid-cols-2 gap-5">
           <div>
-            <label
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontSize: '16px',
-                fontWeight: '700',
-                color: 'var(--color-text-primary)',
-                marginBottom: '8px'
-              }}
-            >
-              <Calendar size={18} color="var(--color-wvsu-primary)" />
-              <span>Date of Birth / Kaadlawan:</span>
+            <label className="flex items-center justify-between mb-2 text-base font-extrabold text-slate-900">
+              <span className="flex items-center gap-2">
+                <Calendar size={18} className="text-[#006B3F]" />
+                <span>Date of Birth / Kaadlawan:</span>
+              </span>
+              {calculatedAge !== null && (
+                <span className="text-xs font-black text-[#006B3F] bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                  {calculatedAge} years old
+                </span>
+              )}
             </label>
             <input
               type="date"
               value={patient.dob || ''}
               onChange={(e) => updateDraftPatientInfo({ dob: e.target.value })}
-              style={{
-                width: '100%',
-                height: '60px',
-                padding: '0 16px',
-                borderRadius: 'var(--radius-md)',
-                border: '1.5px solid var(--color-border)',
-                fontSize: '18px',
-                fontFamily: 'var(--font-family)',
-                backgroundColor: 'var(--color-bg-canvas)'
-              }}
+              className="w-full h-14 px-4 rounded-2xl border-2 border-slate-300 bg-slate-50 text-base font-semibold text-slate-800 focus:border-[#006B3F] focus:bg-white focus:outline-none"
             />
           </div>
 
+          {/* Gender Selection Chips (Accessible Touch Buttons) */}
           <div>
-            <label
-              style={{
-                display: 'block',
-                fontSize: '16px',
-                fontWeight: '700',
-                color: 'var(--color-text-primary)',
-                marginBottom: '8px'
-              }}
-            >
+            <label className="block mb-2 text-base font-extrabold text-slate-900">
               Gender / Sekso:
             </label>
-            <select
-              value={patient.gender || 'Male'}
-              onChange={(e) => updateDraftPatientInfo({ gender: e.target.value })}
-              style={{
-                width: '100%',
-                height: '60px',
-                padding: '0 16px',
-                borderRadius: 'var(--radius-md)',
-                border: '1.5px solid var(--color-border)',
-                fontSize: '18px',
-                fontFamily: 'var(--font-family)',
-                backgroundColor: 'var(--color-bg-canvas)'
-              }}
-            >
-              <option value="Male">Male / Lalaki</option>
-              <option value="Female">Female / Babayi</option>
-              <option value="Other">Other / Iban pa</option>
-              <option value="Prefer not to say">Prefer not to say</option>
-            </select>
+            <div className="grid grid-cols-3 gap-2">
+              {['Male', 'Female', 'Other'].map((g) => {
+                const isSelected = (patient.gender || 'Male') === g;
+                return (
+                  <button
+                    key={g}
+                    type="button"
+                    onClick={() => updateDraftPatientInfo({ gender: g })}
+                    className={`h-14 rounded-2xl border-2 text-sm font-black transition-all flex flex-col items-center justify-center ${
+                      isSelected
+                        ? 'bg-[#006B3F] border-[#006B3F] text-white shadow-md'
+                        : 'bg-slate-50 border-slate-300 text-slate-700 hover:border-slate-400'
+                    }`}
+                  >
+                    <span>{g}</span>
+                    <span className="text-[10px] font-normal opacity-80">
+                      {g === 'Male' ? 'Lalaki' : g === 'Female' ? 'Babaye' : 'Iban'}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* Contact Number */}
+        {/* Contact Phone Number */}
         <div>
-          <label
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontSize: '16px',
-              fontWeight: '700',
-              color: 'var(--color-text-primary)',
-              marginBottom: '8px'
-            }}
-          >
-            <Phone size={18} color="var(--color-wvsu-primary)" />
+          <label className="flex items-center gap-2 mb-2 text-base font-extrabold text-slate-900">
+            <Phone size={18} className="text-[#006B3F]" />
             <span>Mobile Contact / Numero sang Telepono:</span>
           </label>
           <input
@@ -206,82 +238,54 @@ export function PatientInfo() {
             placeholder="09XX-XXX-XXXX"
             value={patient.contact || ''}
             onChange={(e) => updateDraftPatientInfo({ contact: e.target.value })}
-            style={{
-              width: '100%',
-              height: '60px',
-              padding: '0 20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1.5px solid var(--color-border)',
-              fontSize: '18px',
-              fontFamily: 'var(--font-family)',
-              backgroundColor: 'var(--color-bg-canvas)'
-            }}
+            className="w-full h-14 px-5 rounded-2xl border-2 border-slate-300 bg-slate-50 text-lg font-bold text-slate-800 focus:border-[#006B3F] focus:bg-white focus:outline-none"
           />
         </div>
 
-        {/* Error Notification */}
-        {errorMsg && (
-          <div
-            style={{
-              padding: '10px 16px',
-              borderRadius: 'var(--radius-sm)',
-              backgroundColor: 'var(--color-emergency-surface)',
-              border: '1px solid var(--color-emergency-border)',
-              color: 'var(--color-emergency)',
-              fontSize: '14px',
-              fontWeight: '600'
-            }}
+        {/* Fast Scan / Demo Fill Shortcut Strip */}
+        <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={handleSimulateScan}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-bold transition-all ${
+              scanFeedback
+                ? 'bg-emerald-50 border-emerald-500 text-emerald-800'
+                : 'bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-700'
+            }`}
           >
-            {errorMsg}
-          </div>
-        )}
+            <QrCode size={16} className="text-[#006B3F]" />
+            <span>{scanFeedback ? 'Card Scanned!' : 'Scan ID Card (PhilHealth)'}</span>
+          </button>
 
-        {/* Demo Fast-Fill Pill Button */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '4px' }}>
           <button
             type="button"
             onClick={handleDemoFill}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 16px',
-              borderRadius: 'var(--radius-full)',
-              backgroundColor: 'var(--color-wvsu-gold-light)',
-              border: '1px solid var(--color-wvsu-gold)',
-              color: 'var(--color-text-primary)',
-              fontSize: '13px',
-              fontWeight: '700',
-              cursor: 'pointer'
-            }}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 hover:bg-amber-100 text-xs font-bold transition-all"
           >
-            <Sparkles size={14} color="var(--color-wvsu-gold)" />
-            <span>Fill Demo Patient (Juan Dela Cruz)</span>
+            <Sparkles size={14} className="text-amber-600" />
+            <span>Autofill Test Patient</span>
           </button>
         </div>
+
+        {/* Validation Error Message */}
+        {errorMsg && (
+          <div className="p-3.5 rounded-xl bg-red-50 border border-red-300 text-red-800 text-xs font-bold flex items-center gap-2 animate-shake">
+            <AlertCircle size={18} className="text-red-600 shrink-0" />
+            <span>{errorMsg}</span>
+          </div>
+        )}
       </div>
 
-      {/* Navigation Buttons */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          maxWidth: '680px',
-          width: '100%',
-          margin: '20px auto 0',
-          paddingTop: '20px',
-          borderTop: '1px solid var(--color-border)'
-        }}
-      >
+      {/* 3. Bottom Navigation Controls (Docked cleanly at bottom) */}
+      <div className="w-full max-w-3xl mx-auto mt-auto pt-5 border-t border-slate-200 flex items-center justify-between shrink-0">
         <Button
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('identification')}
-          style={{ width: '180px' }}
+          onClick={() => setKioskStep('welcome')}
+          className="px-8 py-3.5 text-sm font-bold"
         >
-          Back / Balik
+          {kioskLanguage === 'hil' ? 'Balik sa Pamuno / Back' : 'Back to Home'}
         </Button>
 
         <Button
@@ -289,11 +293,14 @@ export function PatientInfo() {
           size="lg"
           trailingIcon={ArrowRight}
           onClick={handleNext}
-          style={{ width: '280px' }}
+          className="px-10 py-4 text-base font-black shadow-lg bg-brand-green"
         >
-          Continue / Padayon
+          {kioskLanguage === 'hil'
+            ? 'Padayon sa Sintomas / Next >'
+            : 'Next: Select Symptoms >'}
         </Button>
       </div>
+
     </div>
   );
 }

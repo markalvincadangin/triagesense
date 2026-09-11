@@ -2,7 +2,7 @@ import React from 'react';
 import { Check } from 'lucide-react';
 
 const STAGES = [
-  { id: 1, name: 'Identify', key: 'welcome' },
+  { id: 1, name: 'Identify', key: 'patient-info' },
   { id: 2, name: 'Symptoms', key: 'symptoms' },
   { id: 3, name: 'Body Map', key: 'body-map' },
   { id: 4, name: 'Severity & Vitals', key: 'pain-duration' },
@@ -46,9 +46,10 @@ export function ProgressStepper({ currentStep }) {
   };
 
   const getSubstepIndicator = () => {
+    if (currentStep === 'patient-info') return 'Step 1 of 5 • Patient Demographics & Identification';
     if (currentStep === 'symptoms') return 'Step 2 of 5 • Chief Complaints & Voice Memo';
     if (currentStep === 'body-map') return 'Step 3 of 5 • Anatomical Location';
-    if (currentStep === 'pain-duration') return 'Step 4 of 5 • Pain Scale & Right-Slot Vital Signs';
+    if (currentStep === 'pain-duration') return 'Step 4 of 5 • Pain Scale & Vital Signs Sensor Bay';
     if (currentStep === 'review') return 'Step 5 of 5 • Review & Send to Triage Nurse';
     return null;
   };

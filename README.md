@@ -34,8 +34,8 @@ Synthesized directly from the clinical human factors research and hand-drawn int
 │                                                                                         │
 │  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   ┌────────┐ │
 │  │ 1. IDENTIFY  ├──►│ 2. SYMPTOMS  ├──►│ 3. BODY MAP  ├──►│ 4. SEVERITY  ├──►│5.REVIEW│ │
-│  │  Language +  │   │ 6-Tile Grid  │   │  Anatomical  │   │  Pain + PPG  │   │Send to │ │
-│  │  Demographics│   │  Chief Comp. │   │  Projection  │   │  Sensor Bay  │   │ Nurse  │ │
+│  │ Name + DOB + │   │ 6-Tile Grid  │   │  Anatomical  │   │  Pain + PPG  │   │Send to │ │
+│  │ Voice Dictate│   │  Chief Comp. │   │  Projection  │   │  Sensor Bay  │   │ Nurse  │ │
 │  └──────────────┘   └──────────────┘   └──────────────┘   └──────────────┘   └────────┘ │
 │         ▲                                                        │                      │
 │         │                                                        ▼                      │
@@ -44,8 +44,9 @@ Synthesized directly from the clinical human factors research and hand-drawn int
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-1. **Step 1: Identify** (`Welcome.jsx`): In-place language selection pills (`Hiligaynon`, `English`, `Filipino`, `Cebuano`), quick scan simulation, patient demographic inputs, integrated Web Speech API `<Mic />` voice dictation, test patient autofill, and two-step emergency assistance call.
-2. **Step 2: Symptoms** (`Symptoms.jsx`): 6 high-salience chief complaint cards (`Chest Pain`, `Breathing Difficulty`, `High Fever`, `Abdominal Pain`, `Severe Headache`, `Injury/Trauma`) plus multimodal voice memo input.
+* **Start Screen: Welcome & Attract** (`Welcome.jsx`): Clean, low-cognitive-load welcome page featuring the official WVSUMC seal emblem, single oversized hero target `[ START EMERGENCY INTAKE / MAGSUGOD > ]`, rapid PhilHealth / National ID scan simulation, demo autofill, and high-salience life-threatening emergency assistance callout. Language switching is kept exclusively in `KioskHeader.jsx` to prevent duplicate controls.
+1. **Step 1: Identify** (`PatientInfo.jsx`): Dedicated patient identification stage (Stepper Step 1 of 5). Includes accessible Full Name input with Web Speech API `<Mic /> Voice Dictate` button, visual date of birth with real-time automated age calculation badge (`Age XX`), large tactile gender chips (`Male / Lalaki`, `Female / Babaye`, `Other / Iban`), contact number masking, and shake-animated error prevention.
+2. **Step 2: Symptoms** (`Symptoms.jsx`): 6 high-salience chief complaint cards (`Chest Pain`, `Breathing Difficulty`, `High Fever`, `Abdominal Pain`, `Severe Headache`, `Injury/Trauma`) plus multimodal voice memo recording.
 3. **Step 3: Body Map** (`BodyMap.jsx`): Biometric anatomical wireframe with front/back toggle (`<RotateCw />`) and synchronized regional selector cards.
 4. **Step 4: Severity & Vitals** (`PainDuration.jsx`): Wong-Baker facial pain scale + 0–10 numeric selector, 6 clinical duration options, and the **Integrated Vital Signs Sensor Bay Simulation** ($\text{SpO}_2\%$, Pulse Rate in BPM, Perfusion Index) with live plethysmogram pulse wave animation.
 5. **Step 5: Summary & Send to Nurse** (`IntakeReview.jsx`): Structured verification cards with inline edit links, direct `[ SEND TO NURSE > ]` dispatch action, and printed thermal ticket confirmation with 30-second auto-reset.

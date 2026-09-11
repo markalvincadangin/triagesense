@@ -128,26 +128,27 @@ To ground the UX engineering, three clinical personas representing the spectrum 
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                       STREAMLINED 5-STEP KIOSK FLOW                         │
 │                                                                             │
-│  [ Step 1: Identify ] ──► [ Step 2: Symptoms ] ──► [ Step 3: Body Map ]     │
-│   • Dialect Switch         • 6-Tile Chief Grid      • Anatomical Wireframe  │
-│   • Voice Dictate          • Voice Memo Input       • Front / Back Toggle   │
-│   • Demographics                                                            │
-│                                  │                                          │
-│                                  ▼                                          │
-│  [ Step 5: Summary & Dispatch ] ◄── [ Step 4: Severity & Vitals ]           │
-│   • Modular Review Cards             • Wong-Baker Facial Pain (0-10)        │
-│   • Direct Send to Nurse Action      • Clinical Duration Chips              │
-│   • Printed Queue Ticket Modal       • Right-Side PPG Sensor Bay Simulation │
+│  [ Start Screen: Welcome ] ──► [ Step 1: Identify ] ──► [ Step 2: Symptoms ]│
+│   • Institutional Authority     • Name + Voice Dictate   • 6-Tile Chief Grid│
+│   • Hero [START] Action         • Visual DOB + Age Badge • Voice Memo Input │
+│   • Emergency Assist Call       • Accessible Gender Chip                    │
+│                                                                 │           │
+│                                                                 ▼           │
+│  [ Step 5: Summary & Dispatch ] ◄── [ Step 4: Severity & Vitals ] ◄── [ Step 3: Body Map ]
+│   • Modular Review Cards             • Wong-Baker Facial Pain (0-10) • Anatomical Wireframe
+│   • Direct Send to Nurse Action      • Clinical Duration Chips       • Front / Back Toggle
+│   • Printed Queue Ticket Modal       • Right-Side PPG Sensor Bay     • Synchronized Cards
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 | Step # | Screen Name | Key Persona Friction | Engineering & UX Countermeasure | Usability Heuristic |
 | :---: | :--- | :--- | :--- | :--- |
-| **1** | **Identify & Welcome** | Reading barriers, typing fatigue on vertical glass, fear of emergency button spam. | In-place dialect pills (`Hiligaynon`, etc.), Web Speech voice dictation, test autofill, 2-stage emergency modal with 60s cooldown lock. | Error Prevention (H#5) & Flexibility (H#7) |
-| **2** | **Symptoms** | Medical jargon confusion, inability to articulate multi-symptom distress. | 6 high-salience category tiles (`Chest Pain`, `Dyspnea`, `Fever`, `Abdomen`, `Headache`, `Trauma`) + voice memo recording. | Recognition over Recall (H#6) |
-| **3** | **Body Map** | Difficulty describing anatomical location in words. | 3D-styled glowing biometric anatomical wireframe with front/back toggle (`<RotateCw />`) and synchronized zone buttons. | Match with Real World (H#2) |
-| **4** | **Severity & Vitals** | Vague pain self-reporting; physiological distress (hypoxia, tachycardia) unknown. | Wong-Baker visual facial pain scale (0–10), 6 discrete duration chips, and **Integrated Right-Side PPG Sensor Bay** ($\text{SpO}_2\%$, Pulse Rate, PI %). | Flexibility & Efficiency (H#7) |
-| **5** | **Summary & Dispatch** | "Did my data go through? Who sees this?"; fear of kiosk making clinical decisions. | Modular verification cards with edit shortcuts, direct `[ SEND TO NURSE > ]` dispatch action, thermal queue ticket receipt, and non-autonomous clinical disclaimer. | Visibility of System Status (H#1) |
+| **0** | **Start Screen: Welcome** (`Welcome.jsx`) | Acute stress, cognitive tunneling, panic, visual clutter. | Clean attract screen with WVSUMC seal emblem, single oversized hero target `[ START EMERGENCY INTAKE > ]`, emergency nurse callout, and PhilHealth scan simulation. Dialect switching kept exclusively in header (no duplicate pills). | Aesthetic & Minimalist Design (H#8) |
+| **1** | **Patient Identification** (`PatientInfo.jsx`) | Reading barriers, typing fatigue on vertical glass, hand tremors (*Tatay Ernesto*, *Bea*). | Web Speech API `<Mic /> Voice Dictate` button on name input, visual DOB picker with automated real-time age calculation badge (`Age XX`), large tactile gender chips, and shake-animated error prevention. | Error Prevention (H#5) & Flexibility (H#7) |
+| **2** | **Symptoms** (`Symptoms.jsx`) | Medical jargon confusion, inability to articulate multi-symptom distress. | 6 high-salience category tiles (`Chest Pain`, `Dyspnea`, `Fever`, `Abdomen`, `Headache`, `Trauma`) + voice memo recording. | Recognition over Recall (H#6) |
+| **3** | **Body Map** (`BodyMap.jsx`) | Difficulty describing anatomical location in words. | 3D-styled glowing biometric anatomical wireframe with front/back toggle (`<RotateCw />`) and synchronized zone buttons. | Match with Real World (H#2) |
+| **4** | **Severity & Vitals** (`PainDuration.jsx`) | Vague pain self-reporting; physiological distress (hypoxia, tachycardia) unknown. | Wong-Baker visual facial pain scale (0–10), 6 discrete duration chips, and **Integrated Right-Side PPG Sensor Bay** ($\text{SpO}_2\%$, Pulse Rate, PI %). | Flexibility & Efficiency (H#7) |
+| **5** | **Summary & Dispatch** (`IntakeReview.jsx`) | "Did my data go through? Who sees this?"; fear of kiosk making clinical decisions. | Modular verification cards with edit shortcuts, direct `[ SEND TO NURSE > ]` dispatch action, thermal queue ticket receipt, and non-autonomous clinical disclaimer. | Visibility of System Status (H#1) |
 
 ---
 
