@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* WVSU Medical Center — TriageSense Design System (TSDS) */
+/* Single Source of Truth CSS Variable Bundle */
+
+:root {
+  /* Brand Institutional Palette */
+  --color-wvsu-primary: #006B3F;
+  --color-wvsu-primary-hover: #005230;
+  --color-wvsu-primary-light: #E6F4EA;
+  --color-wvsu-gold: #F2B705;
+  --color-wvsu-gold-light: #FEF8E7;
+  --color-wvsu-blue: #0057A8;
+  --color-wvsu-blue-light: #EBF3FA;
+
+  /* Neutrals & Surfaces */
+  --color-bg-canvas: #F8F8F6;
+  --color-bg-surface: #FFFFFF;
+  --color-border: #D5E2DE;
+  --color-border-hover: #9BB8AF;
+  --color-border-active: #006B3F;
+  --color-border-gold: #F2B705;
+
+  /* Typography Colors */
+  --color-text-primary: #172B4D;
+  --color-text-secondary: #505F78;
+  --color-text-inverse: #FFFFFF;
+  --color-text-disabled: #94A3B8;
+
+  /* Safety, Emergency & Feedback */
+  --color-emergency: #DC2626;
+  --color-emergency-dark: #B91C1C;
+  --color-emergency-surface: #FEE2E2;
+  --color-emergency-border: #FCA5A5;
+  --color-cooldown: #94A3B8;
+  --color-success: #16803C;
+  --color-success-light: #E6F4EA;
+  --color-warning: #D97706;
+  --color-warning-light: #FEF3C7;
+
+  /* 0-10 Numeric Pain Rating Scale Tiers */
+  --color-pain-mild: #10B981;      /* 0-2 (Emerald) */
+  --color-pain-moderate: #F59E0B;  /* 3-5 (Amber) */
+  --color-pain-severe: #F97316;    /* 6-8 (Orange) */
+  --color-pain-worst: #B91C1C;     /* 9-10 (Crimson) */
+
+  /* Clinician-Assigned ESI Badges */
+  --color-esi-1: #991B1B;
+  --color-esi-2: #DC2626;
+  --color-esi-3: #D97706;
+  --color-esi-4: #2563EB;
+  --color-esi-5: #16A34A;
+  --color-esi-review: #7C3AED;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 4px 16px rgba(0, 107, 63, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 8px 24px rgba(0, 107, 63, 0.12);
+  --shadow-modal: 0 24px 64px rgba(23, 43, 77, 0.25);
+  --shadow-emergency: 0 8px 24px rgba(220, 38, 38, 0.22);
+
+  /* Touch Dimensions */
+  --touch-min: 64px;
+  --touch-btn-height: 72px;
+  --touch-btn-width: 360px;
+  --touch-card-min-h: 96px;
+
+  /* Fonts */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family);
+  background-color: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Typography Utility Classes */
+.text-display { font-size: 38px; font-weight: 700; line-height: 46px; letter-spacing: -0.02em; }
+.text-h1 { font-size: 30px; font-weight: 600; line-height: 38px; letter-spacing: -0.01em; }
+.text-h2 { font-size: 24px; font-weight: 600; line-height: 32px; }
+.text-h3 { font-size: 20px; font-weight: 600; line-height: 28px; }
+.text-btn { font-size: 20px; font-weight: 600; line-height: 26px; }
+.text-body-lg { font-size: 18px; font-weight: 400; line-height: 26px; }
+.text-body-md { font-size: 16px; font-weight: 400; line-height: 24px; }
+.text-caption { font-size: 14px; font-weight: 500; line-height: 20px; }
+.text-tiny { font-size: 12px; font-weight: 500; line-height: 16px; }
+
+/* Focus Visible */
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--color-wvsu-gold);
+  outline-offset: 2px;
+}
+
+/* Animations */
+@keyframes pulseSubtle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.22s ease-out forwards;
+}
+
+/* Custom Scrollbar for Dense Staff Tables */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-hover);
+}
