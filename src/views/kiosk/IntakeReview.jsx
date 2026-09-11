@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
-import { Edit3, Check, ArrowLeft, User, Activity, MapPin, HeartPulse, ShieldCheck } from 'lucide-react';
+import { Edit3, Check, ArrowLeft, ArrowRight, User, Activity, MapPin, HeartPulse, ShieldCheck } from 'lucide-react';
 
 export function IntakeReview() {
   const { intakeDraft, submitKioskIntake, setKioskStep, kioskLanguage } = useTriage();
