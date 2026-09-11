@@ -24,158 +24,58 @@ export function TicketConfirmation() {
   }, [resetKioskSession]);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        height: '100%',
-        padding: '36px 48px',
-        backgroundColor: 'var(--color-bg-canvas)',
-        overflowY: 'auto'
-      }}
-    >
+    <div className="flex flex-col items-center justify-between h-full px-12 py-8 bg-canvas overflow-y-auto select-none font-sans">
       {/* Header */}
-      <div style={{ textAlign: 'center' }}>
-        <div
-          style={{
-            width: '84px',
-            height: '84px',
-            borderRadius: 'var(--radius-full)',
-            backgroundColor: 'var(--color-success-light)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--color-success)',
-            margin: '0 auto 16px',
-            boxShadow: 'var(--shadow-card)'
-          }}
-        >
-          <CheckCircle2 size={52} strokeWidth={2.5} />
+      <div className="text-center mt-2">
+        <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center text-brand-green mx-auto mb-3.5 shadow-sm">
+          <CheckCircle2 size={48} strokeWidth={2.5} />
         </div>
 
-        <h1
-          style={{
-            fontSize: '36px',
-            fontWeight: '800',
-            color: 'var(--color-text-primary)'
-          }}
-        >
+        <h1 className="text-4xl font-black text-text-primary tracking-tight">
           You're Checked In!
         </h1>
-        <h2
-          style={{
-            fontSize: '18px',
-            fontWeight: '500',
-            color: 'var(--color-success)',
-            marginTop: '4px'
-          }}
-        >
+        <h2 className="text-base font-bold text-brand-green mt-1">
           Narehistro Ka Na! Nabatun na sang Nurse ang imo impormasyon
         </h2>
       </div>
 
       {/* Queue Token Ticket Slip Mockup */}
-      <div
-        className="animate-fade-in"
-        style={{
-          maxWidth: '520px',
-          width: '100%',
-          margin: '16px auto',
-          backgroundColor: 'var(--color-bg-surface)',
-          padding: '32px',
-          borderRadius: 'var(--radius-xl)',
-          border: '2px dashed var(--color-wvsu-primary)',
-          boxShadow: 'var(--shadow-hover)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-          gap: '16px',
-          position: 'relative'
-        }}
-      >
-        <div
-          style={{
-            fontSize: '13px',
-            fontWeight: '700',
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em',
-            color: 'var(--color-text-secondary)'
-          }}
-        >
+      <div className="w-full max-w-lg mx-auto my-3 bg-white p-7 rounded-2xl border-2 border-dashed border-brand-green shadow-md flex flex-col items-center text-center gap-3.5 animate-fade-in">
+        <div className="text-xs font-black tracking-widest text-text-secondary uppercase">
           WVSU MEDICAL CENTER • EMERGENCY DEPARTMENT
         </div>
 
         <div>
-          <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--color-text-secondary)' }}>
+          <div className="text-xs font-bold text-text-secondary uppercase tracking-wider">
             YOUR QUEUE TICKET NUMBER:
           </div>
-          <div
-            style={{
-              fontSize: '40px',
-              fontWeight: '900',
-              color: 'var(--color-wvsu-primary)',
-              letterSpacing: '0.04em',
-              fontVariantNumeric: 'tabular-nums',
-              marginTop: '4px'
-            }}
-          >
+          <div className="text-4xl font-black text-brand-green tracking-wider font-mono mt-1">
             {referenceCode}
           </div>
         </div>
 
         {/* Clear Lounge Instructions */}
-        <div
-          style={{
-            backgroundColor: 'var(--color-bg-canvas)',
-            padding: '16px 20px',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--color-border)',
-            fontSize: '15px',
-            lineHeight: '22px',
-            color: 'var(--color-text-primary)'
-          }}
-        >
+        <div className="w-full bg-canvas p-4 rounded-xl border border-border-main text-sm leading-relaxed text-text-primary font-medium">
           "Please take a seat in the waiting area. A triage nurse will call your ticket number shortly."
         </div>
 
         {/* Note on Non-Autonomous Triage */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--color-text-secondary)' }}>
-          <ShieldCheck size={16} color="var(--color-wvsu-primary)" />
+        <div className="flex items-center gap-2 text-xs font-semibold text-text-secondary">
+          <ShieldCheck size={16} className="text-brand-green shrink-0" />
           <span>Next Step: In-Person Nurse Assessment</span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--color-text-secondary)' }}>
-          <Printer size={16} />
+        <div className="flex items-center gap-2 text-xs font-semibold text-text-secondary">
+          <Printer size={16} className="text-slate-500 shrink-0" />
           <span>Please take your printed ticket from the slot below</span>
         </div>
       </div>
 
       {/* Auto Reset Timer & Manual Return Button */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '14px',
-          maxWidth: '520px',
-          width: '100%',
-          margin: '0 auto'
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            fontSize: '14px',
-            color: 'var(--color-text-secondary)'
-          }}
-        >
-          <Clock size={16} />
-          <span>Terminal screen will reset for next patient in <strong>{countdown}s</strong></span>
+      <div className="w-full max-w-lg mx-auto flex flex-col items-center gap-3.5 mt-auto">
+        <div className="flex items-center gap-2 text-xs font-semibold text-text-secondary">
+          <Clock size={16} className="text-slate-400" />
+          <span>Terminal screen will reset for next patient in <strong className="text-slate-800 font-bold">{countdown}s</strong></span>
         </div>
 
         <Button
@@ -184,7 +84,7 @@ export function TicketConfirmation() {
           fullWidth
           trailingIcon={ArrowRight}
           onClick={resetKioskSession}
-          style={{ height: '68px', fontSize: '18px' }}
+          className="h-16 text-lg font-black tracking-wide shadow-xl bg-brand-green rounded-2xl"
         >
           DONE / TAPUS NA
         </Button>
@@ -193,10 +93,10 @@ export function TicketConfirmation() {
         <button
           type="button"
           onClick={() => setViewMode('admin')}
-          className="flex items-center justify-center gap-1 text-sm font-bold text-[#0057A8] hover:underline cursor-pointer mt-1"
+          className="flex items-center justify-center gap-1.5 text-xs font-bold text-brand-blue hover:underline cursor-pointer py-1"
         >
           <span>View this record on Nurse Triage Portal</span>
-          <ArrowRight size={14} className="inline shrink-0" />
+          <ArrowRight size={14} className="shrink-0" />
         </button>
       </div>
     </div>

@@ -11,29 +11,16 @@ export function BodyMap() {
     <div className="flex flex-col h-full px-12 py-8 bg-canvas select-none">
       {/* Header */}
       <div className="text-center mb-4 shrink-0">
-        <h1
-          style={{
-            fontSize: '32px',
-            fontWeight: '800',
-            color: 'var(--color-text-primary)'
-          }}
-        >
+        <h1 className="text-3xl font-black text-text-primary tracking-tight">
           Where on Your Body Does It Hurt?
         </h1>
-        <h2
-          style={{
-            fontSize: '18px',
-            fontWeight: '500',
-            color: 'var(--color-text-secondary)',
-            marginTop: '4px'
-          }}
-        >
+        <h2 className="text-base font-semibold text-text-secondary mt-1">
           Diin dampi sa imo lawas ang nagasakit? (Tap on the diagram or buttons)
         </h2>
       </div>
 
       {/* Anatomical Body Location Selector */}
-      <div style={{ width: '100%', maxWidth: '840px', margin: '16px auto 0' }}>
+      <div className="w-full max-w-4xl mx-auto my-2">
         <BodyMapSelector
           selectedLocations={intakeDraft.bodyLocations}
           onToggleLocation={toggleBodyLocation}

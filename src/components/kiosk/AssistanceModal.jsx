@@ -6,84 +6,40 @@ import { Button } from '../common/Button';
 export function AssistanceModal({ isOpen, onCancel, onConfirm }) {
   return (
     <Modal isOpen={isOpen} onClose={onCancel} maxWidth="600px">
-      <div style={{ padding: '36px 36px 32px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div className="p-8 flex flex-col gap-5 select-none font-sans">
         {/* Warning Badge & Icon */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div
-            style={{
-              width: '60px',
-              height: '60px',
-              borderRadius: 'var(--radius-full)',
-              backgroundColor: 'var(--color-emergency-surface)',
-              border: '2px solid var(--color-emergency-border)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--color-emergency)',
-              flexShrink: 0
-            }}
-          >
-            <AlertTriangle size={32} strokeWidth={2.4} />
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-full bg-red-100 border-2 border-red-300 flex items-center justify-center text-emergency shrink-0 shadow-2xs">
+            <AlertTriangle size={30} strokeWidth={2.4} />
           </div>
 
           <div>
-            <h2
-              style={{
-                fontSize: '24px',
-                fontWeight: '700',
-                color: 'var(--color-text-primary)',
-                lineHeight: '30px'
-              }}
-            >
+            <h2 className="text-2xl font-black text-text-primary leading-tight tracking-tight">
               Request ER Staff Assistance?
             </h2>
-            <div
-              style={{
-                fontSize: '15px',
-                fontWeight: '600',
-                color: 'var(--color-emergency)',
-                marginTop: '4px'
-              }}
-            >
+            <div className="text-sm font-bold text-emergency mt-0.5">
               For Acute & Life-Threatening Emergencies
             </div>
           </div>
         </div>
 
         {/* Clinical Instruction Text */}
-        <div
-          style={{
-            backgroundColor: 'var(--color-bg-canvas)',
-            borderRadius: 'var(--radius-md)',
-            padding: '16px 20px',
-            border: '1px solid var(--color-border)',
-            fontSize: '16px',
-            lineHeight: '24px',
-            color: 'var(--color-text-primary)'
-          }}
-        >
+        <div className="bg-canvas rounded-xl p-4 border border-border-main text-sm leading-relaxed text-text-primary">
           Select this if the patient has <strong>severe chest pain</strong>, <strong>cannot breathe</strong>, is <strong>bleeding heavily</strong>, or is <strong>losing consciousness</strong>.
-          <p style={{ marginTop: '10px', fontSize: '14px', color: 'var(--color-text-secondary)' }}>
+          <p className="mt-2 text-xs text-text-secondary">
             An emergency nurse will come to assist you at this kiosk right away.
           </p>
         </div>
 
         {/* Button Actions */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-            marginTop: '8px'
-          }}
-        >
+        <div className="flex flex-col gap-3 mt-1">
           <Button
             variant="emergency"
-            size="md"
+            size="lg"
             fullWidth
             icon={AlertCircle}
             onClick={onConfirm}
-            style={{ height: '64px', fontSize: '18px' }}
+            className="h-14 text-base font-black tracking-wide rounded-xl shadow-md"
           >
             YES, REQUEST ASSISTANCE
           </Button>
@@ -93,7 +49,7 @@ export function AssistanceModal({ isOpen, onCancel, onConfirm }) {
             size="md"
             fullWidth
             onClick={onCancel}
-            style={{ height: '56px', fontSize: '16px' }}
+            className="h-12 text-sm font-bold rounded-xl"
           >
             Cancel / I Can Use Kiosk
           </Button>

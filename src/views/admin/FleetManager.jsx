@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
+import { Card } from '../../components/common/Card';
+import { AlertBanner } from '../../components/common/AlertBanner';
 import { Server, Wifi, Battery, Printer, Clock, Sliders, CheckCircle2, ShieldCheck, RefreshCw } from 'lucide-react';
 
 export function FleetManager() {
@@ -21,249 +23,176 @@ export function FleetManager() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', height: '100%', overflowY: 'auto', padding: '24px 32px' }}>
+    <div className="flex flex-col gap-6 h-full overflow-y-auto p-6 md:p-8 font-sans">
       {/* Top Header */}
       <div>
-        <h1 style={{ fontSize: '26px', fontWeight: '800', color: 'var(--color-text-primary)' }}>
+        <h1 className="text-2xl font-black text-text-primary tracking-tight">
           Kiosk Stations & Hardware Status
         </h1>
-        <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
+        <p className="text-xs text-text-secondary mt-0.5">
           Physical terminal health, paper roll level, and global ER check-in settings.
         </p>
       </div>
 
       {saveBanner && (
-        <div
-          className="animate-fade-in"
-          style={{
-            padding: '12px 20px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--color-success-light)',
-            border: '1.5px solid var(--color-success)',
-            color: 'var(--color-success)',
-            fontSize: '14px',
-            fontWeight: '700',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}
-        >
-          <CheckCircle2 size={18} />
-          <span>Station Settings Successfully Saved & Applied to All Kiosks!</span>
-        </div>
+        <AlertBanner variant="success" title="Success">
+          Station Settings Successfully Saved & Applied to All Kiosks!
+        </AlertBanner>
       )}
 
       {/* Kiosk Hardware Telemetry Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {kiosks.map((kiosk) => (
-          <div
-            key={kiosk.id}
-            style={{
-              backgroundColor: 'var(--color-bg-surface)',
-              borderRadius: 'var(--radius-xl)',
-              border: '1.5px solid var(--color-border)',
-              padding: '24px',
-              boxShadow: 'var(--shadow-sm)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: 'var(--radius-md)',
-                    backgroundColor: 'var(--color-wvsu-primary-light)',
-                    color: 'var(--color-wvsu-primary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <Server size={22} />
-                </div>
+          <Card key={kiosk.id} variant="default">
+            <Card.Header
+              icon={Server}
+              title={kiosk.name}
+              subtitle={kiosk.location}
+              action={
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-brand-green border border-emerald-300 text-xs font-bold">
+                  <Wifi size={13} />
+                  <span>{kiosk.status}</span>
+                </span>
+              }
+            />
+
+            <Card.Body className="gap-4">
+              {/* Hardware Metric Grid */}
+              <div className="grid grid-cols-2 gap-3 bg-canvas p-4 rounded-xl border border-border-main">
                 <div>
-                  <div style={{ fontSize: '18px', fontWeight: '800', color: 'var(--color-text-primary)' }}>
-                    {kiosk.name}
+                  <div className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">
+                    Thermal Printer Paper
                   </div>
-                  <div style={{ fontSize: '13px', color: 'var(--color-text-secondary)' }}>
-                    {kiosk.location}
+                  <div className="text-sm font-black text-text-primary mt-0.5">
+                    {kiosk.paperLevel}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">
+                    Power & Uptime
+                  </div>
+                  <div className="text-sm font-black text-text-primary mt-0.5">
+                    {kiosk.battery}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">
+                    NFC Contactless Reader
+                  </div>
+                  <div className="text-sm font-black text-brand-green mt-0.5">
+                    {kiosk.nfcStatus}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">
+                    Total Intakes Today
+                  </div>
+                  <div className="text-sm font-black text-brand-green mt-0.5">
+                    {kiosk.activeIntakesToday} registered
                   </div>
                 </div>
               </div>
+            </Card.Body>
 
-              <span
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '4px 12px',
-                  borderRadius: 'var(--radius-full)',
-                  backgroundColor: 'var(--color-success-light)',
-                  color: 'var(--color-success)',
-                  fontSize: '13px',
-                  fontWeight: '700'
-                }}
-              >
-                <Wifi size={14} />
-                {kiosk.status}
-              </span>
-            </div>
-
-            {/* Telemetry Metric Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', backgroundColor: 'var(--color-bg-canvas)', padding: '16px', borderRadius: 'var(--radius-md)' }}>
-              <div>
-                <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--color-text-secondary)', textTransform: 'uppercase' }}>
-                  Thermal Printer Paper
-                </div>
-                <div style={{ fontSize: '14px', fontWeight: '700', color: 'var(--color-text-primary)', marginTop: '2px' }}>
-                  {kiosk.paperLevel}
-                </div>
-              </div>
-
-              <div>
-                <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--color-text-secondary)', textTransform: 'uppercase' }}>
-                  Power & Uptime
-                </div>
-                <div style={{ fontSize: '14px', fontWeight: '700', color: 'var(--color-text-primary)', marginTop: '2px' }}>
-                  {kiosk.battery}
-                </div>
-              </div>
-
-              <div>
-                <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--color-text-secondary)', textTransform: 'uppercase' }}>
-                  NFC Contactless Reader
-                </div>
-                <div style={{ fontSize: '14px', fontWeight: '700', color: 'var(--color-success)', marginTop: '2px' }}>
-                  {kiosk.nfcStatus}
-                </div>
-              </div>
-
-              <div>
-                <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--color-text-secondary)', textTransform: 'uppercase' }}>
-                  Total Intakes Today
-                </div>
-                <div style={{ fontSize: '14px', fontWeight: '700', color: 'var(--color-wvsu-primary)', marginTop: '2px' }}>
-                  {kiosk.activeIntakesToday} patients registered
-                </div>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', color: 'var(--color-text-secondary)' }}>
-              <span>Heartbeat: {kiosk.lastSync}</span>
+            <Card.Footer className="text-xs text-text-secondary">
+              <span>Heartbeat: <strong className="text-slate-700">{kiosk.lastSync}</strong></span>
               <button
                 type="button"
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-wvsu-blue)',
-                  fontWeight: '700',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-blue hover:underline cursor-pointer"
               >
-                <RefreshCw size={13} />
+                <RefreshCw size={12} />
                 <span>Simulate Ping</span>
               </button>
-            </div>
-          </div>
+            </Card.Footer>
+          </Card>
         ))}
       </div>
 
       {/* Configuration Settings Form */}
-      <form
-        onSubmit={handleSaveSettings}
-        style={{
-          backgroundColor: 'var(--color-bg-surface)',
-          borderRadius: 'var(--radius-xl)',
-          border: '1.5px solid var(--color-border)',
-          padding: '28px',
-          boxShadow: 'var(--shadow-sm)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '20px'
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '18px', fontWeight: '800', color: 'var(--color-text-primary)' }}>
-          <Sliders size={20} color="var(--color-wvsu-primary)" />
-          <span>Intake Kiosk Operating Parameters</span>
-        </div>
+      <form onSubmit={handleSaveSettings}>
+        <Card variant="default">
+          <Card.Header
+            icon={Sliders}
+            title="Intake Kiosk Operating Parameters"
+            subtitle="Global parameters applied across all active intake terminals"
+          />
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
-          {/* Emergency Cooldown Slider */}
-          <div style={{ backgroundColor: 'var(--color-bg-canvas)', padding: '18px', borderRadius: 'var(--radius-md)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <label style={{ fontSize: '14px', fontWeight: '700', color: 'var(--color-text-primary)' }}>
-                Emergency Request Cooldown Lockout:
-              </label>
-              <span style={{ fontSize: '16px', fontWeight: '800', color: 'var(--color-emergency)' }}>
-                {cooldown} seconds
-              </span>
-            </div>
-            <input
-              type="range"
-              min={30}
-              max={120}
-              step={10}
-              value={cooldown}
-              onChange={(e) => setCooldown(e.target.value)}
-              style={{ width: '100%', accentColor: 'var(--color-emergency)' }}
-            />
-            <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginTop: '6px' }}>
-              Prevents duplicate/spam assistance activations from the kiosk waiting room.
-            </div>
-          </div>
+          <Card.Body className="gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {/* Emergency Cooldown Slider */}
+              <div className="bg-canvas p-4 rounded-xl border border-border-main flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-text-primary uppercase tracking-wider">
+                    Emergency Request Cooldown:
+                  </label>
+                  <span className="text-sm font-black text-emergency font-mono">
+                    {cooldown}s
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={30}
+                  max={120}
+                  step={10}
+                  value={cooldown}
+                  onChange={(e) => setCooldown(e.target.value)}
+                  className="w-full accent-emergency cursor-pointer"
+                />
+                <div className="text-[11px] text-text-secondary">
+                  Prevents duplicate/accidental assistance activations from the kiosk waiting room.
+                </div>
+              </div>
 
-          {/* Inactivity Privacy Timeout */}
-          <div style={{ backgroundColor: 'var(--color-bg-canvas)', padding: '18px', borderRadius: 'var(--radius-md)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <label style={{ fontSize: '14px', fontWeight: '700', color: 'var(--color-text-primary)' }}>
-                Inactivity Reset Timeout:
-              </label>
-              <span style={{ fontSize: '16px', fontWeight: '800', color: 'var(--color-wvsu-primary)' }}>
-                {timeoutSec} seconds
-              </span>
+              {/* Inactivity Privacy Timeout */}
+              <div className="bg-canvas p-4 rounded-xl border border-border-main flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-text-primary uppercase tracking-wider">
+                    Inactivity Reset Timeout:
+                  </label>
+                  <span className="text-sm font-black text-brand-green font-mono">
+                    {timeoutSec}s
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={30}
+                  max={180}
+                  step={15}
+                  value={timeoutSec}
+                  onChange={(e) => setTimeoutSec(e.target.value)}
+                  className="w-full accent-[#006B3F] cursor-pointer"
+                />
+                <div className="text-[11px] text-text-secondary">
+                  Auto-purges session if terminal is abandoned without input to protect patient privacy.
+                </div>
+              </div>
             </div>
-            <input
-              type="range"
-              min={30}
-              max={180}
-              step={15}
-              value={timeoutSec}
-              onChange={(e) => setTimeoutSec(e.target.value)}
-              style={{ width: '100%', accentColor: 'var(--color-wvsu-primary)' }}
-            />
-            <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginTop: '6px' }}>
-              Auto-purges session if terminal is abandoned without input.
+
+            {/* Supported Languages Toggles */}
+            <div>
+              <div className="text-xs font-bold text-text-primary uppercase tracking-wider mb-2.5">
+                Supported Languages Enabled on Kiosk:
+              </div>
+              <div className="flex gap-4 flex-wrap">
+                {['Hiligaynon (Ilonggo)', 'English (Standard)', 'Filipino (Tagalog)', 'Cebuano (Bisaya)'].map((lang) => (
+                  <label key={lang} className="flex items-center gap-2 text-xs font-semibold text-text-primary cursor-pointer select-none">
+                    <input type="checkbox" defaultChecked className="accent-[#006B3F] w-4 h-4 rounded" />
+                    <span>{lang}</span>
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
-        </div>
+          </Card.Body>
 
-        {/* Supported Languages Toggles */}
-        <div>
-          <div style={{ fontSize: '14px', fontWeight: '700', color: 'var(--color-text-primary)', marginBottom: '10px' }}>
-            Supported Languages Enabled on Kiosk:
-          </div>
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            {['Hiligaynon (Ilonggo)', 'English (Standard)', 'Filipino (Tagalog)', 'Cebuano (Bisaya)'].map((lang) => (
-              <label key={lang} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: '600', color: 'var(--color-text-primary)' }}>
-                <input type="checkbox" defaultChecked style={{ accentColor: 'var(--color-wvsu-primary)', width: '16px', height: '16px' }} />
-                <span>{lang}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
-          <Button type="submit" variant="primary" size="md" style={{ width: '220px' }}>
-            Save Configuration
-          </Button>
-        </div>
+          <Card.Footer className="justify-end">
+            <Button type="submit" variant="primary" size="md" className="px-6 text-xs font-bold uppercase tracking-wider">
+              Save Configuration
+            </Button>
+          </Card.Footer>
+        </Card>
       </form>
     </div>
   );
