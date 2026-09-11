@@ -375,7 +375,7 @@ export function PatientDossier() {
                 </div>
 
                 <div style={{ fontSize: '11px', color: '#047857' }}>
-                  * Automated pre-screening data. Licensed nurse verifies and confirms telemetry on the right assessment panel.
+                  * Automated pre-screening data. Licensed nurse verifies and confirms vital signs on the right assessment panel.
                 </div>
               </div>
             )}

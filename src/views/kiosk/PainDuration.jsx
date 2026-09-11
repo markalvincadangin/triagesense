@@ -237,7 +237,7 @@ export function PainDuration() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-emerald-900 font-bold text-sm">
                   <CheckCircle2 size={18} className="text-emerald-600" />
-                  <span>Objective Telemetry Captured Successfully via Vital Signs Sensor Bay</span>
+                  <span>Your Quick Pulse Check is Done!</span>
                 </div>
                 <button
                   onClick={handleStartMeasurement}

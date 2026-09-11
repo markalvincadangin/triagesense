@@ -64,7 +64,7 @@ export function AssistanceModal({ isOpen, onCancel, onConfirm }) {
         >
           Select this if the patient has <strong>severe chest pain</strong>, <strong>cannot breathe</strong>, is <strong>bleeding heavily</strong>, or is <strong>losing consciousness</strong>.
           <p style={{ marginTop: '10px', fontSize: '14px', color: 'var(--color-text-secondary)' }}>
-            An emergency nurse will be immediately dispatched to this kiosk terminal.
+            An emergency nurse will come to assist you at this kiosk right away.
           </p>
         </div>
 

@@ -200,7 +200,7 @@ export function Welcome() {
           className="px-6 py-3 text-xs font-black shrink-0 shadow-md whitespace-nowrap"
         >
           {isCooldown
-            ? `DISPATCHED (${assistanceCooldownRemaining}s)`
+            ? `NURSE CALLED (${assistanceCooldownRemaining}s)`
             : 'REQUEST IMMEDIATE NURSE'}
         </Button>
       </div>

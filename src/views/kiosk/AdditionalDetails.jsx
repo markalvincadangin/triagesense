@@ -206,7 +206,7 @@ export function AdditionalDetails() {
               </div>
               <div style={{ fontSize: '13px', color: 'var(--color-text-secondary)' }}>
                 {intakeDraft.voiceNoteRecorded
-                  ? 'Audio file is ready for triage nurse playback in clinical dossier.'
+                  ? 'Your voice note is saved and will be played for the triage nurse.'
                   : 'Record a quick audio message to explain in your own words.'}
               </div>
             </div>

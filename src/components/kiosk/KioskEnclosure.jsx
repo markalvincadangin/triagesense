@@ -220,7 +220,7 @@ export function KioskEnclosure({ children, scale = 1.0 }) {
                     VITAL SIGNS SENSORS
                   </span>
                   <span className="text-[9px] font-mono text-slate-500 tracking-wide">
-                    INTEGRATED BIO-TELEMETRY & OPTICAL SENSING MODULE
+                    AUTOMATIC HEART RATE & PULSE SENSING PAD
                   </span>
                 </div>
               </div>
@@ -235,7 +235,7 @@ export function KioskEnclosure({ children, scale = 1.0 }) {
           <div className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-full bg-[#006B3F] border border-emerald-400/40" />
             <span className="text-[9px] font-mono font-bold tracking-widest text-slate-400 uppercase">
-              WVSU MEDICAL CENTER • EMERGENCY INTAKE TOTEM
+              WVSU MEDICAL CENTER • EMERGENCY INTAKE KIOSK
             </span>
           </div>
           <div className="w-14 h-2 rounded-full bg-slate-700/80" />
