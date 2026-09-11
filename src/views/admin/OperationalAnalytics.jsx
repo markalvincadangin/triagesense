@@ -2,7 +2,7 @@ import React from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { BarChart3, Clock, TrendingUp, Users, Globe, Info, Activity } from 'lucide-react';
 
-export function ADM05Analytics() {
+export function OperationalAnalytics() {
   const { analytics } = useTriage();
 
   return (

@@ -11,7 +11,7 @@ const ADDITIONAL_SYMPTOMS = [
   { id: 'Other', label: 'Other Concerns / Iban pa', dialect: 'Iban pa nga ginabatyag' }
 ];
 
-export function K08AdditionalDetails() {
+export function AdditionalDetails() {
   const { intakeDraft, toggleAdditionalSymptom, updateDraft, setKioskStep } = useTriage();
   const [isRecording, setIsRecording] = useState(false);
 
@@ -240,7 +240,7 @@ export function K08AdditionalDetails() {
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('K07')}
+          onClick={() => setKioskStep('pain-duration')}
           style={{ width: '180px' }}
         >
           Back / Balik
@@ -250,7 +250,7 @@ export function K08AdditionalDetails() {
           variant="primary"
           size="lg"
           trailingIcon={ArrowRight}
-          onClick={() => setKioskStep('K09')}
+          onClick={() => setKioskStep('review')}
           style={{ width: '280px' }}
         >
           Proceed to Review

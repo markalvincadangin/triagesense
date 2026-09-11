@@ -1,7 +1,7 @@
-# WVSU Medical Center — TriageSense Admin Portal
-## Admin Screen Interaction Blueprint & Layout Specification (Screens ADM-01–06)
+# WVSU Medical Center — TriageSense Staff Portal
+## Admin Screen Interaction Blueprint & Layout Specification
 
-**Document Identifier**: `TS-ADM-002` | **Version**: `1.0.0 (Audited Design Specification)`  
+**Document Identifier**: `TS-ADM-002` | **Version**: `2.0.0 (Elevated Clinical Workstation Specification)`  
 **Course**: CIT 213: Human Computer Interaction 2 (Activity 5: Concept Refinement and Prototyping)  
 **Institution**: West Visayas State University Medical Center (WVSU MC)  
 *“Quality. Accessible. Compassionate.”* | *“Better Access. Healthier Tomorrow.”*  
@@ -15,191 +15,170 @@
 
 ## 1. System Architecture, Clinical Safety & Scope Partitioning
 
-The **TriageSense Admin Portal** is an enterprise-grade Emergency Department Information System (EDIS) interface engineered specifically for **16:9 widescreen desktop workstations ($1920 \times 1080$)** utilized at ER triage desks and charge nurse stations.
+The **TriageSense Staff Portal** is an enterprise-grade Emergency Department Information System (EDIS) interface engineered specifically for **16:9 widescreen desktop workstations ($1920 \times 1080$)** utilized at ER triage desks and charge nurse stations.
 
 > [!CAUTION]
 > **Mandatory Clinical Safety Rule — No Autonomous ESI Assignment**:
 > **TriageSense does not autonomously determine or assign Emergency Severity Index (ESI) acuity.**
 > - Arriving records from kiosks represent **subjective patient-reported intake**.
 > - Arriving patients appear in the queue with an acuity state of **`Needs Nurse Review`**.
-> - The triage nurse alone evaluates objective vital signs and assigns the final **`Nurse-Confirmed ESI-1` to `ESI-5`** level in Screen ADM-02.
+> - The triage nurse alone evaluates objective vital signs and assigns the final **`Nurse-Confirmed ESI-1` to `ESI-5`** level in Screen **Patient Clinical Dossier**.
 > - Algorithmic flags (e.g., chest pain, pain $\ge 8$) serve strictly as visual prioritization hints labeled `"Suggested Priority — Requires Clinician Verification"`.
 
 > [!NOTE]
 > **Illustrative Sample Data Disclaimer**:
-> All patient names (e.g., *Juan Dela Cruz*), personnel names (*Nurse Reyes, RN*), hospital record IDs, and operational throughput statistics (DTT times, symptom percentages) in this document are **fictional sample data** designed for academic coursework demonstration.
+> All patient names (e.g., *Juan Dela Cruz*, *Maria Santos*), personnel names (*Nurse Kristine, RN*), hospital record IDs (`TS-2026-9912`), and operational throughput statistics in this document are **fictional sample data** designed for academic coursework demonstration.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                        TRIAGESENSE ADMIN PORTAL SUITE MAP                              │
-├───────────────┬──────────────────────────────────────────┬─────────────────────────────┤
-│ Screen Code   │ Screen Name & Implementation Scope       │ Clinical Function           │
-├───────────────┼──────────────────────────────────────────┼─────────────────────────────┤
-│ ADM-01        │ Live Triage Queue & Command Dashboard    │ Real-time patient queue,    │
-│               │ [CORE PROTOTYPE SCOPE]                   │ wait times & KPI metrics    │
-├───────────────┼──────────────────────────────────────────┼─────────────────────────────┤
-│ ADM-02        │ Patient Clinical Dossier & Workspace     │ Full intake review, body map│
-│               │ [CORE PROTOTYPE SCOPE]                   │ inspection, vitals & ESI    │
-├───────────────┼──────────────────────────────────────────┼─────────────────────────────┤
-│ ADM-03        │ Kiosk Emergency Broadcast Console        │ Real-time modal alert &     │
-│               │ [CORE PROTOTYPE SCOPE]                   │ chime for assistance calls  │
-├───────────────┼──────────────────────────────────────────┼─────────────────────────────┤
-│ ADM-04        │ Patient Health Directory & Archive       │ Searchable past visits and  │
-│               │ [EXTENDED ROADMAP CAPABILITY]            │ longitudinal medical records│
-├───────────────┼──────────────────────────────────────────┼─────────────────────────────┤
-│ ADM-05        │ ED Operational Intelligence (Reports)    │ Door-to-Triage (DTT) BI,    │
-│               │ [EXTENDED ROADMAP CAPABILITY]            │ peak hours & symptom charts │
-├───────────────┼──────────────────────────────────────────┼─────────────────────────────┤
-│ ADM-06        │ Kiosk Fleet Manager & Settings           │ Kiosk hardware health, paper│
-│               │ [EXTENDED ROADMAP CAPABILITY]            │ levels, timeout & cooldown  │
-└───────────────┴──────────────────────────────────────────┴─────────────────────────────┘
+│                        TRIAGESENSE STAFF PORTAL SUITE MAP                              │
+├───────────────────────────────┬──────────────────────────────────────────┬─────────────┤
+│ Standardized Screen Name      │ Implementation Scope                     │ Function    │
+├───────────────────────────────┼──────────────────────────────────────────┼─────────────┤
+│ Live Triage Queue             │ Real-time intake queue, 4 KPI cards,     │ Core        │
+│                               │ demographic table & operational rail     │ Prototype   │
+├───────────────────────────────┼──────────────────────────────────────────┼─────────────┤
+│ Patient Clinical Dossier      │ Full intake review, body map inspection, │ Core        │
+│                               │ vitals capture & nurse-controlled ESI    │ Prototype   │
+├───────────────────────────────┼──────────────────────────────────────────┼─────────────┤
+│ Emergency Console             │ Full-screen audio-visual emergency alert │ Core        │
+│                               │ & two-way kiosk broadcast dispatch       │ Prototype   │
+├───────────────────────────────┼──────────────────────────────────────────┼─────────────┤
+│ Patient Directory             │ Searchable past visits, filter by date   │ Extended    │
+│                               │ and longitudinal intake archive          │ Capability  │
+├───────────────────────────────┼──────────────────────────────────────────┼─────────────┤
+│ Operational Analytics         │ Door-to-Triage (DTT) business metrics,   │ Extended    │
+│                               │ peak surge hours & dialect utilization   │ Capability  │
+├───────────────────────────────┼──────────────────────────────────────────┼─────────────┤
+│ Kiosk Fleet & Settings        │ Kiosk hardware health, paper levels,     │ Extended    │
+│                               │ cooldown timers & auto-purge timeouts    │ Capability  │
+└───────────────────────────────┴──────────────────────────────────────────┴─────────────┘
 ```
 
 ---
 
 ## 2. Screen-by-Screen Interaction Specifications
 
-### Screen ADM-01: Live Triage Queue & Command Dashboard [Core Prototype]
+### Screen: Live Triage Queue & Command Dashboard [Core Prototype]
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ [WVSUMC Logo] TriageSense ER Portal — Desk 01          Nurse Reyes, RN  ● Online            10:24:18 AM │
-├─────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ [<UserPlus /> 12 New Intake]  [<Clock /> 8 Waiting]  [<Activity /> 2 In Triage]  [<CheckCircle2 /> 31 Completed]│
-├─────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ Queue View: [All Active (20) ▼]  [Filter by Acuity: All ▼]                     [<Search /> Search...]   │
-│ ┌─────┬────────────────┬──────────┬───────────────────────┬────────────┬──────────────────────┬────────┐ │
-│ │ Q#  │ Patient Name   │ Arrival  │ Chief Complaint       │ Pain Score │ Clinical Acuity      │ Action │ │
-│ ├─────┼────────────────┼──────────┼───────────────────────┼────────────┼──────────────────────┼────────┤ │
-│ │ #01 │ J. Dela Cruz   │ 10:24 AM │ Chest Pain, Fever     │ 7/10 (Sev) │ [<Clock /> Needs Exam]│[Assess]│ │
-│ │ #02 │ M. Santos      │ 10:18 AM │ Abdominal Pain        │ 9/10 (Crit)│ [<Alert> Urgent Hint]│ [Assess]│ │
-│ │ #03 │ P. Reyes       │ 10:12 AM │ Cough, Mild Fever     │ 4/10 (Mod) │ [<Clock /> Needs Exam]│[Assess]│ │
-│ │ #04 │ A. Garcia      │ 10:05 AM │ Headache, Dizziness   │ 2/10 (Mild)│ [<Check> ESI-4 Conf] │ [Assess]│ │
-│ └─────┴────────────────┴──────────┴───────────────────────┴────────────┴──────────────────────┴────────┘ │
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ [Activity] TriageSense | WVSU Medical Center - Emergency Dept      [● Triage Desk 1]  [<Bell /> 3] [<Volume2 />] [NK Nurse Kristine] 5:57 PM │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ [<Users /> Total Intakes: 12 ↑2]  [<Clock /> Waiting: 5 ↑1]  [<Bed /> In Triage: 4 ↑2]  [<CheckCircle2 /> Completed: 3 ↑1]       │
+├───────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────────────────┤
+│ [All] [New] [Waiting] [In Triage] [Completed]   ESI: [ESI-1] [ESI-2] [ESI-3] [ESI-4] [ESI-5]       │ [<Alert /> Emergency Assist] │
+│ [<Search /> Search name, token, or symptoms...]                                                   │ 1 active alert >             │
+├───────────────────────────────────────────────────────────────────────────────────────────────────┼──────────────────────────────┤
+│ #   TIME   TOKEN         PATIENT          CHIEF COMPLAINT   PAIN   WAIT   STATUS      ESI   ACTION  │ Recent Activity:             │
+│ 1   17:42  TS-2026-9912  Juan Dela Cruz   Chest Pain, SOB   [8/10] 15m    [In Triage] ESI-2 [Open>] │ • New intake TS-9907 (17:36) │
+│                          68y · M · Hil    Loc: Chest, Arms                                        │ • Nurse assessed TS-9912     │
+│ 2   17:36  TS-2026-9907  Maria Santos     Fever, Cough      [5/10] 21m    [Waiting]   ESI-3 [Open>] │ • Status TS-9887 -> Complete │
+│                          34y · F · Eng    Respiratory                                             │ • Emergency Kiosk 01 (15:42) │
+│ 3   17:28  TS-2026-9903  Roberto Ramos    Abdominal Pain    [7/10] 28m    [Waiting]   ESI-3 [Open>] ├──────────────────────────────┤
+│                          52y · M · Fil    Abdomen                                                 │ Quick Actions:               │
+│ 4   17:21  TS-2026-9898  Ana Reyes        Injury / Trauma   [4/10] 35m    [New]       ESI-4 [Open>] │ > Emergency Console          │
+│                          38y · F · Hil    Arms · <1h                                              │ > Patient Directory          │
+│ 5   16:50  TS-2026-9887  Jose Ramirez     Headache          [6/10] 1h 5m  [Completed] ESI-4 [Open>] │ > View Reports               │
+│ 6   16:32  TS-2026-9876  Liza Fernandez   Nausea, Vomiting  [5/10] 1h 32m [In Triage] ESI-3 [Open>] │ > Kiosk Settings             │
+│ 7   16:18  TS-2026-9865  Mark dela Torre  Shortness of Breath [8/10] 1h 48m [Waiting] ESI-2 [Open>] ├──────────────────────────────┤
+│ 8   15:52  TS-2026-9854  Sofia Santos     Fever, Body Aches [3/10] 2h 12m [Completed] ESI-5 [Open>] │ (i) Nurse-Controlled ESI     │
+├───────────────────────────────────────────────────────────────────────────────────────────────────│ ESI is manually assigned by  │
+│ Showing 8 of 12 patients                                                                < 1 2 >   │ the nurse upon exam.         │
+└───────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────┘
 ```
 
-* **Purpose**: Primary operational cockpit for the triage charge nurse to monitor patient flow, distinguish unassessed arrivals from nurse-confirmed triaged patients, and prioritize acute patients.
+* **Purpose**: Primary operational cockpit for the triage charge nurse to monitor real-time intake registry, distinguish unassessed arrivals from nurse-confirmed triaged patients, and prioritize emergent cases.
 * **Top Navigation Bar**:
-  * Institution: WVSU Medical Center crest with `<Activity />` gold pulse icon.
-  * Station Identity: `Triage Desk 01 — Emergency Department`.
-  * Nurse Badge: `Nurse Reyes, RN` (ID: `#N-8402`) with online status badge.
-  * System Real-Time Clock with seconds ticker (`10:24:18 AM`).
+  * Institution: TriageSense emerald pulse badge + WVSU Medical Center & Emergency Department wordmark.
+  * Station Identity: `● Triage Desk 1` green status indicator pill.
+  * Notification Bell: Unread badge counter with clickable interactive flyout.
+  * Audio Alert Chime Toggle: Enable/mute acoustic alarm.
+  * Nurse Badge: `Nurse Kristine, RN` profile chip with avatar and role indicator.
+  * Live Real-Time Clock & Date: `5:57 PM / Apr 26, 2026` ticker.
 * **Queue Status KPI Metric Cards (Top Row)**:
-  1. **New Intake**: `12` (`<UserPlus />`, Blue `#0057A8` — Arrived from kiosk, pending examination).
-  2. **Waiting for Triage**: `8` (`<Clock />`, Amber `#F59E0B` — Seated in waiting area, average wait $14\text{ mins}$).
-  3. **In Triage**: `2` (`<Activity />`, Green `#006B3F` — Actively undergoing examination).
-  4. **Completed / Disposed**: `31` (`<CheckCircle2 />`, Slate `#16803C` — Successfully triaged and admitted to ED rooms).
-* **Live Queue Table & Strict Separation of Status and Acuity**:
-  * **Queue Status Filter Tabs**: `All Active (20)`, `New Intake (12)`, `Waiting for Triage (8)`, `In Triage (2)`.
-  * **Clinical Acuity Filter**: `All Acuities`, `Needs Nurse Review`, `ESI-1`, `ESI-2`, `ESI-3`, `ESI-4`, `ESI-5`.
-  * Search Bar: Search by Patient Name, Reference Number `TS-2026-XXXX`, or Hospital ID.
-  * Action: Clicking `[ <FileText /> View & Assess ]` opens Screen **ADM-02**.
+  1. **Total Intakes**: Count `12`, delta indicator `↑ 2 today` (Light blue `Users` icon circle).
+  2. **Waiting**: Count `5`, delta indicator `↑ 1` (Light amber `Clock` icon circle).
+  3. **In Triage**: Count `4`, delta indicator `↑ 2` (Light blue `Bed` icon circle).
+  4. **Completed**: Count `3`, delta indicator `↑ 1` (Light green `CheckCircle2` icon circle).
+* **Live Queue Table Architecture**:
+  * **Workflow Filters**: `All`, `New`, `Waiting`, `In Triage`, `Completed`.
+  * **Acuity Filters**: `ESI Filter` with colored badges (`ESI-1`, `ESI-2`, `ESI-3`, `ESI-4`, `ESI-5`).
+  * **Search Bar**: Real-time matching across Patient Name, Reference Token `TS-2026-XXXX`, Symptoms, or Dialect.
+  * **Row Elements**:
+    * Sequence number `#`, arrival time, token.
+    * Patient Demographics: Full name + Age, Gender, Dialect subtitle.
+    * Chief Complaint: Primary complaints + anatomical location & duration subtitle.
+    * Pain Score Pill: Color-coded severity badge (`0–10`).
+    * Wait Time: Real-time clock counter (`15m`, `21m`, `1h 5m`).
+    * Workflow Status: Soft pill badge with Lucide icon.
+    * ESI Badge: Assigned acuity badge or `Needs Exam` tag.
+    * Action: `Open >` button opening the patient dossier.
+* **Right Operational Intelligence Rail**:
+  * **Emergency Assistance Banner**: Direct red highlight card for kiosk assistance calls.
+  * **Recent Activity Feed**: Real-time chronological audit trail of intakes, assessments, and status transitions.
+  * **Quick Actions**: Rapid navigation shortcuts.
+  * **Nurse-Controlled ESI Governance**: Institutional clinical governance reminder.
 
 ---
 
-### Screen ADM-02: Patient Clinical Dossier & Nurse Assessment Workspace
-
-```
-┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-│ [← Back to Queue]    Patient Dossier: Juan Dela Cruz (#TS-2026-000123)       [<Clock /> 4m]   │
-├───────────────────────────────────────────────┬──────────────────────────────────────────────┤
-│ PATIENT-REPORTED INTAKE (KIOSK SUBJECTIVE)    │ NURSE OBJECTIVE ASSESSMENT & DISPOSITION     │
-├───────────────────────────────────────────────┼──────────────────────────────────────────────┤
-│ [<User />] Juan Dela Cruz (36M) — DOB: Jan 1, 1990  │ [<Activity />] Objective Vital Signs Entry   │
-│ [<Phone />] Contact: 0912-345-6789                  │ BP: [ 138 ]/[ 88 ] mmHg  HR: [ 94 ] bpm     │
-│ [<CreditCard />] Hospital ID: #WVSU-2024-9912       │ Temp: [ 38.6 ] °C        SpO2: [ 96 ] %      │
-│                                                     │ RR: [ 22 ] cpm           GCS: [ 15 ] /15     │
-│ [<HeartPulse />] Complaint: Chest Pain, Fever, Cough├──────────────────────────────────────────────┤
-│ [<Clock />] Duration: 1–6 hours (Acute onset)       │ [<ShieldAlert />] Assign Final ESI Acuity    │
-│ [<AlertTriangle />] Pain: 7 / 10 (Severe Pain)      │ [ESI-1]  [ ESI-2: Emergent ✓ ]  [ESI-3]      │
-│ [<FileText />] Comorbidities: Nausea, Fatigue       │ [ESI-4]  [ ESI-5: Non-Urgent ]              │
-│                                                     ├──────────────────────────────────────────────┤
-│ [<MapPin />] Body Map: Anterior Thoracic            │ [<Building2 />] Bed / Room Disposition       │
-│    [Visual Body Silhouette with Chest Pulse]        │ Triage Bed: [ Room 1 — Bed 02 ▼ ]            │
-│                                                     ├──────────────────────────────────────────────┤
-│ [<Mic />] Patient Voice Memo Playback               │ Actions:                                     │
-│    [ <Play /> Play Audio Memo (0:15) ▂▄▆█▄▂ ]       │ [ <Bell /> Call Patient to Room 1 ]          │
-│                                               │ [ <FastForward /> Escalate to Trauma Team ]  │
-│                                               │ [ <CheckCircle2 /> Complete & Admit to ED ]  │
-└───────────────────────────────────────────────┴──────────────────────────────────────────────┘
-```
+### Screen: Patient Clinical Dossier & Nurse Assessment Workspace [Core Prototype]
 
 * **Purpose**: Two-column clinical examination workspace where the triage nurse verifies subjective kiosk data, captures vital signs, and assigns hospital disposition.
 * **Left Column (Subjective Intake Data)**:
-  * Demographic verification card.
-  * Chief complaints, pain score ($7/10$), and duration ($1–6\text{h}$).
-  * **Biometric Body Map Module**: Displays the patient's selected pain zone (Chest) highlighted on the vector silhouette.
-  * **Voice Memo Player**: Interactive audio player allowing the nurse to hear the patient's vocalized complaint and assess respiratory effort.
+  * Demographic verification card (Full name, DOB, ID verification).
+  * Chief complaints, pain score ($8/10$), and duration ($1–6\text{h}$).
+  * **Biometric Body Map Module**: Displays patient's selected pain zone (Chest, Arms) highlighted on vector silhouette.
+  * **Voice Memo Player**: Interactive audio player allowing nurse to hear patient's recorded symptom statement.
 * **Right Column (Objective Clinical Capture)**:
-  * Vitals entry fields with abnormal value highlights (e.g. Temp $38.6^\circ\text{C}$ in amber).
-  * ESI 1–5 Acuity assignment toggles.
-  * Direct action buttons to call patient, fast-track to trauma, or complete admission.
+  * Vitals entry fields with abnormal value highlights (BP $158/94$, HR $104$, SpO2 $94\%$, Temp $37.1^\circ\text{C}$).
+  * Nurse-assigned ESI Acuity selector (`ESI-1` through `ESI-5`).
+  * Clinical notes and bed/room disposition selector.
+  * Direct action buttons: Call Patient to Room, Escalate to Trauma, Complete Admission.
 
 ---
 
-### Screen ADM-03: Urgent Kiosk Emergency Broadcast & Dispatch Console
+### Screen: Emergency Console & Broadcast Dispatch [Core Prototype]
 
-```
-┌──────────────────────────────────────────────────────────────────────────────────────────────┐
-│  [<AlertOctagon />] CRITICAL EMERGENCY ASSISTANCE DISPATCH — KIOSK #01                       │
-├──────────────────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                              │
-│        <AlertOctagon />   IMMEDIATE NURSE ASSISTANCE REQUESTED AT ENTRANCE KIOSK             │
-│                                                                                              │
-│        Station: Main Emergency Lobby Kiosk 01 (ID: KSK-WVSU-01)                              │
-│        Timestamp: 10:25:02 AM (Active for 12 seconds)                                        │
-│        Patient State: Emergency button confirmed by patient or companion.                   │
-│                                                                                              │
-│        ┌──────────────────────────────────┐      ┌──────────────────────────────────┐        │
-│        │  [ <CheckCheck /> Acknowledge &  │      │   [ <Phone /> Open Two-Way       │        │
-│        │    Dispatch Triage Staff ]       │      │     Audio Intercom to Kiosk ]    │        │
-│        └──────────────────────────────────┘      └──────────────────────────────────┘        │
-│                                                                                              │
-└──────────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-* **Purpose**: Full-screen emergency interrupt overlay triggered via WebSocket when a patient taps "Request Immediate Assistance" at any kiosk.
+* **Purpose**: Full-screen emergency interrupt overlay triggered when a patient activates "Request Immediate Assistance" at any kiosk.
 * **Sensory Affordance**: Flashing red emergency border (`#DC2626`), high-contrast alert card, and repeating acoustic chime.
 * **Nurse Actions**:
-  * `[ <CheckCheck /> Acknowledge & Dispatch Staff ]`: Stops chime, logs responding nurse ID, and updates the physical kiosk display to *"Staff Dispatched — Nurse on the way"*.
-  * `[ <Phone /> Open Two-Way Audio Intercom ]`: Establishes real-time VOIP connection to speak directly to the patient through the kiosk microphone and speaker array.
+  * `[ Acknowledge & Dispatch Staff ]`: Silences chime, logs responding nurse ID, and transmits dispatch confirmation to the physical kiosk display.
+  * `[ Open Two-Way Audio Intercom ]`: Establishes real-time audio connection through kiosk microphone and speaker array.
 
 ---
 
-### Screen ADM-04: Patient Health Directory & Historical Records
+### Screen: Patient Directory & Historical Archive [Extended Capability]
 
 * **Purpose**: Searchable patient archive for retrieving past triage records, cross-referencing re-admissions, and auditing intake logs.
 * **Components**:
-  * Global search bar with autocomplete by Name, PhilHealth Number, or Hospital ID.
-  * Date range filters: `Today`, `Past 24 Hours`, `Past 7 Days`, `Custom Range`.
-  * Tabular results displaying Patient Name, Record Date, Chief Complaint, Assigned ESI Level, and Attending Triage Nurse.
-  * `[ <ExternalLink /> View Past Intake Summary ]` action.
+  * Global search bar with autocomplete by Name, PhilHealth Number, or Reference Token.
+  * Filter by date ranges: `Today`, `Past 24 Hours`, `Past 7 Days`.
+  * Patient record detail slide-over with historical acuity and disposition summary.
 
 ---
 
-### Screen ADM-05: ED Operational Intelligence & Triage Analytics (Reports)
+### Screen: Operational Analytics & Triage Intelligence [Extended Capability]
 
 * **Purpose**: Real-time business intelligence dashboard for nurse supervisors and ED directors to monitor flow and eliminate bottlenecks.
 * **Key Visualizations**:
   1. **Door-to-Triage (DTT) Efficiency Metric**: Average time from kiosk arrival to nurse assessment ($2.4\text{ minutes}$, representing a $58\%$ acceleration).
-  2. **Hourly Arrival Heatmap**: Surge arrival distribution showing peak ED hours (6:00 PM to 10:00 PM).
-  3. **Chief Complaint Distribution Bar Chart**: Chest Pain ($26\%$), Abdominal Pain ($22\%$), Trauma ($18\%$), Respiratory ($16\%$), Other ($18\%$).
-  4. **Regional Language Utilization**: English ($42\%$), Hiligaynon ($38\%$), Filipino ($16\%$), Cebuano ($4\%$).
+  2. **Hourly Arrival Surge Model**: Surge arrival distribution showing peak ED hours.
+  3. **Chief Complaint Distribution Bar Chart**: Chest Pain ($27\%$), Respiratory ($23\%$), Abdominal ($19\%$), Trauma ($18\%$), Infectious ($13\%$).
+  4. **Regional Language Utilization**: Hiligaynon ($41\%$), English ($33\%$), Filipino ($18\%$), Cebuano ($8\%$).
 
 ---
 
-### Screen ADM-06: Kiosk Fleet Management & Station Configuration (Settings)
+### Screen: Kiosk Fleet & Station Settings [Extended Capability]
 
-* **Purpose**: Hardware telemetry, peripheral diagnostics, and operational parameter adjustments for all physical kiosks.
-* **Kiosk Fleet Status Cards**:
-  * `Kiosk 01 (Main Emergency Entrance)`: Status `Online`, Touch Glass `OK`, QR/NFC Scanner `OK`, Thermal Paper `84%`, Mic Array `Active`.
-  * `Kiosk 02 (Ambulance Bay Entrance)`: Status `Online`, Thermal Paper `18% (Low Paper Warning - <AlertTriangle />)`.
-* **System Parameter Controls**:
-  * **Emergency Cooldown Lockout**: Number stepper (Default: `60 seconds`, adjustable).
-  * **Inactivity Auto-Purge Timeout**: Number stepper (Default: `45 seconds`).
-  * **Supported Languages Multi-Select**: Toggles for English, Filipino, Hiligaynon, Cebuano.
-  * **Audio Intercom Volume & Mic Gain Slider**.
+* **Purpose**: Hardware telemetry, peripheral diagnostics, and operational parameter adjustments for physical kiosks.
+* **Telemetry**:
+  * Kiosk 01 (Entrance Lobby): Status `Online`, Thermal Paper `88%`, Battery `100%`, NFC Scanner `Active`.
+  * Kiosk 02 (Ambulatory Lounge): Status `Online`, Thermal Paper `94%`, NFC Scanner `Active`.
+* **Parameter Controls**:
+  * Inactivity Auto-Purge Timeout: Number stepper (Default: `45s`).
+  * Emergency Cooldown Lockout: Number stepper (Default: `60s`).
+  * Supported Dialects Multi-Select: Hiligaynon, Cebuano, Filipino, English.
 
 ---
 
@@ -207,9 +186,8 @@ The **TriageSense Admin Portal** is an enterprise-grade Emergency Department Inf
 
 | Audit Metric | Specification Value | Compliance Status |
 | :--- | :--- | :---: |
-| **Document Identifier** | `TS-ADM-002` | Active Admin Blueprint |
-| **Screen Coverage** | Screens ADM-01–03 (Core Prototype); ADM-04–06 (Extended Roadmap) | 100% Specified |
+| **Document Identifier** | `TS-ADM-002` | Active Staff Blueprint |
+| **Standardized Screens** | Live Triage Queue, Patient Clinical Dossier, Emergency Console, Patient Directory, Operational Analytics, Fleet Manager | 100% Prefix-Free |
 | **Form Factor** | Desktop 16:9 Widescreen ($1920 \times 1080$) | Optimized |
 | **Clinical Standard** | Emergency Severity Index (ESI v4/v5) / Clinician-Assigned Model | Grounded |
-| **Iconography Standard** | Lucide Medical Icon System (2.0px stroke) | 100% (0 Emojis) |
-| **Review Status** | Team TriageSense (CIT 213 HCI 2) | Final Academic Draft |
+| **Iconography Standard** | Lucide Medical Icon System (Strict Zero-Emoji Policy) | 100% Compliant |

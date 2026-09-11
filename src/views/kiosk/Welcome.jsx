@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import wvsumcLogo from '../../assets/wvsumc-logo.png';
 
-export function K01Welcome() {
+export function Welcome() {
   const {
     setKioskStep,
     kioskLanguage,
@@ -209,7 +209,7 @@ export function K01Welcome() {
           size="lg"
           fullWidth
           trailingIcon={ArrowRight}
-          onClick={() => setKioskStep('K02')}
+          onClick={() => setKioskStep('language')}
           style={{ height: '76px', fontSize: '22px' }}
         >
           START INTAKE / SUGDAN

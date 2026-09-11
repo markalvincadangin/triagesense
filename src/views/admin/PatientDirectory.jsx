@@ -4,7 +4,7 @@ import { StatusBadge } from '../../components/common/StatusBadge';
 import { Button } from '../../components/common/Button';
 import { Search, FolderArchive, ArrowUpRight, Calendar, User, Eye } from 'lucide-react';
 
-export function ADM04PatientDirectory() {
+export function PatientDirectory() {
   const { intakes, selectIntakeForDossier } = useTriage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRecord, setSelectedRecord] = useState(null);

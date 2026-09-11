@@ -20,7 +20,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 
-export function ADM02PatientDossier() {
+export function PatientDossier() {
   const { intakes, selectedIntakeId, updateNurseAssessment, updateWorkflowStatus, setActiveAdminTab } = useTriage();
 
   const currentIntake = intakes.find((i) => i.id === selectedIntakeId) || intakes[0];
@@ -79,7 +79,7 @@ export function ADM02PatientDossier() {
     return (
       <div style={{ padding: '40px', textAlign: 'center' }}>
         <h2>No patient intake selected.</h2>
-        <Button onClick={() => setActiveAdminTab('ADM01')} style={{ marginTop: '16px' }}>
+        <Button onClick={() => setActiveAdminTab('live-queue')} style={{ marginTop: '16px' }}>
           Return to Queue
         </Button>
       </div>
@@ -97,7 +97,7 @@ export function ADM02PatientDossier() {
             variant="outline"
             size="sm"
             icon={ArrowLeft}
-            onClick={() => setActiveAdminTab('ADM01')}
+            onClick={() => setActiveAdminTab('live-queue')}
             style={{ height: '38px' }}
           >
             Queue

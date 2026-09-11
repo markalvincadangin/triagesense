@@ -3,7 +3,7 @@ import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
 import { Edit3, Check, ArrowRight, ArrowLeft, User, Activity, MapPin, AlertCircle, MessageSquare } from 'lucide-react';
 
-export function K09Review() {
+export function IntakeReview() {
   const { intakeDraft, setKioskStep } = useTriage();
 
   const patient = intakeDraft.patientInfo || {};
@@ -80,7 +80,7 @@ export function K09Review() {
                 variant="subtle"
                 size="sm"
                 icon={Edit3}
-                onClick={() => setKioskStep('K04')}
+                onClick={() => setKioskStep('patient-info')}
                 style={{ height: '32px', padding: '0 8px', fontSize: '13px' }}
               >
                 EDIT
@@ -120,7 +120,7 @@ export function K09Review() {
                 variant="subtle"
                 size="sm"
                 icon={Edit3}
-                onClick={() => setKioskStep('K05')}
+                onClick={() => setKioskStep('symptoms')}
                 style={{ height: '32px', padding: '0 8px', fontSize: '13px' }}
               >
                 EDIT
@@ -177,7 +177,7 @@ export function K09Review() {
                 variant="subtle"
                 size="sm"
                 icon={Edit3}
-                onClick={() => setKioskStep('K06')}
+                onClick={() => setKioskStep('body-map')}
                 style={{ height: '32px', padding: '0 8px', fontSize: '13px' }}
               >
                 EDIT
@@ -229,7 +229,7 @@ export function K09Review() {
                 variant="subtle"
                 size="sm"
                 icon={Edit3}
-                onClick={() => setKioskStep('K08')}
+                onClick={() => setKioskStep('additional-details')}
                 style={{ height: '32px', padding: '0 8px', fontSize: '13px' }}
               >
                 EDIT
@@ -268,7 +268,7 @@ export function K09Review() {
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('K08')}
+          onClick={() => setKioskStep('additional-details')}
           style={{ width: '180px' }}
         >
           Back / Balik
@@ -278,7 +278,7 @@ export function K09Review() {
           variant="primary"
           size="lg"
           trailingIcon={ArrowRight}
-          onClick={() => setKioskStep('K10')}
+          onClick={() => setKioskStep('submission')}
           style={{ width: '320px' }}
         >
           CONFIRM & CONTINUE

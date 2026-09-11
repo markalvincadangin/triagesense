@@ -28,7 +28,7 @@ const SYMPTOMS_LIST = [
   { id: 'Other', label: 'Other Symptoms / Iban Pa', desc: 'Other concerns to report to nurse', icon: HelpCircle, color: '#505F78' }
 ];
 
-export function K05Symptoms() {
+export function Symptoms() {
   const { intakeDraft, toggleSymptom, setKioskStep } = useTriage();
   const [isRecordingVoice, setIsRecordingVoice] = useState(false);
   const [voiceSeconds, setVoiceSeconds] = useState(0);
@@ -255,7 +255,7 @@ export function K05Symptoms() {
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('K04')}
+          onClick={() => setKioskStep('patient-info')}
           style={{ width: '180px' }}
         >
           Back / Balik
@@ -265,7 +265,7 @@ export function K05Symptoms() {
           variant="primary"
           size="lg"
           trailingIcon={ArrowRight}
-          onClick={() => setKioskStep('K06')}
+          onClick={() => setKioskStep('body-map')}
           style={{ width: '280px' }}
         >
           Next: Body Location

@@ -3,7 +3,7 @@ import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
 import { Server, Wifi, Battery, Printer, Clock, Sliders, CheckCircle2, ShieldCheck, RefreshCw } from 'lucide-react';
 
-export function ADM06FleetManager() {
+export function FleetManager() {
   const { kiosks, settings, setSettings } = useTriage();
   const [cooldown, setCooldown] = useState(settings.emergencyCooldown || 60);
   const [timeoutSec, setTimeoutSec] = useState(settings.inactivityTimeout || 45);

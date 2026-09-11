@@ -28,11 +28,11 @@ export function TriageProvider({ children }) {
   const [intakes, setIntakes] = useState(INITIAL_INTAKES);
   const [selectedIntakeId, setSelectedIntakeId] = useState('TS-2026-9912');
 
-  // Admin Navigation Tab
-  const [activeAdminTab, setActiveAdminTab] = useState('ADM01');
+  // Admin Navigation Tab ('live-queue' | 'patient-dossier' | 'emergency-console' | 'patient-directory' | 'analytics' | 'fleet-manager')
+  const [activeAdminTab, setActiveAdminTab] = useState('live-queue');
 
-  // Kiosk Session State
-  const [kioskStep, setKioskStep] = useState('K01'); // K01 to K11
+  // Kiosk Session State ('welcome' | 'language' | 'identification' | 'patient-info' | 'symptoms' | 'body-map' | 'pain-duration' | 'additional-details' | 'review' | 'submission' | 'confirmation')
+  const [kioskStep, setKioskStep] = useState('welcome');
   const [kioskLanguage, setKioskLanguage] = useState('en'); // 'en' | 'hil' | 'fil' | 'ceb'
   const [intakeDraft, setIntakeDraft] = useState(DEFAULT_INTAKE_DRAFT);
   const [lastSubmittedId, setLastSubmittedId] = useState(null);
@@ -194,12 +194,12 @@ export function TriageProvider({ children }) {
 
     setIntakes((prev) => [newRecord, ...prev]);
     setLastSubmittedId(newId);
-    setKioskStep('K11');
+    setKioskStep('confirmation');
   };
 
   const resetKioskSession = () => {
     setIntakeDraft(DEFAULT_INTAKE_DRAFT);
-    setKioskStep('K01');
+    setKioskStep('welcome');
     setLastSubmittedId(null);
   };
 
@@ -289,7 +289,7 @@ export function TriageProvider({ children }) {
 
   const selectIntakeForDossier = (intakeId) => {
     setSelectedIntakeId(intakeId);
-    setActiveAdminTab('ADM02');
+    setActiveAdminTab('patient-dossier');
   };
 
   const resetDemoData = () => {

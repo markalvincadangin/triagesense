@@ -14,7 +14,7 @@ import {
   RotateCcw
 } from 'lucide-react';
 
-export function ADM03EmergencyConsole() {
+export function EmergencyConsole() {
   const { emergencyAlert, acknowledgeEmergency, dispatchEmergency, dismissEmergency } = useTriage();
   const [intercomConnected, setIntercomConnected] = useState(false);
   const [intercomMessage, setIntercomMessage] = useState('');

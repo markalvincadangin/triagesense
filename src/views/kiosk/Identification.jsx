@@ -43,7 +43,7 @@ const ID_OPTIONS = [
   }
 ];
 
-export function K03Identification() {
+export function Identification() {
   const { intakeDraft, updateDraft, setKioskStep } = useTriage();
   const [simulatedScan, setSimulatedScan] = useState(false);
 
@@ -238,7 +238,7 @@ export function K03Identification() {
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('K02')}
+          onClick={() => setKioskStep('language')}
           style={{ width: '180px' }}
         >
           Back / Balik
@@ -248,7 +248,7 @@ export function K03Identification() {
           variant="primary"
           size="lg"
           trailingIcon={ArrowRight}
-          onClick={() => setKioskStep('K04')}
+          onClick={() => setKioskStep('patient-info')}
           style={{ width: '280px' }}
         >
           Continue / Padayon

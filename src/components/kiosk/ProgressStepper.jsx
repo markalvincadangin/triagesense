@@ -14,26 +14,36 @@ export function ProgressStepper({ currentStep }) {
   // Map step code to 1-based stage number
   const getActiveStageNumber = () => {
     switch (currentStep) {
+      case 'language':
       case 'K02': return 1;
+      case 'identification':
       case 'K03': return 2;
+      case 'patient-info':
       case 'K04': return 3;
+      case 'symptoms':
+      case 'body-map':
+      case 'pain-duration':
+      case 'additional-details':
       case 'K05':
       case 'K06':
       case 'K07':
       case 'K08':
         return 4;
+      case 'review':
       case 'K09': return 5;
-      case 'K10': return 6;
+      case 'submission':
+      case 'confirmation':
+      case 'K10':
       case 'K11': return 6;
       default: return 1;
     }
   };
 
   const getSubstepIndicator = () => {
-    if (currentStep === 'K05') return 'Step 4.1 of 4 • Main Symptoms';
-    if (currentStep === 'K06') return 'Step 4.2 of 4 • Body Location';
-    if (currentStep === 'K07') return 'Step 4.3 of 4 • Pain & Duration';
-    if (currentStep === 'K08') return 'Step 4.4 of 4 • Additional Details';
+    if (currentStep === 'symptoms' || currentStep === 'K05') return 'Step 4.1 of 4 • Main Symptoms';
+    if (currentStep === 'body-map' || currentStep === 'K06') return 'Step 4.2 of 4 • Body Location';
+    if (currentStep === 'pain-duration' || currentStep === 'K07') return 'Step 4.3 of 4 • Pain & Duration';
+    if (currentStep === 'additional-details' || currentStep === 'K08') return 'Step 4.4 of 4 • Additional Details';
     return null;
   };
 

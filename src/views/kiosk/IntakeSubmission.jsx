@@ -3,7 +3,7 @@ import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
 import { ShieldCheck, Lock, Send, ArrowLeft, AlertCircle, Sparkles } from 'lucide-react';
 
-export function K10Submit() {
+export function IntakeSubmission() {
   const { submitKioskIntake, setKioskStep } = useTriage();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -174,7 +174,7 @@ export function K10Submit() {
           size="md"
           icon={ArrowLeft}
           disabled={isSubmitting}
-          onClick={() => setKioskStep('K09')}
+          onClick={() => setKioskStep('review')}
           style={{ width: '180px' }}
         >
           Back to Review

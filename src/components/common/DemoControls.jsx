@@ -148,7 +148,7 @@ export function DemoControls() {
 
   const handleOpenEmergencyConsole = () => {
     setViewMode('admin');
-    setActiveAdminTab('ADM03');
+    setActiveAdminTab('emergency-console');
     setIsOpen(false);
   };
 

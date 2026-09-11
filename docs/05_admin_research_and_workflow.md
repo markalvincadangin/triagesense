@@ -111,20 +111,20 @@ Relying on a single dashboard screen produces critical clinical failure modes:
 To resolve these failures, the TriageSense Admin Portal is partitioned into **Core Prototype Screens** and **Extended Roadmap Capabilities**:
 
 **Core Prototype Scope (Current Active Prototype)**:
-- `ADM-01`: Live Command Dashboard & Queue (Visual gestalt, separated queue status and clinical acuity)
-- `ADM-02`: Patient Clinical Dossier & Assessment Workspace (Subjective kiosk intake vs. objective vitals entry)
-- `ADM-03`: Urgent Kiosk Emergency Broadcast Console (Acoustic alarm, dispatch acknowledgment, two-way intercom)
+- `Live Triage Queue`: Live Command Dashboard & Queue (Visual gestalt, separated queue status and clinical acuity)
+- `Patient Clinical Dossier`: Patient Clinical Dossier & Assessment Workspace (Subjective kiosk intake vs. objective vitals entry)
+- `Emergency Console`: Urgent Kiosk Emergency Broadcast Console (Acoustic alarm, dispatch acknowledgment, two-way intercom)
 
 **Extended / Future EDIS Capabilities (Product Roadmap)**:
-- `ADM-04`: Patient Health Directory & Historical Archive (48-hour bounce-back tracking)
-- `ADM-05`: ED Operational Intelligence & Analytics (DTT efficiency and hourly surge heatmaps)
-- `ADM-06`: Kiosk Fleet Management & Station Configuration (Peripheral telemetry and timeout calibration)
+- `Patient Directory`: Patient Health Directory & Historical Archive (48-hour bounce-back tracking)
+- `Operational Analytics`: ED Operational Intelligence & Analytics (DTT efficiency and hourly surge heatmaps)
+- `Kiosk Fleet & Settings`: Kiosk Fleet Management & Station Configuration (Peripheral telemetry and timeout calibration)
 
 ---
 
-## 5. Screen-by-Screen Nursing Cognitive Ergonomics & Friction Engineering (ADM-01–06)
+## 5. Screen-by-Screen Nursing Cognitive Ergonomics & Friction Engineering
 
-### Screen ADM-01: Live Triage Queue & Command Dashboard
+### Screen: Live Triage Queue & Command Dashboard
 
 #### 1. Clinical Cognitive Friction Analysis
 - **Change Blindness & Peripheral Neglect**: When a triage nurse is focused on inputting vitals or reviewing a patient, newly arriving critical patients (ESI-2) can easily go unnoticed in a static queue.
@@ -139,7 +139,7 @@ To resolve these failures, the TriageSense Admin Portal is partitioned into **Co
 
 ---
 
-### Screen ADM-02: Patient Clinical Dossier & Nurse Assessment Workspace
+### Screen: Patient Clinical Dossier & Nurse Assessment Workspace
 
 #### 1. Clinical Cognitive Friction Analysis
 - **Subjective vs. Objective Data Conflation**: Nurses risk confusing subjective complaints self-reported by distressed patients at the kiosk with verified, objective clinical measurements.
@@ -156,7 +156,7 @@ To resolve these failures, the TriageSense Admin Portal is partitioned into **Co
 
 ---
 
-### Screen ADM-03: Urgent Kiosk Emergency Broadcast & Dispatch Console
+### Screen: Emergency Console & Broadcast Dispatch Console
 
 #### 1. Clinical Cognitive Friction Analysis
 - **Acoustic Alarm Fatigue**: In an ER filled with monitor beeps, nurses suffer sensory habituation, tuning out low-urgency chimes.
@@ -173,7 +173,7 @@ To resolve these failures, the TriageSense Admin Portal is partitioned into **Co
 
 ---
 
-### Screen ADM-04: Patient Health Directory & Historical Records
+### Screen: Patient Directory & Historical Records
 
 #### 1. Clinical Cognitive Friction Analysis
 - **Emergency Name Disambiguation**: Common regional Filipino surnames (e.g. *Dela Cruz*, *Santos*, *Reyes*) lead to frequent patient record confusion under emergency pressure.
@@ -187,7 +187,7 @@ To resolve these failures, the TriageSense Admin Portal is partitioned into **Co
 
 ---
 
-### Screen ADM-05: ED Operational Intelligence & Triage Analytics (Reports)
+### Screen: Operational Analytics & Triage Reports
 
 #### 1. Clinical Cognitive Friction Analysis
 - **Lagging vs. Actionable Operational Metrics**: End-of-month PDF reports do not empower charge nurses to allocate beds or manage acute Friday-night surge volumes.
@@ -201,7 +201,7 @@ To resolve these failures, the TriageSense Admin Portal is partitioned into **Co
 
 ---
 
-### Screen ADM-06: Kiosk Fleet Management & Station Configuration (Settings)
+### Screen: Kiosk Fleet Management & Station Settings
 
 #### 1. Clinical Cognitive Friction Analysis
 - **Silent Peripheral Failures**: A kiosk running out of thermal paper or experiencing an offline QR scanner creates immediate patient bottlenecks at the entrance without alerting staff.

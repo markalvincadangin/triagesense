@@ -2,25 +2,38 @@ import React from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { AdminHeader } from '../../components/admin/AdminHeader';
 import { AdminSidebar } from '../../components/admin/AdminSidebar';
-import { ADM01LiveQueue } from './ADM01LiveQueue';
-import { ADM02PatientDossier } from './ADM02PatientDossier';
-import { ADM03EmergencyConsole } from './ADM03EmergencyConsole';
-import { ADM04PatientDirectory } from './ADM04PatientDirectory';
-import { ADM05Analytics } from './ADM05Analytics';
-import { ADM06FleetManager } from './ADM06FleetManager';
+import { LiveQueue } from './LiveQueue';
+import { PatientDossier } from './PatientDossier';
+import { EmergencyConsole } from './EmergencyConsole';
+import { PatientDirectory } from './PatientDirectory';
+import { OperationalAnalytics } from './OperationalAnalytics';
+import { FleetManager } from './FleetManager';
 
 export function AdminApp() {
   const { activeAdminTab } = useTriage();
 
   const renderActiveTab = () => {
     switch (activeAdminTab) {
-      case 'ADM01': return <ADM01LiveQueue />;
-      case 'ADM02': return <ADM02PatientDossier />;
-      case 'ADM03': return <ADM03EmergencyConsole />;
-      case 'ADM04': return <ADM04PatientDirectory />;
-      case 'ADM05': return <ADM05Analytics />;
-      case 'ADM06': return <ADM06FleetManager />;
-      default: return <ADM01LiveQueue />;
+      case 'live-queue':
+      case 'ADM01':
+        return <LiveQueue />;
+      case 'patient-dossier':
+      case 'ADM02':
+        return <PatientDossier />;
+      case 'emergency-console':
+      case 'ADM03':
+        return <EmergencyConsole />;
+      case 'patient-directory':
+      case 'ADM04':
+        return <PatientDirectory />;
+      case 'analytics':
+      case 'ADM05':
+        return <OperationalAnalytics />;
+      case 'fleet-manager':
+      case 'ADM06':
+        return <FleetManager />;
+      default:
+        return <LiveQueue />;
     }
   };
 

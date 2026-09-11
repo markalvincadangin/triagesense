@@ -34,7 +34,7 @@ const LANGUAGES = [
   }
 ];
 
-export function K02Language() {
+export function LanguageSelection() {
   const { kioskLanguage, setKioskLanguage, setKioskStep } = useTriage();
 
   return (
@@ -193,7 +193,7 @@ export function K02Language() {
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('K01')}
+          onClick={() => setKioskStep('welcome')}
           style={{ width: '180px' }}
         >
           Back / Balik
@@ -203,7 +203,7 @@ export function K02Language() {
           variant="primary"
           size="lg"
           trailingIcon={ArrowRight}
-          onClick={() => setKioskStep('K03')}
+          onClick={() => setKioskStep('identification')}
           style={{ width: '280px' }}
         >
           Continue / Padayon

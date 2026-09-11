@@ -3,7 +3,7 @@ import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
 import { User, Calendar, Phone, ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
 
-export function K04PatientInfo() {
+export function PatientInfo() {
   const { intakeDraft, updateDraftPatientInfo, setKioskStep } = useTriage();
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -15,7 +15,7 @@ export function K04PatientInfo() {
       return;
     }
     setErrorMsg('');
-    setKioskStep('K05');
+    setKioskStep('symptoms');
   };
 
   const handleDemoFill = () => {
@@ -278,7 +278,7 @@ export function K04PatientInfo() {
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('K03')}
+          onClick={() => setKioskStep('identification')}
           style={{ width: '180px' }}
         >
           Back / Balik

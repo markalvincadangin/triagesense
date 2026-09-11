@@ -5,7 +5,7 @@ import { PainScale } from '../../components/kiosk/PainScale';
 import { DurationSelector } from '../../components/kiosk/DurationSelector';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 
-export function K07PainDuration() {
+export function PainDuration() {
   const { intakeDraft, updateDraft, setKioskStep } = useTriage();
 
   return (
@@ -109,7 +109,7 @@ export function K07PainDuration() {
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('K06')}
+          onClick={() => setKioskStep('body-map')}
           style={{ width: '180px' }}
         >
           Back / Balik
@@ -119,7 +119,7 @@ export function K07PainDuration() {
           variant="primary"
           size="lg"
           trailingIcon={ArrowRight}
-          onClick={() => setKioskStep('K08')}
+          onClick={() => setKioskStep('additional-details')}
           style={{ width: '280px' }}
         >
           Next: Additional Details

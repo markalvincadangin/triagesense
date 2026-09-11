@@ -41,7 +41,7 @@ TriageSense includes three dedicated presentation modes, switchable on demand:
 
 ## 🛡️ Clinical Safeguards & Design Rules
 
-* **Zero Autonomous ESI**: TriageSense **never** calculates or assigns clinical acuity. Kiosk data is strictly preliminary patient-reported intake. Acuity (`ESI-1` through `ESI-5`) must be manually confirmed and entered by the triage nurse in **ADM-02**.
+* **Zero Autonomous ESI**: TriageSense **never** calculates or assigns clinical acuity. Kiosk data is strictly preliminary patient-reported intake. Acuity (`ESI-1` through `ESI-5`) must be manually confirmed and entered by the triage nurse in the **Patient Dossier**.
 * **Status vs. Acuity Separation**: Operational workflow states (`New Intake`, `Waiting for Triage`, `In Triage`, `Completed`) are strictly disentangled from clinical acuity.
 * **Zero-Emoji Mandate**: 100% compliant with professional healthcare interface standards. All UI icons are standard Lucide React (`lucide-react`) components with 2.0px stroke.
 * **Touch-First Ergonomics**: $64\text{px}$ minimum touch targets and $360 \times 72\text{px}$ primary action buttons on the patient kiosk.
@@ -92,27 +92,29 @@ triagesense/
 │   │       ├── AdminHeader.jsx
 │   │       └── AdminSidebar.jsx
 │   └── views/
-│       ├── kiosk/               # Screens K01–K11 + Emergency States
-│       │   ├── K01Welcome.jsx
-│       │   ├── K02Language.jsx
-│       │   ├── K03Identification.jsx
-│       │   ├── K04PatientInfo.jsx
-│       │   ├── K05Symptoms.jsx
-│       │   ├── K06BodyMap.jsx
-│       │   ├── K07PainDuration.jsx
-│       │   ├── K08AdditionalDetails.jsx
-│       │   ├── K09Review.jsx
-│       │   ├── K10Submit.jsx
-│       │   ├── K11Confirmation.jsx
+│       ├── kiosk/               # Patient Kiosk Intake Flow
+│       │   ├── Welcome.jsx
+│       │   ├── LanguageSelection.jsx
+│       │   ├── Identification.jsx
+│       │   ├── PatientInfo.jsx
+│       │   ├── Symptoms.jsx
+│       │   ├── BodyMap.jsx
+│       │   ├── PainDuration.jsx
+│       │   ├── AdditionalDetails.jsx
+│       │   ├── IntakeReview.jsx
+│       │   ├── IntakeSubmission.jsx
+│       │   ├── TicketConfirmation.jsx
 │       │   └── KioskApp.jsx
-│       └── admin/               # Screens ADM-01–ADM-06
-│           ├── ADM01LiveQueue.jsx
-│           ├── ADM02PatientDossier.jsx
-│           ├── ADM03EmergencyConsole.jsx
-│           ├── ADM04PatientDirectory.jsx
-│           ├── ADM05Analytics.jsx
-│           ├── ADM06FleetManager.jsx
+│       └── admin/               # Triage Staff Workstation
+│           ├── LiveQueue.jsx
+│           ├── PatientDossier.jsx
+│           ├── EmergencyConsole.jsx
+│           ├── PatientDirectory.jsx
+│           ├── OperationalAnalytics.jsx
+│           ├── FleetManager.jsx
 │           └── AdminApp.jsx
+│   └── assets/
+│       └── wvsumc-logo.png      # 1024x1024 Official HD Transparent Seal
 ```
 
 ---

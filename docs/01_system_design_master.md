@@ -420,7 +420,7 @@ The **TriageSense Design System (TSDS)** is the single source of truth (SSOT) go
 | **TS-KSK-001** | [docs/03_kiosk_research_and_hfe.md](file:///home/markc/projects/playground/triagesense/docs/03_kiosk_research_and_hfe.md) | Human Factors Engineering, Stress Modeling & Screen Friction Analysis |
 | **TS-KSK-002** | [docs/04_kiosk_screen_spec.md](file:///home/markc/projects/playground/triagesense/docs/04_kiosk_screen_spec.md) | Kiosk Screen Interaction Blueprint & Prototype Specification (Screens 01–11) |
 | **TS-ADM-001** | [docs/05_admin_research_and_workflow.md](file:///home/markc/projects/playground/triagesense/docs/05_admin_research_and_workflow.md) | Clinical EDIS Research & Emergency Triage Nursing Workflows |
-| **TS-ADM-002** | [docs/06_admin_screen_spec.md](file:///home/markc/projects/playground/triagesense/docs/06_admin_screen_spec.md) | 6-Screen EDIS Admin Suite Interaction Blueprint (ADM-01 to ADM-06) |
+| **TS-ADM-002** | [docs/06_admin_screen_spec.md](file:///home/markc/projects/playground/triagesense/docs/06_admin_screen_spec.md) | Triage Staff Portal Interaction Blueprint (Live Queue, Dossier, Emergency Console, Directory, Analytics, Fleet Manager) |
 
 ---
 

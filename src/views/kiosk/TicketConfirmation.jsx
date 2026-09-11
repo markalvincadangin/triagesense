@@ -3,7 +3,7 @@ import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
 import { CheckCircle2, Printer, ArrowRight, Clock, ShieldCheck } from 'lucide-react';
 
-export function K11Confirmation() {
+export function TicketConfirmation() {
   const { lastSubmittedId, resetKioskSession, setViewMode } = useTriage();
   const [countdown, setCountdown] = useState(30);
 

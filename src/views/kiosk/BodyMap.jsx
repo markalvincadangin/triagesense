@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
-import { BodyMap } from '../../components/kiosk/BodyMap';
+import { BodyMap as BodyMapSelector } from '../../components/kiosk/BodyMap';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 
-export function K06BodyMap() {
+export function BodyMap() {
   const { intakeDraft, toggleBodyLocation, setKioskStep } = useTriage();
 
   return (
@@ -44,7 +44,7 @@ export function K06BodyMap() {
 
       {/* Anatomical Body Location Selector */}
       <div style={{ width: '100%', maxWidth: '840px', margin: '16px auto 0' }}>
-        <BodyMap
+        <BodyMapSelector
           selectedLocations={intakeDraft.bodyLocations}
           onToggleLocation={toggleBodyLocation}
         />
@@ -67,7 +67,7 @@ export function K06BodyMap() {
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('K05')}
+          onClick={() => setKioskStep('symptoms')}
           style={{ width: '180px' }}
         >
           Back / Balik
@@ -77,7 +77,7 @@ export function K06BodyMap() {
           variant="primary"
           size="lg"
           trailingIcon={ArrowRight}
-          onClick={() => setKioskStep('K07')}
+          onClick={() => setKioskStep('pain-duration')}
           style={{ width: '280px' }}
         >
           Next: Pain & Duration
