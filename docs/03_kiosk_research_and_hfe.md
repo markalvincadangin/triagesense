@@ -96,12 +96,14 @@ To ground the UX engineering, three clinical personas representing the spectrum 
     - **30% Institutional Anchor**: `#006B3F` WVSUMC Emerald provides clinical authority and structural grounding.
     - **10% Semantic Signals**: `#DC2626` Emergency Red (strictly for immediate assistance), `#F2B705` Gold (accents only, paired with `#172B4D` Navy text, $7.76:1$ AAA), `#0057A8` Medical Blue (info badges).
 
-### Topic B: Hardware Engineering of the Right-Side Vital Signs Sensor Bay
+### Topic B: Hardware Engineering of the Integrated Vital Signs Sensor Bay (Bottom-Right Panel)
 * **Medical Classification**: **Integrated Multi-Wavelength Photoplethysmography (PPG) & Pulse Oximetry Sensor Chamber**.
 * **Physiological Measurement**: Dual-wavelength ($660\text{ nm}$ Red, $940\text{ nm}$ Infrared) non-invasive optical sensor measuring Blood Oxygen Saturation ($\text{SpO}_2\%$), Pulse Rate (BPM), and Perfusion Index (PI %).
 * **Ergonomics & Anthropometrics (ADA §707 / Batas Pambansa 344)**:
-  - Mounted on the **right lateral bezel** at **$1080\text{ mm}$ height** with a **$22^\circ$ downward contour**.
+  - Mounted directly beneath the touchscreen display on the **bottom right of the peripheral console** (replacing the legacy optical barcode scanner window, as modeled in the team CAD drawing).
+  - Positioned at **$1000\text{ mm}$ elevation** with a **$22^\circ$ downward contour**.
   - Matches the natural resting forearm pronation of seated wheelchair patients ($15\text{--}48\text{ inches}$) and standing adults.
+  - Complemented by the lower cabinet door silkscreened with `VITAL SIGNS SENSORS (OPTIONAL)` housing telemetry expansion modules.
 * **Illuminated Status Halo Ring**:
   - *Pulsing Cyan*: Standby / Ready for Finger Insertion.
   - *Solid Emerald Green*: Pulse wave locked / 5-second sampling active.

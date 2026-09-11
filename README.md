@@ -47,16 +47,17 @@ Synthesized directly from the clinical human factors research and hand-drawn int
 1. **Step 1: Identify** (`Welcome.jsx`): In-place language selection pills (`Hiligaynon`, `English`, `Filipino`, `Cebuano`), quick scan simulation, patient demographic inputs, integrated Web Speech API `<Mic />` voice dictation, test patient autofill, and two-step emergency assistance call.
 2. **Step 2: Symptoms** (`Symptoms.jsx`): 6 high-salience chief complaint cards (`Chest Pain`, `Breathing Difficulty`, `High Fever`, `Abdominal Pain`, `Severe Headache`, `Injury/Trauma`) plus multimodal voice memo input.
 3. **Step 3: Body Map** (`BodyMap.jsx`): Biometric anatomical wireframe with front/back toggle (`<RotateCw />`) and synchronized regional selector cards.
-4. **Step 4: Severity & Vitals** (`PainDuration.jsx`): Wong-Baker facial pain scale + 0–10 numeric selector, 6 clinical duration options, and the **Integrated Right-Side PPG Sensor Bay Simulation** ($\text{SpO}_2\%$, Pulse Rate in BPM, Perfusion Index) with live plethysmogram pulse wave animation.
+4. **Step 4: Severity & Vitals** (`PainDuration.jsx`): Wong-Baker facial pain scale + 0–10 numeric selector, 6 clinical duration options, and the **Integrated Vital Signs Sensor Bay Simulation** ($\text{SpO}_2\%$, Pulse Rate in BPM, Perfusion Index) with live plethysmogram pulse wave animation.
 5. **Step 5: Summary & Send to Nurse** (`IntakeReview.jsx`): Structured verification cards with inline edit links, direct `[ SEND TO NURSE > ]` dispatch action, and printed thermal ticket confirmation with 30-second auto-reset.
 
 ---
 
-## 🔬 Hardware Engineering: Right-Side Vital Signs Sensor Bay
+## 🔬 Hardware Engineering: Integrated Vital Signs Sensor Bay (Bottom-Right Panel)
 
-The physical kiosk enclosure models an **Integrated Multi-Wavelength Photoplethysmography (PPG) & Pulse Oximetry Sensor Chamber** mounted on the right lateral bezel:
+The physical kiosk enclosure models an **Integrated Multi-Wavelength Photoplethysmography (PPG) & Pulse Oximetry Sensor Chamber** mounted directly beneath the touchscreen display on the **bottom right of the peripheral console** (specifically replacing the legacy optical barcode scanner window, as specified in the team CAD drawing and sketch):
 * **Physiological Telemetry**: Measures preliminary Blood Oxygen Saturation ($\text{SpO}_2\%$), Pulse Rate (BPM), and Perfusion Index (PI %) through dual red ($660\text{ nm}$) and infrared ($940\text{ nm}$) optical absorption.
-* **Ergonomics & Accessibility (ADA §707 & BP 344)**: Elevated at $1080\text{ mm}$ above finished floor with a $22^\circ$ downward contour for comfortable forearm resting posture for both wheelchair users and standing patients.
+* **Ergonomics & Accessibility (ADA §707 & BP 344)**: Elevated at $1000\text{ mm}$ above finished floor with a $22^\circ$ downward contour for comfortable forearm resting posture for both wheelchair users and standing patients.
+* **Peripheral Architecture**: Complemented by the contactless NFC/RFID reader pad on the left, microphone & speaker dot matrix, center thermal queue ticket dispenser slot, and the lower cabinet door silkscreened with `VITAL SIGNS SENSORS (OPTIONAL)` housing telemetry expansion modules.
 * **Visual Guidance Ring**: Illuminated status halo ring cycling from standby cyan to measuring emerald green.
 * **Clinical Safety Boundary**: Kiosk telemetry is designated strictly as preliminary screening data; certified triage nurses retain 100% authority over verified vitals and ESI categorization.
 
@@ -87,7 +88,7 @@ To prevent visual fatigue and semiotic hazard confusion in acute care environmen
 
 ## 📱 Presentation Modes & Controls
 
-* **Patient Kiosk View**: Centered physical kiosk enclosure with ambient optical camera, native $1080 \times 1920$ touchscreen housing, right-side vital signs sensor bay, contactless NFC/RFID tapping zone, optical barcode scanner, and thermal ticket slot.
+* **Patient Kiosk View**: Centered physical kiosk enclosure with top 3D depth/RGB camera module, native $1080 \times 1920$ touchscreen housing, bottom-right integrated vital signs sensor bay, contactless NFC/RFID tapping zone, microphone/speaker dot matrix, thermal ticket slot, and lower telemetry cabinet door.
 * **Staff Portal View**: Clinical desktop command center ($1920 \times 1080$) for triage nurses and ED staff.
 * **Dual View (Side-by-Side)**: Authentic ~28% Kiosk / ~72% Staff Portal layout reflecting real-world hospital deployment. Submitting an intake on the left instantly updates the queue on the right.
 * **Draggable Demo Controller (Turbopack-Style)**: A compact $44 \times 44\text{px}$ floating icon badge that can be moved anywhere on the screen so it never covers clinical controls.

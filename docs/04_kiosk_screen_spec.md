@@ -64,33 +64,38 @@ Color application in hospital interfaces must never be decorative or blindly imp
 
 ```
                        ┌────────────────────────────┐
-                       │     [●] Wide Camera        │
-                       │   WVSU MEDICAL CENTER      │
-                       │   TriageSense Kiosk        │
+                       │   [ o  ●  o ] 3D Camera    │  ◄── Top Camera Module (Presence/Liveness)
+                       ├────────────────────────────┤
+                       │            ( ⬡ )           │  ◄── WVSUMC Official Seal Emblem
                        ├────────────────────────────┤
                        │                            │
-                       │      1080 × 1920           │
-                       │      Full HD Touch         ├───[ Right-Side PPG Sensor Bay ]
-                       │      Capacitive Display    │   [ SpO2 & Pulse Chamber     ]
-                       │                            │   [ LED Halo Ring Guide      ]
+                       │        1080 × 1920         │
+                       │       Full HD Touch        │  ◄── 23.8" Portrait Touchscreen Display
+                       │     Capacitive Display     │
                        │                            │
                        ├────────────────────────────┤
-                       │  [(((o)))] NFC / RFID Bay  │
-                       │  [ |||||| ] 2D QR Scanner  │
+                       │ [(((o)))]      [========]  │  ◄── Left: NFC/RFID Tap Reader
+                       │ NFC Reader     [VITALS  ]  │  ◄── Bottom-Right: VITAL SIGNS SENSOR BAY
+                       │ :::::: MIC     [SENSOR  ]  │      (SpO2 & Pulse Rate Optical Chamber,
+                       │ [======] Paper [INSERT  ]  │       replacing legacy barcode window)
+                       │ Ticket Slit    [FINGER  ]  │  ◄── Center: Thermal Ticket Dispenser
                        ├────────────────────────────┤
-                       │  [======] Thermal Printer  │
-                       │           Queue Ticket Bay │
+                       │   -^v^- VITAL SIGNS        │  ◄── Lower Cabinet Door
+                       │         SENSORS (OPTIONAL) │      (Bio-telemetry Expansion Module)
+                       ├────────────────────────────┤
+                       │ ══════════════════════════ │  ◄── Weighted Pedestal Base (600×380mm)
                        └────────────────────────────┘
 ```
 
-### 3.1 Integrated Multi-Wavelength PPG & Pulse Oximetry Sensor Chamber
-Mounted on the **right lateral bezel of the kiosk chassis**, the vitals sensor bay provides automated, non-invasive vital sign screening:
+### 3.1 Integrated Multi-Wavelength PPG & Pulse Oximetry Sensor Chamber (Bottom-Right Panel)
+Mounted on the **bottom right of the peripheral console directly beneath the touchscreen display** (replacing the legacy optical barcode scanner window), the vitals sensor bay provides automated, non-invasive vital sign screening:
 - **Technical Specifications**:
   - Dual-wavelength optical emitter: $660\text{ nm}$ (Red) and $940\text{ nm}$ (Infrared).
   - High-sensitivity photodiode detecting arterial pulsatile blood flow through the digital capillary bed.
   - Telemetry parameters: Blood Oxygen Saturation ($\text{SpO}_2\%$), Pulse Rate (PR in BPM), and Perfusion Index (PI %).
 - **Physical Chassis & Anthropometrics (ADA Title III §707 & BP 344)**:
-  - Elevation: Centerline positioned **$1080\text{ mm}$ above finished floor level**, comfortably accessible to seated wheelchair users ($15\text{--}48\text{ inches}$) and standing adults.
+  - Elevation: Positioned **$980\text{ mm}$ to $1050\text{ mm}$ above finished floor level**, comfortably accessible to seated wheelchair users ($15\text{--}48\text{ inches}$) and standing adults.
+  - Form Factor: Deep beveled rectangular chamber with dark inner casing and contoured finger resting cradle.
   - Angle: Contoured with a **$20^\circ\text{ to }25^\circ$ downward pitch** supporting natural resting forearm pronation.
   - Chamber: Lined with medical-grade, hypoallergenic, antimicrobial silicone.
 - **Illuminated Status Halo Ring**:
@@ -198,14 +203,14 @@ To ensure total inclusivity across Western Visayas demographics (elderly patient
   - Wong-Baker facial expressions: `😊 No Hurt`, `😐 Mild`, `😟 Moderate`, `😣 Severe`, `😭 Worst`.
 - **Section 2: Symptom Duration Chips**:
   - 6 discrete clinical duration buckets: `< 1 hour`, `1–6 hours`, `6–24 hours`, `1–3 days`, `> 3 days`, `Not sure`.
-- **Section 3: Integrated Right-Side PPG Sensor Bay Simulation**:
-  - Visual diagram showing the right-side kiosk finger chamber with flashing LED ring.
-  - Action button: `[ <Fingerprint /> Place Finger in Right Sensor Bay ]`.
+- **Section 3: Integrated Vital Signs Sensor Bay Simulation (Bottom-Right Panel)**:
+  - Visual diagram showing the recessed finger chamber below the screen on the bottom right with illuminated halo ring.
+  - Action button: `[ <Activity /> Insert Finger / Start Sensor ]`.
   - Interactive 5-second sampling sequence:
     - Real-time animated plethysmogram pulse wave (`<Activity />`).
     - Dynamic countdown timer: *"Acquiring arterial pulse wave... 5s"*.
     - Telemetry results: $\text{SpO}_2: 98\%$, Pulse Rate: $76\text{ BPM}$, Perfusion Index: $4.2\%$.
-  - Fallback: `[ Skip Sensor ]` button if patient has finger dressings or tremors.
+  - Fallback: `[ Skip Vitals / Laktawan ]` button if patient has finger dressings or tremors.
   - Regulatory notice: *"Non-autonomous preliminary screening. Clinical evaluation performed by triage nurse."*
 - **Navigation Controls**:
   - `[ < BACK ]` returns to Step 3.

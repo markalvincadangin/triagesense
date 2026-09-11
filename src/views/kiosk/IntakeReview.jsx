@@ -146,7 +146,7 @@ export function IntakeReview() {
               </div>
               <div><strong>Duration:</strong> {intakeDraft.duration || '1–6 hours'}</div>
               <div className="border-t border-slate-100 pt-1.5 mt-1.5">
-                <div className="text-xs font-bold text-slate-700">Right-Side PPG Sensor Telemetry:</div>
+                <div className="text-xs font-bold text-slate-700">Kiosk Vital Signs Sensor Bay:</div>
                 {vitals.spo2 ? (
                   <div className="flex items-center gap-3 mt-1">
                     <span className="text-xs font-bold text-emerald-800">SpO₂: {vitals.spo2}%</span>

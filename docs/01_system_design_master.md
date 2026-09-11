@@ -227,7 +227,7 @@ In emergency medical informatics, applying university or hospital brand colors i
 
 ---
 
-### 2.7 Hardware Engineering Specification: Integrated Right-Side Vital Signs Sensor Bay
+### 2.7 Hardware Engineering Specification: Integrated Bottom-Right Vital Signs Sensor Bay
 
 #### Medical Terminology & Classification
 * **Component Name**: **Integrated Multi-Wavelength Photoplethysmography (PPG) & Pulse Oximetry Sensor Chamber** (also designated *Optical Vitals Well*, *Finger Sensor Bay*, or *Embedded Non-Invasive Pulse Oximeter Module*).
@@ -238,9 +238,15 @@ In emergency medical informatics, applying university or hospital brand colors i
   4. **Continuous Plethysmogram Waveform**: Real-time arterial pulse wave verifying sensor engagement.
 
 #### Physical Chassis & Anthropometric Ergonomics (ADA Title III §707 & BP 344)
-* **Location**: Mounted flush into the **right lateral bezel/chassis** of the kiosk totem at a height of **$980\text{ mm}$ to $1050\text{ mm}$ above the finished floor**.
-* **Posture Angulation**: Tilted at a **$20^\circ\text{ to }25^\circ$ downward angle** matching natural resting forearm pronation for both seated wheelchair users and standing adult/pediatric patients.
-* **Chamber Affordance**: Soft, contoured funnel lined with medical-grade, antibacterial silicone to comfortably seat index or middle fingers of all adult and pediatric sizes.
+* **Location**: Integrated directly into the lower peripheral control console, situated on the **bottom right directly below the 23.8" touchscreen display** (specifically replacing the legacy barcode/QR scanner window, as specified in the team sketch and 3D CAD engineering model).
+* **Relative Peripheral Placement**:
+  - **Left**: Contactless NFC / RFID Reader pad (`((•))`, $13.56\text{ MHz}$).
+  - **Below NFC (Left)**: Precision microphone & 5W speaker dot perforation matrix.
+  - **Center**: Pinhole optical sensor & High-speed thermal ticket/receipt exit slot.
+  - **Bottom Right**: **Vital Signs Sensor Bay** — deep beveled recessed chamber with dark inner casing and internal angled optical window.
+  - **Lower Cabinet Body**: Large recessed service door silkscreened with ECG waveform and labeled `VITAL SIGNS SENSORS (OPTIONAL)`.
+* **Elevation & Posture Angulation**: Located at **$980\text{ mm}$ to $1050\text{ mm}$ above the finished floor**, with an internal **$20^\circ\text{ to }25^\circ$ downward chamber pitch** matching natural resting forearm pronation for seated wheelchair users ($15\text{--}48\text{ inches}$) and standing adults.
+* **Chamber Affordance**: Soft, contoured internal funnel lined with medical-grade, antibacterial silicone to comfortably seat index or middle fingers of all adult and pediatric sizes.
 * **Illuminated Visual Halo Ring**:
   * *Pulsing Cyan*: Standby / Ready for Finger Insertion.
   * *Pulsing Amber*: Finger detected / Calibrating capillary waveform.
@@ -251,7 +257,7 @@ In emergency medical informatics, applying university or hospital brand colors i
 
 #### Clinical Governance Guardrail: Pre-Triage Screening Only
 * The kiosk explicitly labels vitals as: *"Preliminary automated screening telemetry. Final clinical triage determination and vital sign verification performed by licensed triage nurse."*
-* Telemetry automatically populates into `PatientDossier.jsx` under `Kiosk PPG Sensor Telemetry`, pre-filling objective data while leaving the nurse in 100% control of final ESI assignment.
+* Telemetry automatically populates into `PatientDossier.jsx` under `Kiosk Vital Signs Sensor Bay`, pre-filling objective data while leaving the nurse in 100% control of final ESI assignment.
 
 ---
 

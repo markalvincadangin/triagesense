@@ -344,7 +344,7 @@ export function PatientDossier() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: '800', color: '#065F46', textTransform: 'uppercase' }}>
                     <Activity size={16} />
-                    <span>Kiosk PPG Sensor Telemetry (Right-Side Slot)</span>
+                    <span>Kiosk Vital Signs Sensor Bay (Bottom-Right Panel)</span>
                   </div>
                   <span style={{ fontSize: '11px', fontWeight: '700', padding: '2px 8px', borderRadius: 'var(--radius-full)', backgroundColor: '#D1FAE5', color: '#047857' }}>
                     {currentIntake.vitalsTelemetry?.capturedAt ? `Captured ${currentIntake.vitalsTelemetry.capturedAt}` : 'Automated Reading'}

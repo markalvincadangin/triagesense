@@ -151,8 +151,8 @@ export function PainDuration() {
                 <div>
                   <div className="text-sm font-bold text-slate-900">
                     {kioskLanguage === 'hil'
-                      ? 'Palihug isulod ang imo tudlo sa nagasiga nga slot sa tuo nga bahin sang kiosk.'
-                      : 'Please insert your index finger into the illuminated slot on the right side of the kiosk body.'}
+                      ? 'Palihug isulod ang imo tudlo sa nagasiga nga Vital Signs Sensor Bay sa idalum sang screen (sa tuo nga bahin).'
+                      : 'Please insert your index finger into the illuminated Vital Signs Sensor Bay below the screen (bottom right).'}
                   </div>
                   <div className="text-xs text-slate-600 mt-0.5">
                     Takes only 5 seconds. Captures baseline SpO₂ and pulse rate for the emergency doctor and nurse.
@@ -176,7 +176,7 @@ export function PainDuration() {
                   onClick={handleStartMeasurement}
                   className="px-6 py-2.5 text-sm font-bold shadow-md bg-brand-green"
                 >
-                  Insert Finger / Test Sensor
+                  Insert Finger / Start Sensor
                 </Button>
               </div>
             </div>
@@ -225,7 +225,7 @@ export function PainDuration() {
               </div>
 
               <span className="text-xs text-slate-400 italic">
-                Please hold your finger steady in the right-side sensor well.
+                Please hold your finger steady in the bottom-right sensor bay.
               </span>
             </div>
           )}
@@ -235,7 +235,7 @@ export function PainDuration() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-emerald-900 font-bold text-sm">
                   <CheckCircle2 size={18} className="text-emerald-600" />
-                  <span>Objective Telemetry Captured Successfully via Right Sensor Slot</span>
+                  <span>Objective Telemetry Captured Successfully via Vital Signs Sensor Bay</span>
                 </div>
                 <button
                   onClick={handleStartMeasurement}
