@@ -25,10 +25,10 @@ export function FleetManager() {
       {/* Top Header */}
       <div>
         <h1 style={{ fontSize: '26px', fontWeight: '800', color: 'var(--color-text-primary)' }}>
-          Kiosk Fleet Management & Station Configuration
+          Kiosk Stations & Hardware Status
         </h1>
         <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
-          Hardware status telemetry for physical ER terminals and global intake parameter configuration.
+          Physical terminal health, paper roll level, and global ER check-in settings.
         </p>
       </div>
 
@@ -49,7 +49,7 @@ export function FleetManager() {
           }}
         >
           <CheckCircle2 size={18} />
-          <span>Kiosk Fleet Parameters Successfully Synchronized across Terminals!</span>
+          <span>Station Settings Successfully Saved & Applied to All Kiosks!</span>
         </div>
       )}
 

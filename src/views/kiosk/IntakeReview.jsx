@@ -14,26 +14,26 @@ export function IntakeReview() {
   return (
     <div className="flex flex-col h-full px-12 py-8 bg-canvas select-none">
       {/* Header */}
-      <div className="text-center shrink-0">
+      <div className="text-center shrink-0 mb-3">
         <h1 className="text-3xl font-extrabold text-slate-900 leading-tight">
-          Step 5 of 5: Review & Send to Triage Nurse
+          Step 5 of 5: Check Your Answers Before Sending
         </h1>
         <h2 className="text-base font-semibold text-brand-green mt-1">
           {kioskLanguage === 'hil'
-            ? 'Palihog lantawa kag kumpirmaha ang tanan nga impormasyon bag-o ipasa sa nurse'
-            : 'Please review and confirm your intake information before sending to the triage desk'}
+            ? 'Lantawa ang imo mga sabat bag-o ipadala sa nurse'
+            : 'Review your information below so the triage nurse receives accurate details'}
         </h2>
       </div>
 
       {/* Review Summary Grid */}
-      <div className="w-full max-w-4xl mx-auto my-4 grid grid-cols-2 gap-4">
-        {/* Card 1: Patient Information */}
+      <div className="w-full max-w-4xl mx-auto my-3 grid grid-cols-2 gap-4">
+        {/* Card 1: Patient Details */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
               <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
                 <User size={18} />
-                <span>Patient Identification</span>
+                <span>Patient Details</span>
               </div>
               <button
                 onClick={() => setKioskStep('patient-info')}
@@ -60,7 +60,7 @@ export function IntakeReview() {
             <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
               <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
                 <Activity size={18} />
-                <span>Reported Symptoms</span>
+                <span>What Hurts</span>
               </div>
               <button
                 onClick={() => setKioskStep('symptoms')}
@@ -95,7 +95,7 @@ export function IntakeReview() {
             <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
               <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
                 <MapPin size={18} />
-                <span>Body Location</span>
+                <span>Where It Hurts</span>
               </div>
               <button
                 onClick={() => setKioskStep('body-map')}
@@ -114,19 +114,19 @@ export function IntakeReview() {
                   </span>
                 ))
               ) : (
-                <span className="text-xs text-slate-400 italic">General / Diffuse</span>
+                <span className="text-xs text-slate-400 italic">General / Whole Body</span>
               )}
             </div>
           </div>
         </div>
 
-        {/* Card 4: Severity & Vital Signs Telemetry */}
+        {/* Card 4: Pain & Quick Finger Check */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
               <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
                 <HeartPulse size={18} />
-                <span>Pain & Vital Signs</span>
+                <span>Pain Level & Finger Check</span>
               </div>
               <button
                 onClick={() => setKioskStep('pain-duration')}
@@ -146,7 +146,7 @@ export function IntakeReview() {
               </div>
               <div><strong>Duration:</strong> {intakeDraft.duration || '1–6 hours'}</div>
               <div className="border-t border-slate-100 pt-1.5 mt-1.5">
-                <div className="text-xs font-bold text-slate-700">Kiosk Vital Signs Sensor Bay:</div>
+                <div className="text-xs font-bold text-slate-700">Quick Finger Check:</div>
                 {vitals.spo2 ? (
                   <div className="flex items-center gap-3 mt-1">
                     <span className="text-xs font-bold text-emerald-800">SpO₂: {vitals.spo2}%</span>
@@ -162,6 +162,28 @@ export function IntakeReview() {
                 )}
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Empathetic Patient Reassurance: What Happens Next? (Balances vertical portrait layout) */}
+      <div className="w-full max-w-4xl mx-auto my-3 p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-slate-800">
+        <div className="text-sm font-extrabold text-[#006B3F] flex items-center gap-2 mb-3">
+          <ShieldCheck size={18} className="text-[#006B3F]" />
+          <span>What Happens When You Tap "Send to Triage Nurse"? / Ano ang Masunod?</span>
+        </div>
+        <div className="grid grid-cols-3 gap-4 text-xs leading-relaxed">
+          <div className="bg-white p-3.5 rounded-xl border border-emerald-100 shadow-xs flex flex-col gap-1">
+            <span className="font-extrabold text-slate-900 text-xs">1. Nurse Receives Details</span>
+            <span className="text-slate-600">Your information appears immediately on the triage nurse's station screen.</span>
+          </div>
+          <div className="bg-white p-3.5 rounded-xl border border-emerald-100 shadow-xs flex flex-col gap-1">
+            <span className="font-extrabold text-slate-900 text-xs">2. Take Your Paper Ticket</span>
+            <span className="text-slate-600">A ticket slip with your queue number prints automatically from the slot below.</span>
+          </div>
+          <div className="bg-white p-3.5 rounded-xl border border-emerald-100 shadow-xs flex flex-col gap-1">
+            <span className="font-extrabold text-slate-900 text-xs">3. Relax in Waiting Area</span>
+            <span className="text-slate-600">Please take a seat. The triage nurse will call your ticket number for in-person evaluation.</span>
           </div>
         </div>
       </div>
@@ -186,13 +208,13 @@ export function IntakeReview() {
         <Button
           variant="primary"
           size="lg"
-          icon={Check}
+          trailingIcon={ArrowRight}
           onClick={submitKioskIntake}
           className="px-10 py-4 text-base font-black shadow-xl bg-brand-green hover:bg-brand-green-hover"
         >
           {kioskLanguage === 'hil'
-            ? 'IPASA SA NURSE / SEND TO NURSE >'
-            : 'SEND TO NURSE >'}
+            ? 'IPADALA SA TRIAGE NURSE'
+            : 'SEND TO TRIAGE NURSE'}
         </Button>
       </div>
     </div>

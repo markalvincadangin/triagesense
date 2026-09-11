@@ -11,7 +11,8 @@ import {
   ShieldAlert,
   CheckCircle2,
   RefreshCw,
-  Info
+  Info,
+  ArrowDownRight
 } from 'lucide-react';
 
 export function PainDuration() {
@@ -80,12 +81,12 @@ export function PainDuration() {
       {/* Header */}
       <div className="text-center shrink-0">
         <h1 className="text-3xl font-extrabold text-slate-900 leading-tight">
-          Step 4 of 5: Severity & Automated Vital Signs
+          Step 4 of 5: How Bad is the Pain & Quick Pulse Check
         </h1>
         <h2 className="text-base font-semibold text-brand-green mt-1">
           {kioskLanguage === 'hil'
-            ? 'Kadasig kag kalawig sang balatyagon kag awtomatiko nga vital signs'
-            : 'Rate your pain, duration, and insert finger for automatic vital signs'}
+            ? 'Pilia kon daw ano kasakit kag isulod ang tudlo sa sensor agud masukol ang imo pulso'
+            : 'Select your pain score and slip your finger into the sensor below to check your pulse and oxygen'}
         </h2>
       </div>
 
@@ -94,8 +95,8 @@ export function PainDuration() {
         {/* Section 1: Pain Rating Scale */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
           <div className="text-sm font-extrabold text-slate-800 mb-3 flex items-center justify-between">
-            <span>1. Rate Your Current Pain Level / Kabug-at sang Sakit:</span>
-            <span className="text-xs text-slate-500 font-normal">Wong-Baker Scale (0 = No Pain, 10 = Severe)</span>
+            <span>1. How Bad Does It Hurt Right Now? / Daw Ano Kasakit Subong?</span>
+            <span className="text-xs text-slate-500 font-normal">Tap the face that matches how you feel (0 = No Pain, 10 = Severe)</span>
           </div>
           <PainScale
             value={intakeDraft.painLevel || 0}
@@ -106,7 +107,7 @@ export function PainDuration() {
         {/* Section 2: Duration Selector */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
           <div className="text-sm font-extrabold text-slate-800 mb-3">
-            2. How Long Have You Felt These Symptoms? / Pila na ka oras o adlaw?
+            2. How Long Have You Felt This Way? / Pila na ka oras ukon adlaw?
           </div>
           <DurationSelector
             value={intakeDraft.duration || '1–6 hours'}
@@ -124,18 +125,19 @@ export function PainDuration() {
               </div>
               <div>
                 <div className="text-sm font-extrabold text-slate-900">
-                  3. Automated Vital Signs (Integrated PPG Finger Sensor)
+                  3. Quick Pulse & Oxygen Check (Finger Sensor on Lower Right)
                 </div>
                 <div className="text-xs text-slate-500">
-                  Non-invasive optical finger measurement for Blood Oxygen (SpO₂) & Pulse Rate (BPM)
+                  Slip your index finger into the green sensor chamber below for 5 seconds
                 </div>
               </div>
             </div>
 
-            {/* Hardware Callout Tag */}
+            {/* Hardware Callout Tag with Lucide SVG Icon */}
             <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full border border-emerald-200 text-xs font-bold animate-pulse">
               <div className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>SENSOR READY ON RIGHT CHASSIS ➔</span>
+              <span>SENSOR READY ON RIGHT CHASSIS</span>
+              <ArrowDownRight size={14} className="text-emerald-700" />
             </div>
           </div>
 
@@ -298,7 +300,7 @@ export function PainDuration() {
           <div className="mt-3 text-[11px] text-slate-500 flex items-center gap-1.5">
             <ShieldAlert size={14} className="text-slate-400 shrink-0" />
             <span>
-              Clinical Governance: Automated kiosk readings provide preliminary screening telemetry. Final clinical assessment, vital sign verification, and Emergency Severity Index (ESI 1–5) are determined exclusively by the triage nurse.
+              Clinical Notice: Kiosk vitals are for preliminary check-in. The triage nurse will verify your vitals when they call your name.
             </span>
           </div>
         </div>
@@ -323,7 +325,7 @@ export function PainDuration() {
           onClick={() => setKioskStep('review')}
           className="px-10 py-4 text-base font-black shadow-lg bg-brand-green"
         >
-          Next: Review Summary
+          Next: Check Your Answers
         </Button>
       </div>
     </div>

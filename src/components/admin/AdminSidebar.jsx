@@ -12,11 +12,11 @@ import {
 
 const NAV_ITEMS = [
   { id: 'live-queue', label: 'Live Triage Queue', icon: LayoutDashboard },
-  { id: 'patient-dossier', label: 'Patient Dossier', icon: ClipboardList },
-  { id: 'emergency-console', label: 'Emergency Console', icon: SlidersHorizontal, hasAlert: true },
-  { id: 'patient-directory', label: 'Patient Directory', icon: FolderArchive },
-  { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-  { id: 'fleet-manager', label: 'Kiosk Fleet & Settings', icon: Server }
+  { id: 'patient-dossier', label: 'Patient Triage Chart', icon: ClipboardList },
+  { id: 'emergency-console', label: 'Emergency Help Calls', icon: SlidersHorizontal, hasAlert: true },
+  { id: 'patient-directory', label: 'Patient Records & Archive', icon: FolderArchive },
+  { id: 'analytics', label: 'ED Census & Metrics', icon: BarChart3 },
+  { id: 'fleet-manager', label: 'Kiosk Stations & Hardware', icon: Server }
 ];
 
 export function AdminSidebar() {

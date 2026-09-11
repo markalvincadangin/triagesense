@@ -149,7 +149,7 @@ export function PatientDossier() {
             }}
           >
             <CheckCircle2 size={16} />
-            <span>Nurse Clinical Assessment Saved to Queue!</span>
+            <span>Clinical assessment and ESI score updated in patient record.</span>
           </div>
         )}
       </div>
@@ -189,7 +189,7 @@ export function PatientDossier() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <User size={18} color="var(--color-wvsu-blue)" />
               <span style={{ fontSize: '15px', fontWeight: '800', color: 'var(--color-text-primary)' }}>
-                PATIENT-REPORTED INTAKE (SUBJECTIVE)
+                PATIENT-REPORTED INTAKE (SUBJECTIVE DATA)
               </span>
             </div>
             <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--color-text-secondary)' }}>
@@ -344,7 +344,7 @@ export function PatientDossier() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: '800', color: '#065F46', textTransform: 'uppercase' }}>
                     <Activity size={16} />
-                    <span>Kiosk Vital Signs Sensor Bay (Bottom-Right Panel)</span>
+                    <span>Preliminary Kiosk Vitals Screening</span>
                   </div>
                   <span style={{ fontSize: '11px', fontWeight: '700', padding: '2px 8px', borderRadius: 'var(--radius-full)', backgroundColor: '#D1FAE5', color: '#047857' }}>
                     {currentIntake.vitalsTelemetry?.capturedAt ? `Captured ${currentIntake.vitalsTelemetry.capturedAt}` : 'Automated Reading'}
@@ -458,7 +458,7 @@ export function PatientDossier() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <ShieldAlert size={20} />
               <span style={{ fontSize: '15px', fontWeight: '800' }}>
-                NURSE CLINICAL ASSESSMENT (OBJECTIVE)
+                NURSE TRIAGE ASSESSMENT & ESI SCORING
               </span>
             </div>
             <span style={{ fontSize: '12px', fontWeight: '600', backgroundColor: '#005230', padding: '3px 10px', borderRadius: 'var(--radius-full)' }}>
@@ -678,7 +678,7 @@ export function PatientDossier() {
               fullWidth
               style={{ height: '52px', fontSize: '16px' }}
             >
-              SAVE CLINICAL ASSESSMENT
+              SAVE TRIAGE ASSESSMENT
             </Button>
           </div>
         </form>

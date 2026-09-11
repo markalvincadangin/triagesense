@@ -10,10 +10,10 @@ export function OperationalAnalytics() {
       {/* Top Header */}
       <div>
         <h1 style={{ fontSize: '26px', fontWeight: '800', color: 'var(--color-text-primary)' }}>
-          ED Operational Intelligence & Triage Analytics
+          ED Census, Flow & Triage Analytics
         </h1>
         <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
-          Throughput acceleration metrics, arrival surge models, and regional dialect utilization.
+          Patient flow metrics, arrival patterns, and regional dialect usage across the emergency department.
         </p>
       </div>
 
@@ -49,7 +49,7 @@ export function OperationalAnalytics() {
             {analytics.averageDoorToTriage}
           </div>
           <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
-            Target benchmark: &lt; 5.0 minutes
+            Target benchmark: under 5.0 minutes
           </div>
         </div>
 

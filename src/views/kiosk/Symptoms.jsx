@@ -17,14 +17,14 @@ import {
 } from 'lucide-react';
 
 const SYMPTOMS_LIST = [
-  { id: 'Chest Pain', label: 'Chest Pain / Sakit Dughan', desc: 'Pressure, tightness, crushing sensation', icon: HeartPulse, color: '#DC2626' },
-  { id: 'Shortness of Breath', label: 'Breathing Difficulty / Hangos', desc: 'Difficulty breathing, wheezing, or gasping', icon: Wind, color: '#0057A8' },
-  { id: 'Fever', label: 'Fever / Hilanat', desc: 'High body temperature, chills, sweating', icon: Thermometer, color: '#DC2626' },
-  { id: 'Abdominal Pain', label: 'Abdominal Pain / Sakit Tiyan', desc: 'Severe stomach cramping, sharp or dull ache', icon: AlertCircle, color: '#D97706' },
-  { id: 'Headache', label: 'Severe Headache / Sakit Ulo', desc: 'Migraine, sudden throbbing, dizziness', icon: Zap, color: '#7C3AED' },
-  { id: 'Injury / Trauma', label: 'Injury / Samad o Pagkahulog', desc: 'Cut, deep wound, fall, vehicular trauma', icon: PlusSquare, color: '#16803C' },
-  { id: 'Cough', label: 'Persistent Cough / Ubo', desc: 'Chronic dry cough or coughing with phlegm', icon: Activity, color: '#F97316' },
-  { id: 'Other', label: 'Other Symptoms / Iban Pa', desc: 'Other physical concerns to report to nurse', icon: HelpCircle, color: '#505F78' }
+  { id: 'Chest Pain', label: 'Chest Pain or Pressure / Sakit sa Dughan', desc: 'Tightness, crushing, or heavy chest feeling', icon: HeartPulse, color: '#DC2626' },
+  { id: 'Shortness of Breath', label: 'Trouble Breathing / Mabudlay Magginhawa', desc: 'Short of breath, wheezing, or gasping for air', icon: Wind, color: '#0057A8' },
+  { id: 'Fever', label: 'High Fever & Chills / Mataas nga Hilanat', desc: 'Very hot body, shivering, sweating', icon: Thermometer, color: '#DC2626' },
+  { id: 'Abdominal Pain', label: 'Stomach or Belly Pain / Sakit sang Tiyan', desc: 'Severe cramps, sharp or aching stomach', icon: AlertCircle, color: '#D97706' },
+  { id: 'Headache', label: 'Severe Headache / Sakit sang Ulo', desc: 'Throbbing migraine, dizziness, confusion', icon: Zap, color: '#7C3AED' },
+  { id: 'Injury / Trauma', label: 'Accident, Cut, or Fall / Pilas o Nabali', desc: 'Deep wound, bleeding, fractured bone, fall', icon: PlusSquare, color: '#16803C' },
+  { id: 'Cough', label: 'Persistent Cough / Ubo nga Indi Mag-untat', desc: 'Constant coughing, chest phlegm, throat pain', icon: Activity, color: '#F97316' },
+  { id: 'Other', label: 'Other Concern / Iban Pa nga Balatian', desc: 'Something else you want to tell the nurse', icon: HelpCircle, color: '#505F78' }
 ];
 
 export function Symptoms() {
@@ -59,7 +59,7 @@ export function Symptoms() {
       {/* Screen Title & Instruction Header */}
       <div className="text-center mb-6 shrink-0">
         <h1 className="text-3xl font-black text-slate-900 tracking-tight">
-          What Are Your Main Symptoms?
+          What Brings You to the Emergency Room Today?
         </h1>
         <h2 className="text-lg font-medium text-slate-600 mt-1">
           Ano ang ginabatyag mo subong? <span className="text-slate-500 text-base font-normal">(Tap all that apply)</span>
@@ -144,15 +144,15 @@ export function Symptoms() {
             <Mic size={22} />
           </div>
           <div className="text-left">
-            <div className="text-sm font-bold text-slate-900">
+            <div className="text-sm font-extrabold text-slate-900">
               {isRecordingVoice
-                ? `Recording Active (${voiceSeconds}s) — Speak your symptoms now...`
-                : 'Prefer to describe your symptoms with your voice?'}
+                ? `Recording voice memo... (${voiceSeconds}s / 6s)`
+                : 'Prefer to speak instead of tapping? / Mas gusto mo ihambal?'}
             </div>
             <div className="text-xs text-slate-500">
               {isRecordingVoice
-                ? 'Audio memo will be securely attached to your clinical intake dossier for the triage nurse.'
-                : 'Tap to record a 10-second voice memo in Hiligaynon, English, or Filipino.'}
+                ? 'Your voice recording will be played directly for the triage nurse.'
+                : 'Tap to record a short voice description in Hiligaynon, English, or Filipino.'}
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@ export function Symptoms() {
           onClick={handleToggleVoice}
           className="px-5 py-2 text-xs font-bold shrink-0"
         >
-          {isRecordingVoice ? 'Stop Recording' : 'Voice Input'}
+          {isRecordingVoice ? 'Stop Recording' : 'Record Voice Memo'}
         </Button>
       </div>
 
@@ -186,7 +186,7 @@ export function Symptoms() {
           onClick={() => setKioskStep('body-map')}
           className="px-10 py-4 text-base font-black shadow-lg bg-brand-green"
         >
-          Next: Body Location
+          Next: Where Does It Hurt?
         </Button>
       </div>
     </div>

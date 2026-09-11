@@ -25,7 +25,7 @@ export function PatientDirectory() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <h1 style={{ fontSize: '26px', fontWeight: '800', color: 'var(--color-text-primary)' }}>
-            Patient Directory & Archive
+            Emergency Patient Records & Archive
           </h1>
           <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
             Historical index of emergency department intakes and clinical triage assessments.
@@ -37,7 +37,7 @@ export function PatientDirectory() {
           <Search size={16} color="var(--color-text-secondary)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
           <input
             type="text"
-            placeholder="Search patient name, token ID..."
+            placeholder="Search patient name, ticket #, or chief complaint..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{
@@ -79,7 +79,7 @@ export function PatientDirectory() {
                   textTransform: 'uppercase'
                 }}
               >
-                <th style={{ padding: '0 20px' }}>Reference ID</th>
+                <th style={{ padding: '0 20px' }}>Ticket #</th>
                 <th style={{ padding: '0 16px' }}>Patient Name</th>
                 <th style={{ padding: '0 16px' }}>Timestamp</th>
                 <th style={{ padding: '0 16px' }}>Workflow Status</th>
@@ -130,7 +130,7 @@ export function PatientDirectory() {
                         onClick={() => selectIntakeForDossier(item.id)}
                         style={{ height: '34px', padding: '0 12px' }}
                       >
-                        Dossier
+                        Triage Chart
                       </Button>
                     </div>
                   </td>
@@ -191,7 +191,7 @@ export function PatientDirectory() {
               trailingIcon={ArrowUpRight}
               onClick={() => selectIntakeForDossier(selectedRecord.id)}
             >
-              Open Full Clinical Dossier &rarr;
+               Open Full Patient Triage Chart
             </Button>
           </div>
         )}

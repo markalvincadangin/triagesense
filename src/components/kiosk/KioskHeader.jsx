@@ -31,10 +31,10 @@ export function KioskHeader({ onLogoClick }) {
 
     if ('speechSynthesis' in window) {
       const phrases = {
-        hil: 'Maayong adlaw sa WVSU Medical Center. Sunda ang mga tikang sa iskrin ukon i-insert ang imo tudlo sa tuo nga bahin para sa vital signs.',
-        en: 'Welcome to WVSU Medical Center Emergency Intake. Please follow the on-screen steps or insert your index finger into the right-side sensor slot for automatic vital signs.',
-        fil: 'Maligayang pagdating sa WVSU Medical Center. Sundin ang mga hakbang sa screen o ilagay ang hintuturo sa kanang slot para sa vital signs.',
-        ceb: 'Maayong pag-abot sa WVSU Medical Center. Sunda ang mga lakang sa screen o isulod ang imong tudlo sa tuo nga slot alang sa vital signs.'
+        hil: 'Maayong adlaw sa WVSU Medical Center Emergency Room. Sunda ang mga tikang sa screen agud mabuligan ka gilayon sang nurse.',
+        en: 'Welcome to WVSU Medical Center Emergency Check-In. Please follow the steps on screen so the nurse can assist you.',
+        fil: 'Maligayang pagdating sa WVSU Medical Center Emergency Room. Sundin ang mga hakbang sa screen upang matulungan ka agad ng nurse.',
+        ceb: 'Maayong pag-abot sa WVSU Medical Center Emergency Room. Sunda ang mga lakang sa screen aron matabangan ka dayon sa nurse.'
       };
       const textToSpeak = phrases[kioskLanguage] || phrases.en;
       const utterance = new SpeechSynthesisUtterance(textToSpeak);
@@ -73,7 +73,7 @@ export function KioskHeader({ onLogoClick }) {
             WEST VISAYAS STATE UNIVERSITY
           </div>
           <div className="text-[13px] font-semibold text-text-secondary tracking-wider mt-0.5">
-            MEDICAL CENTER • EMERGENCY INTAKE KIOSK
+            MEDICAL CENTER • EMERGENCY ROOM CHECK-IN
           </div>
         </div>
       </div>

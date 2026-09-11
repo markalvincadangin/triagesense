@@ -122,13 +122,13 @@ export function PatientInfo() {
       <div className="text-center mb-6 shrink-0">
         <h1 className="text-3xl font-black text-slate-900 tracking-tight">
           {kioskLanguage === 'hil'
-            ? 'Tikang 1 sang 5: Impormasyon sang Pasyente'
-            : 'Step 1 of 5: Patient Identification'}
+            ? 'Tikang 1: Sin-o ang magapabulong subong?'
+            : 'Step 1 of 5: Who is checking in today?'}
         </h1>
         <h2 className="text-base font-semibold text-slate-600 mt-1">
           {kioskLanguage === 'hil'
-            ? 'Palihog isulat ang impormasyon para sa opisyal nga rekord sang ospital'
-            : 'Please enter patient details for official hospital triage registration'}
+            ? 'Palihog isulat ang imo ngalan kag kaadlawan agud mabuligan ka gilayon sang nurse'
+            : 'Please enter your name and birthday so the nurse can prepare your record'}
         </h2>
       </div>
 
@@ -140,7 +140,7 @@ export function PatientInfo() {
           <div className="flex items-center justify-between mb-2">
             <label className="flex items-center gap-2 text-base font-extrabold text-slate-900">
               <User size={18} className="text-[#006B3F]" />
-              <span>Full Name / Bug-os nga Ngalan:</span>
+              <span>Full Name (First, Middle, Last) / Bug-os nga Ngalan:</span>
               <span className="text-xs font-bold text-red-600">*Required</span>
             </label>
             
@@ -155,7 +155,7 @@ export function PatientInfo() {
               }`}
             >
               {isDictating ? <MicOff size={14} /> : <Mic size={14} />}
-              <span>{isDictating ? 'Listening (Speak now)...' : 'Voice Dictate'}</span>
+              <span>{isDictating ? 'Listening (Speak now)...' : 'Voice Dictate (Speak Name)'}</span>
             </button>
           </div>
 
@@ -231,7 +231,7 @@ export function PatientInfo() {
         <div>
           <label className="flex items-center gap-2 mb-2 text-base font-extrabold text-slate-900">
             <Phone size={18} className="text-[#006B3F]" />
-            <span>Mobile Contact / Numero sang Telepono:</span>
+            <span>Cellphone / Contact Number (Yours or Companion's):</span>
           </label>
           <input
             type="tel"
@@ -254,7 +254,7 @@ export function PatientInfo() {
             }`}
           >
             <QrCode size={16} className="text-[#006B3F]" />
-            <span>{scanFeedback ? 'Card Scanned!' : 'Scan ID Card (PhilHealth)'}</span>
+            <span>{scanFeedback ? 'Card Scanned!' : 'Scan ID Card (PhilHealth / National ID)'}</span>
           </button>
 
           <button
@@ -285,7 +285,7 @@ export function PatientInfo() {
           onClick={() => setKioskStep('welcome')}
           className="px-8 py-3.5 text-sm font-bold"
         >
-          {kioskLanguage === 'hil' ? 'Balik sa Pamuno / Back' : 'Back to Home'}
+          {kioskLanguage === 'hil' ? 'Balik sa Pamuno' : 'Back to Home'}
         </Button>
 
         <Button
@@ -296,8 +296,8 @@ export function PatientInfo() {
           className="px-10 py-4 text-base font-black shadow-lg bg-brand-green"
         >
           {kioskLanguage === 'hil'
-            ? 'Padayon sa Sintomas / Next >'
-            : 'Next: Select Symptoms >'}
+            ? 'Padayon: Ano ang Ginabatyag?'
+            : 'Next: What Hurts?'}
         </Button>
       </div>
 

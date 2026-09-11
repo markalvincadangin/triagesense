@@ -36,10 +36,10 @@ export function EmergencyConsole() {
       {/* Top Title */}
       <div>
         <h1 style={{ fontSize: '26px', fontWeight: '800', color: 'var(--color-text-primary)' }}>
-          Emergency Assistance Broadcast Console
+          Kiosk Emergency Calls & Duress Alarms
         </h1>
         <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
-          Real-time terminal distress dispatch monitoring & two-way kiosk intercom.
+          Real-time patient distress calls from check-in kiosks and two-way nurse intercom.
         </p>
       </div>
 

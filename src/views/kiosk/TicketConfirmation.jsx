@@ -62,7 +62,7 @@ export function TicketConfirmation() {
             color: 'var(--color-text-primary)'
           }}
         >
-          Intake Successfully Submitted!
+          You're Checked In!
         </h1>
         <h2
           style={{
@@ -72,7 +72,7 @@ export function TicketConfirmation() {
             marginTop: '4px'
           }}
         >
-          Nabatun na sang Triage Staff ang imo impormasyon
+          Narehistro Ka Na! Nabatun na sang Nurse ang imo impormasyon
         </h2>
       </div>
 
@@ -110,7 +110,7 @@ export function TicketConfirmation() {
 
         <div>
           <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--color-text-secondary)' }}>
-            YOUR INTAKE REFERENCE TOKEN:
+            YOUR QUEUE TICKET NUMBER:
           </div>
           <div
             style={{
@@ -138,18 +138,18 @@ export function TicketConfirmation() {
             color: 'var(--color-text-primary)'
           }}
         >
-          "Please remain in the waiting area. A triage staff member will review your information and call your reference number shortly."
+          "Please take a seat in the waiting area. A triage nurse will call your ticket number shortly."
         </div>
 
         {/* Note on Non-Autonomous Triage */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--color-text-secondary)' }}>
           <ShieldCheck size={16} color="var(--color-wvsu-primary)" />
-          <span>Status: Waiting for Nurse Assessment • No AI Acuity Assigned</span>
+          <span>Next Step: In-Person Nurse Assessment</span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--color-text-secondary)' }}>
           <Printer size={16} />
-          <span>Queue slip ticket printed at terminal slot below</span>
+          <span>Please take your printed ticket from the slot below</span>
         </div>
       </div>
 
@@ -186,25 +186,17 @@ export function TicketConfirmation() {
           onClick={resetKioskSession}
           style={{ height: '68px', fontSize: '18px' }}
         >
-          FINISH & RETURN TO START / TAPUSON
+          DONE / TAPUS NA
         </Button>
 
         {/* Shortcut button to view the newly submitted record in Staff Portal */}
         <button
           type="button"
           onClick={() => setViewMode('admin')}
-          style={{
-            background: 'none',
-            border: 'none',
-            fontSize: '14px',
-            fontWeight: '700',
-            color: 'var(--color-wvsu-blue)',
-            cursor: 'pointer',
-            textDecoration: 'underline',
-            marginTop: '4px'
-          }}
+          className="flex items-center justify-center gap-1 text-sm font-bold text-[#0057A8] hover:underline cursor-pointer mt-1"
         >
-          View this intake live on Triage Staff Portal &rarr;
+          <span>View this record on Nurse Triage Portal</span>
+          <ArrowRight size={14} className="inline shrink-0" />
         </button>
       </div>
     </div>

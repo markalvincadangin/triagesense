@@ -6,10 +6,10 @@ const REGIONS = [
   { id: 'Neck', label: 'Neck / Liog', view: 'both' },
   { id: 'Shoulder', label: 'Shoulders / Abaga', view: 'both' },
   { id: 'Chest', label: 'Chest / Dughan', view: 'front' },
-  { id: 'Abdomen', label: 'Abdomen / Tiyan', view: 'front' },
+  { id: 'Abdomen', label: 'Stomach / Tiyan', view: 'front' },
   { id: 'Back', label: 'Back / Likod', view: 'back' },
-  { id: 'Arms', label: 'Arms / Takyag', view: 'both' },
-  { id: 'Legs', label: 'Legs / Tiil', view: 'both' }
+  { id: 'Arms', label: 'Arms & Hands / Takyag', view: 'both' },
+  { id: 'Legs', label: 'Legs & Feet / Tiil', view: 'both' }
 ];
 
 export function BodyMap({ selectedLocations = [], onToggleLocation }) {
@@ -54,7 +54,7 @@ export function BodyMap({ selectedLocations = [], onToggleLocation }) {
             transition: 'all 0.18s ease-in-out'
           }}
         >
-          Front View / Atubang
+          Front / Sa Atubang
         </button>
 
         <button
@@ -76,7 +76,7 @@ export function BodyMap({ selectedLocations = [], onToggleLocation }) {
           }}
         >
           <RotateCw size={16} />
-          <span>Back View / Likod</span>
+          <span>Back / Sa Likod</span>
         </button>
       </div>
 

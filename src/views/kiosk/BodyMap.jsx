@@ -18,7 +18,7 @@ export function BodyMap() {
             color: 'var(--color-text-primary)'
           }}
         >
-          Select Body Location
+          Where on Your Body Does It Hurt?
         </h1>
         <h2
           style={{
@@ -28,7 +28,7 @@ export function BodyMap() {
             marginTop: '4px'
           }}
         >
-          Diin dampi ang imo ginabatyag nga sakit ukon samad? (Tap on the diagram or region buttons)
+          Diin dampi sa imo lawas ang nagasakit? (Tap on the diagram or buttons)
         </h2>
       </div>
 
@@ -59,7 +59,7 @@ export function BodyMap() {
           onClick={() => setKioskStep('pain-duration')}
           className="px-10 py-4 text-base font-black shadow-lg bg-brand-green"
         >
-          Next: Pain & Duration
+          Next: How Bad is the Pain?
         </Button>
       </div>
     </div>

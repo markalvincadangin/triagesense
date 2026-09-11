@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   Search,
   ChevronRight,
+  ChevronLeft,
   AlertTriangle,
   Info,
   FolderArchive,
@@ -120,7 +121,7 @@ export function LiveQueue() {
     if (!esi) {
       return (
         <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500 border border-slate-200">
-          Needs Exam
+          Pending Nurse Exam
         </span>
       );
     }
@@ -169,7 +170,7 @@ export function LiveQueue() {
             Live Emergency Triage Queue
           </h1>
           <p className="text-[13px] text-slate-500 mt-0.5">
-            Real-time patient intakes and nurse assessments.
+            Real-time patient registrations and clinical nurse assessments.
           </p>
         </div>
 
@@ -185,15 +186,15 @@ export function LiveQueue() {
         </button>
       </div>
 
-      {/* 4 Stat Metric KPI Cards in a Row (from Inspo) */}
+      {/* 4 Stat Metric KPI Cards in a Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Card 1: Total Intakes */}
+        {/* Card 1: Patients Registered */}
         <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
             <Users size={24} strokeWidth={2.2} />
           </div>
           <div>
-            <div className="text-xs font-semibold text-slate-500">Total Intakes</div>
+            <div className="text-xs font-semibold text-slate-500">Patients Registered</div>
             <div className="text-2xl font-black text-slate-900 leading-tight">
               {totalIntakes}
             </div>
@@ -203,13 +204,13 @@ export function LiveQueue() {
           </div>
         </div>
 
-        {/* Card 2: Waiting */}
+        {/* Card 2: Waiting for Triage */}
         <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
             <Clock size={24} strokeWidth={2.2} />
           </div>
           <div>
-            <div className="text-xs font-semibold text-slate-500">Waiting</div>
+            <div className="text-xs font-semibold text-slate-500">Waiting for Triage</div>
             <div className="text-2xl font-black text-slate-900 leading-tight">
               {waitingCount}
             </div>
@@ -219,13 +220,13 @@ export function LiveQueue() {
           </div>
         </div>
 
-        {/* Card 3: In Triage */}
+        {/* Card 3: Under Assessment */}
         <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
             <Bed size={24} strokeWidth={2.2} />
           </div>
           <div>
-            <div className="text-xs font-semibold text-slate-500">In Triage</div>
+            <div className="text-xs font-semibold text-slate-500">Under Assessment</div>
             <div className="text-2xl font-black text-slate-900 leading-tight">
               {inTriageCount}
             </div>
@@ -235,7 +236,7 @@ export function LiveQueue() {
           </div>
         </div>
 
-        {/* Card 4: Completed */}
+        {/* Card 4: Triage Completed */}
         <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
             <CheckCircle2 size={24} strokeWidth={2.2} />
@@ -316,7 +317,7 @@ export function LiveQueue() {
               setSearchQuery(e.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search name, token, or symptoms..."
+            placeholder="Search patient name, ticket #, or symptoms..."
             className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
           />
         </div>
@@ -332,7 +333,7 @@ export function LiveQueue() {
                 <tr className="border-b border-slate-100 bg-slate-50/70 text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">
                   <th className="py-3.5 px-4 text-center w-12">#</th>
                   <th className="py-3.5 px-4 w-20">Time</th>
-                  <th className="py-3.5 px-4 w-32">Token</th>
+                  <th className="py-3.5 px-4 w-32">Ticket #</th>
                   <th className="py-3.5 px-4">Patient</th>
                   <th className="py-3.5 px-4">Chief Complaint</th>
                   <th className="py-3.5 px-4 text-center w-24">Pain</th>
@@ -366,7 +367,7 @@ export function LiveQueue() {
                           {item.timestamp}
                         </td>
 
-                        {/* Token Identifier */}
+                        {/* Ticket Identifier */}
                         <td className="py-4 px-4 whitespace-nowrap">
                           <span className="font-mono font-bold text-emerald-700">
                             {item.id}
@@ -429,7 +430,7 @@ export function LiveQueue() {
                             }}
                             className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#006B3F] hover:bg-[#005230] text-white text-xs font-bold shadow-xs transition-colors"
                           >
-                            <span>Open</span>
+                            <span>Assess</span>
                             <ChevronRight size={13} />
                           </button>
                         </td>
@@ -458,9 +459,9 @@ export function LiveQueue() {
                 type="button"
                 disabled={currentPage <= 1}
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                className="w-7 h-7 rounded-lg border border-slate-200 flex items-center justify-center disabled:opacity-30 hover:bg-slate-50"
+                className="w-7 h-7 rounded-lg border border-slate-200 flex items-center justify-center disabled:opacity-30 hover:bg-slate-50 text-slate-600"
               >
-                &lt;
+                <ChevronLeft size={14} />
               </button>
               {Array.from({ length: totalPages }).map((_, i) => (
                 <button
@@ -480,9 +481,9 @@ export function LiveQueue() {
                 type="button"
                 disabled={currentPage >= totalPages}
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                className="w-7 h-7 rounded-lg border border-slate-200 flex items-center justify-center disabled:opacity-30 hover:bg-slate-50"
+                className="w-7 h-7 rounded-lg border border-slate-200 flex items-center justify-center disabled:opacity-30 hover:bg-slate-50 text-slate-600"
               >
-                &gt;
+                <ChevronRight size={14} />
               </button>
             </div>
           </div>

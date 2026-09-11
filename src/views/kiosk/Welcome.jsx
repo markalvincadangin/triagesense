@@ -79,24 +79,24 @@ export function Welcome() {
 
         <h1 className="text-4xl font-black text-slate-900 tracking-tight leading-tight">
           {kioskLanguage === 'hil'
-            ? 'Maayong Pag-abot sa TriageSense'
+            ? 'Maayong Pag-abot sa WVSUMC Emergency Room'
             : kioskLanguage === 'fil'
-            ? 'Maligayang Pagdating sa TriageSense'
+            ? 'Maligayang Pagdating sa WVSUMC Emergency Room'
             : kioskLanguage === 'ceb'
-            ? 'Maayong Pag-abot sa TriageSense'
-            : 'Welcome to TriageSense ED Intake'}
+            ? 'Maayong Pag-abot sa WVSUMC Emergency Room'
+            : 'Welcome to WVSUMC Emergency Check-In'}
         </h1>
 
         <p className="text-base font-semibold text-slate-600 mt-2">
           {kioskLanguage === 'hil'
-            ? 'Pang-emerhensya nga Pag-rehistro kag Triage Support • Iloilo City'
-            : 'Emergency Department Patient Intake & Triage Support • Iloilo City'}
+            ? 'Dali nga Pagpalista • Isugid ang imo ginabatyag agud mabuligan ka gilayon sang nurse'
+            : 'Quick Emergency Check-In • Tell us what hurts so the nurse can assist you'}
         </p>
 
         <p className="text-xs text-slate-500 max-w-xl mt-3 leading-relaxed">
           {kioskLanguage === 'hil'
-            ? 'Ini nga self-service kiosk nagapadasig sang imo pag-rehistro kag nagadirekta sa imo detalye sa nurse triage desk. Sunda ang mga masunod nga tikang.'
-            : 'This self-service kiosk accelerates your emergency registration and sends your intake directly to the clinical triage nurse. Please tap below to begin.'}
+            ? 'Pinduta ang berde nga buton sa idalom agud makasugod. Ang imo mga sabat direktang makalab-ot sa nurse on duty agud matatap ka sa pinakamadali nga tion.'
+            : 'Tap below to begin. Your information goes directly to the triage nurse on duty so you can be attended to as quickly as possible.'}
         </p>
       </div>
 
@@ -106,10 +106,10 @@ export function Welcome() {
           <CheckCircle2 size={28} className="text-emerald-600 shrink-0" />
           <div className="text-left">
             <div className="text-sm font-black text-emerald-900">
-              Emergency Triage Staff Dispatched to this Terminal
+              A Triage Nurse is on the Way to Help You
             </div>
             <div className="text-xs text-emerald-700">
-              Clinical team has been alerted to your position. Please remain at the kiosk. Cooldown lock: ({assistanceCooldownRemaining}s).
+              Please stay right here at this station. A nurse will attend to you shortly. Cooldown lock: ({assistanceCooldownRemaining}s).
             </div>
           </div>
         </div>
@@ -125,8 +125,8 @@ export function Welcome() {
           className="w-full py-6 text-2xl font-black tracking-wide shadow-2xl bg-[#006B3F] hover:bg-[#005230] rounded-2xl flex items-center justify-center gap-3"
         >
           {kioskLanguage === 'hil'
-            ? 'MAGSUGOD SA PAG-REHISTRO / START >'
-            : 'START EMERGENCY INTAKE >'}
+            ? 'MAGSUGOD SA PAGPALISTA'
+            : 'START EMERGENCY CHECK-IN'}
         </Button>
 
         {/* Secondary Fast-Track Ingress Cards */}
