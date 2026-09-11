@@ -12,6 +12,7 @@ import {
   PhoneCall,
   CheckCircle2
 } from 'lucide-react';
+import wvsumcLogo from '../../assets/wvsumc-logo.png';
 
 export function K01Welcome() {
   const {
@@ -52,21 +53,11 @@ export function K01Welcome() {
           marginTop: '8px'
         }}
       >
-        <div
-          style={{
-            width: '76px',
-            height: '76px',
-            borderRadius: 'var(--radius-full)',
-            backgroundColor: 'var(--color-wvsu-primary-light)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--color-wvsu-primary)',
-            boxShadow: 'var(--shadow-sm)'
-          }}
-        >
-          <ShieldCheck size={44} strokeWidth={2.3} />
-        </div>
+        <img
+          src={wvsumcLogo}
+          alt="WVSU Medical Center Official Seal"
+          className="w-24 h-24 object-contain drop-shadow-md shrink-0"
+        />
 
         <div>
           <h1

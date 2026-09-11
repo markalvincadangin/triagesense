@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTriage } from '../../context/TriageContext';
-import { Activity, Bell, BellOff, AlertTriangle } from 'lucide-react';
+import { Bell, BellOff, AlertTriangle } from 'lucide-react';
+import wvsumcLogo from '../../assets/wvsumc-logo.png';
 
 export function AdminHeader() {
   const { emergencyAlert, setActiveAdminTab } = useTriage();
@@ -22,10 +23,12 @@ export function AdminHeader() {
   return (
     <header className="h-[70px] bg-surface border-b border-border-main flex items-center justify-between px-8 shrink-0 select-none">
       {/* Hospital & Workspace Identifier */}
-      <div className="flex items-center gap-4">
-        <div className="w-10 h-10 rounded-md bg-brand-green flex items-center justify-center text-white shadow-sm">
-          <Activity size={22} strokeWidth={2.5} />
-        </div>
+      <div className="flex items-center gap-3.5">
+        <img
+          src={wvsumcLogo}
+          alt="WVSU Medical Center Official Logo"
+          className="w-11 h-11 object-contain drop-shadow-sm shrink-0"
+        />
 
         <div>
           <div className="text-[17px] font-bold text-text-primary tracking-tight">

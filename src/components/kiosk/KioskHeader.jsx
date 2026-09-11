@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, Activity } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
+import wvsumcLogo from '../../assets/wvsumc-logo.png';
 
 export function KioskHeader({ onLogoClick }) {
   const [currentTime, setCurrentTime] = useState('');
@@ -23,10 +24,12 @@ export function KioskHeader({ onLogoClick }) {
         onClick={onLogoClick}
         className={`flex items-center gap-4 ${onLogoClick ? 'cursor-pointer hover:opacity-95' : 'cursor-default'}`}
       >
-        {/* WVSUMC Emblem Seal */}
-        <div className="w-14 h-14 rounded-md bg-brand-green flex items-center justify-center text-white shadow-sm shrink-0">
-          <Activity size={32} strokeWidth={2.5} />
-        </div>
+        {/* Official WVSUMC Emblem Seal */}
+        <img
+          src={wvsumcLogo}
+          alt="WVSU Medical Center Official Seal"
+          className="w-14 h-14 object-contain drop-shadow-sm shrink-0"
+        />
 
         <div>
           <div className="text-[15px] font-bold text-brand-green tracking-wide leading-tight">
