@@ -53,7 +53,7 @@ export function ViewportFrame({ kioskContent, adminContent }) {
   }
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden select-none bg-gradient-to-b from-[#E2E8E5] via-[#EDF2EF] to-[#DFE6E2] font-sans">
+    <div data-viewport-root className="relative w-screen h-screen overflow-hidden select-none bg-gradient-to-b from-[#E2E8E5] via-[#EDF2EF] to-[#DFE6E2] font-sans">
       
       {/* 1. STANDALONE PATIENT KIOSK MODE */}
       {viewMode === 'kiosk' && (

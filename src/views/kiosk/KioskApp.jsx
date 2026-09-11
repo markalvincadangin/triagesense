@@ -64,7 +64,7 @@ export function KioskApp() {
     kioskStep !== 'K11';
 
   return (
-    <div className="w-[1080px] h-[1920px] bg-canvas flex flex-col relative overflow-hidden font-sans">
+    <div data-kiosk-screen className="w-[1080px] h-[1920px] bg-canvas flex flex-col relative overflow-hidden font-sans">
       {/* Kiosk Hardware Header */}
       <KioskHeader onLogoClick={resetKioskSession} />
 

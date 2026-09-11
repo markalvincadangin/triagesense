@@ -38,7 +38,7 @@ export function AdminApp() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-canvas overflow-hidden font-sans">
+    <div data-admin-screen className="w-full h-full flex flex-col bg-canvas overflow-hidden font-sans">
       {/* Staff Workstation Header */}
       <AdminHeader />
 
