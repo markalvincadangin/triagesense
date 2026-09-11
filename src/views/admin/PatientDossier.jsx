@@ -328,6 +328,58 @@ export function PatientDossier() {
               </div>
             </div>
 
+            {/* Objective Kiosk Telemetry Card */}
+            {(currentIntake.vitalsTelemetry?.spo2 || currentIntake.nurseAssessment?.vitals?.o2) && (
+              <div
+                style={{
+                  backgroundColor: '#ECFDF5',
+                  border: '1.5px solid #A7F3D0',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '14px 18px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '8px'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: '800', color: '#065F46', textTransform: 'uppercase' }}>
+                    <Activity size={16} />
+                    <span>Kiosk PPG Sensor Telemetry (Right-Side Slot)</span>
+                  </div>
+                  <span style={{ fontSize: '11px', fontWeight: '700', padding: '2px 8px', borderRadius: 'var(--radius-full)', backgroundColor: '#D1FAE5', color: '#047857' }}>
+                    {currentIntake.vitalsTelemetry?.capturedAt ? `Captured ${currentIntake.vitalsTelemetry.capturedAt}` : 'Automated Reading'}
+                  </span>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginTop: '4px' }}>
+                  <div style={{ backgroundColor: '#FFFFFF', padding: '8px 12px', borderRadius: '8px', border: '1px solid #A7F3D0', textAlign: 'center' }}>
+                    <div style={{ fontSize: '10px', fontWeight: '700', color: '#64748B', textTransform: 'uppercase' }}>SpO₂ (O₂ Sat)</div>
+                    <div style={{ fontSize: '18px', fontWeight: '900', color: '#006B3F' }}>
+                      {currentIntake.vitalsTelemetry?.spo2 || currentIntake.nurseAssessment?.vitals?.o2 || '98%'}
+                    </div>
+                  </div>
+
+                  <div style={{ backgroundColor: '#FFFFFF', padding: '8px 12px', borderRadius: '8px', border: '1px solid #A7F3D0', textAlign: 'center' }}>
+                    <div style={{ fontSize: '10px', fontWeight: '700', color: '#64748B', textTransform: 'uppercase' }}>Pulse Rate</div>
+                    <div style={{ fontSize: '18px', fontWeight: '900', color: '#006B3F' }}>
+                      {currentIntake.vitalsTelemetry?.pulseRate || currentIntake.nurseAssessment?.vitals?.hr || '76 bpm'}
+                    </div>
+                  </div>
+
+                  <div style={{ backgroundColor: '#FFFFFF', padding: '8px 12px', borderRadius: '8px', border: '1px solid #A7F3D0', textAlign: 'center' }}>
+                    <div style={{ fontSize: '10px', fontWeight: '700', color: '#64748B', textTransform: 'uppercase' }}>Perfusion Index</div>
+                    <div style={{ fontSize: '18px', fontWeight: '900', color: '#006B3F' }}>
+                      {currentIntake.vitalsTelemetry?.perfusionIndex || '4.2%'}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ fontSize: '11px', color: '#047857' }}>
+                  * Automated pre-screening data. Licensed nurse verifies and confirms telemetry on the right assessment panel.
+                </div>
+              </div>
+            )}
+
             {/* Voice Memo Audio Player Simulation */}
             {currentIntake.voiceNoteRecorded && (
               <div

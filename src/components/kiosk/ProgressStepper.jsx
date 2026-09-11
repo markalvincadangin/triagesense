@@ -2,48 +2,54 @@ import React from 'react';
 import { Check } from 'lucide-react';
 
 const STAGES = [
-  { id: 1, name: 'Language', key: 'K02' },
-  { id: 2, name: 'Identification', key: 'K03' },
-  { id: 3, name: 'Patient Info', key: 'K04' },
-  { id: 4, name: 'Symptoms', key: 'symptoms' }, // K05, K06, K07, K08
-  { id: 5, name: 'Review', key: 'K09' },
-  { id: 6, name: 'Submit', key: 'K10' }
+  { id: 1, name: 'Identify', key: 'welcome' },
+  { id: 2, name: 'Symptoms', key: 'symptoms' },
+  { id: 3, name: 'Body Map', key: 'body-map' },
+  { id: 4, name: 'Severity & Vitals', key: 'pain-duration' },
+  { id: 5, name: 'Summary', key: 'review' }
 ];
 
 export function ProgressStepper({ currentStep }) {
   // Map step code to 1-based stage number
   const getActiveStageNumber = () => {
     switch (currentStep) {
+      case 'welcome':
       case 'language':
-      case 'K02': return 1;
       case 'identification':
-      case 'K03': return 2;
       case 'patient-info':
-      case 'K04': return 3;
+      case 'K01':
+      case 'K02':
+      case 'K03':
+      case 'K04':
+        return 1;
       case 'symptoms':
+      case 'K05':
+        return 2;
       case 'body-map':
+      case 'K06':
+        return 3;
       case 'pain-duration':
       case 'additional-details':
-      case 'K05':
-      case 'K06':
       case 'K07':
       case 'K08':
         return 4;
       case 'review':
-      case 'K09': return 5;
       case 'submission':
       case 'confirmation':
+      case 'K09':
       case 'K10':
-      case 'K11': return 6;
-      default: return 1;
+      case 'K11':
+        return 5;
+      default:
+        return 1;
     }
   };
 
   const getSubstepIndicator = () => {
-    if (currentStep === 'symptoms' || currentStep === 'K05') return 'Step 4.1 of 4 • Main Symptoms';
-    if (currentStep === 'body-map' || currentStep === 'K06') return 'Step 4.2 of 4 • Body Location';
-    if (currentStep === 'pain-duration' || currentStep === 'K07') return 'Step 4.3 of 4 • Pain & Duration';
-    if (currentStep === 'additional-details' || currentStep === 'K08') return 'Step 4.4 of 4 • Additional Details';
+    if (currentStep === 'symptoms') return 'Step 2 of 5 • Chief Complaints & Voice Memo';
+    if (currentStep === 'body-map') return 'Step 3 of 5 • Anatomical Location';
+    if (currentStep === 'pain-duration') return 'Step 4 of 5 • Pain Scale & Right-Slot Vital Signs';
+    if (currentStep === 'review') return 'Step 5 of 5 • Review & Send to Triage Nurse';
     return null;
   };
 

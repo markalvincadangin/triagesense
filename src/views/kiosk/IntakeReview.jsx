@@ -1,95 +1,52 @@
 import React from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
-import { Edit3, Check, ArrowRight, ArrowLeft, User, Activity, MapPin, AlertCircle, MessageSquare } from 'lucide-react';
+import { Edit3, Check, ArrowLeft, User, Activity, MapPin, HeartPulse, ShieldCheck } from 'lucide-react';
 
 export function IntakeReview() {
-  const { intakeDraft, setKioskStep } = useTriage();
+  const { intakeDraft, submitKioskIntake, setKioskStep, kioskLanguage } = useTriage();
 
   const patient = intakeDraft.patientInfo || {};
   const symptoms = intakeDraft.symptoms || [];
   const locations = intakeDraft.bodyLocations || [];
-  const additional = intakeDraft.additionalSymptoms || [];
+  const vitals = intakeDraft.vitals || {};
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        height: '100%',
-        padding: '32px 48px',
-        backgroundColor: 'var(--color-bg-canvas)',
-        overflowY: 'auto'
-      }}
-    >
+    <div className="flex flex-col justify-between h-full px-12 py-8 bg-canvas overflow-y-auto font-sans select-none">
       {/* Header */}
-      <div style={{ textAlign: 'center' }}>
-        <h1
-          style={{
-            fontSize: '32px',
-            fontWeight: '800',
-            color: 'var(--color-text-primary)'
-          }}
-        >
-          Review Your Intake Information
+      <div className="text-center">
+        <h1 className="text-3xl font-extrabold text-slate-900 leading-tight">
+          Step 5 of 5: Review & Send to Triage Nurse
         </h1>
-        <h2
-          style={{
-            fontSize: '18px',
-            fontWeight: '500',
-            color: 'var(--color-text-secondary)',
-            marginTop: '4px'
-          }}
-        >
-          Palihog lantawa kag kumpirmaha ang tanan nga impormasyon bag-o ipasa
+        <h2 className="text-base font-semibold text-brand-green mt-1">
+          {kioskLanguage === 'hil'
+            ? 'Palihog lantawa kag kumpirmaha ang tanan nga impormasyon bag-o ipasa sa nurse'
+            : 'Please review and confirm your intake information before sending to the triage desk'}
         </h2>
       </div>
 
       {/* Review Summary Grid */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '18px',
-          maxWidth: '860px',
-          width: '100%',
-          margin: '16px auto 0'
-        }}
-      >
+      <div className="w-full max-w-4xl mx-auto my-4 grid grid-cols-2 gap-4">
         {/* Card 1: Patient Information */}
-        <div
-          style={{
-            backgroundColor: 'var(--color-bg-surface)',
-            padding: '20px 24px',
-            borderRadius: 'var(--radius-lg)',
-            border: '1.5px solid var(--color-border)',
-            boxShadow: 'var(--shadow-sm)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between'
-          }}
-        >
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700', fontSize: '16px', color: 'var(--color-wvsu-primary)' }}>
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
+              <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
                 <User size={18} />
                 <span>Patient Identification</span>
               </div>
-              <Button
-                variant="subtle"
-                size="sm"
-                icon={Edit3}
-                onClick={() => setKioskStep('patient-info')}
-                style={{ height: '32px', padding: '0 8px', fontSize: '13px' }}
+              <button
+                onClick={() => setKioskStep('welcome')}
+                className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-brand-green"
               >
-                EDIT
-              </Button>
+                <Edit3 size={13} />
+                <span>EDIT</span>
+              </button>
             </div>
 
-            <div style={{ fontSize: '15px', color: 'var(--color-text-primary)', lineHeight: '22px' }}>
+            <div className="text-sm text-slate-800 space-y-1.5">
               <div><strong>Name:</strong> {patient.fullName || 'Juan Dela Cruz'}</div>
-              <div><strong>Date of Birth:</strong> {patient.dob || '1956-04-12'}</div>
+              <div><strong>Birthdate:</strong> {patient.dob || '1984-05-22'}</div>
               <div><strong>Gender:</strong> {patient.gender || 'Male'}</div>
               <div><strong>Contact:</strong> {patient.contact || '0917-555-0192'}</div>
               <div><strong>ID Method:</strong> {intakeDraft.identification || 'Hospital ID'}</div>
@@ -98,190 +55,144 @@ export function IntakeReview() {
         </div>
 
         {/* Card 2: Main Symptoms */}
-        <div
-          style={{
-            backgroundColor: 'var(--color-bg-surface)',
-            padding: '20px 24px',
-            borderRadius: 'var(--radius-lg)',
-            border: '1.5px solid var(--color-border)',
-            boxShadow: 'var(--shadow-sm)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between'
-          }}
-        >
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700', fontSize: '16px', color: 'var(--color-wvsu-primary)' }}>
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
+              <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
                 <Activity size={18} />
                 <span>Reported Symptoms</span>
               </div>
-              <Button
-                variant="subtle"
-                size="sm"
-                icon={Edit3}
+              <button
                 onClick={() => setKioskStep('symptoms')}
-                style={{ height: '32px', padding: '0 8px', fontSize: '13px' }}
+                className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-brand-green"
               >
-                EDIT
-              </Button>
+                <Edit3 size={13} />
+                <span>EDIT</span>
+              </button>
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            <div className="flex flex-wrap gap-1.5 my-2">
               {symptoms.length > 0 ? (
                 symptoms.map((s) => (
-                  <span
-                    key={s}
-                    style={{
-                      padding: '4px 10px',
-                      borderRadius: 'var(--radius-full)',
-                      backgroundColor: 'var(--color-wvsu-primary-light)',
-                      border: '1px solid var(--color-wvsu-primary)',
-                      color: 'var(--color-wvsu-primary)',
-                      fontSize: '13px',
-                      fontWeight: '600'
-                    }}
-                  >
+                  <span key={s} className="px-2.5 py-1 bg-emerald-50 text-brand-green border border-emerald-200 rounded-lg text-xs font-bold">
                     {s}
                   </span>
                 ))
               ) : (
-                <span style={{ fontSize: '14px', color: 'var(--color-text-secondary)', fontStyle: 'italic' }}>
-                  No symptoms selected
-                </span>
+                <span className="text-xs text-slate-400 italic">No symptoms selected</span>
+              )}
+            </div>
+
+            <div className="text-xs text-slate-600 mt-2">
+              <strong>Voice Memo:</strong> {intakeDraft.voiceNoteRecorded ? 'Attached for nurse audio playback' : 'None recorded'}
+            </div>
+          </div>
+        </div>
+
+        {/* Card 3: Anatomical Body Location */}
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
+              <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
+                <MapPin size={18} />
+                <span>Body Location</span>
+              </div>
+              <button
+                onClick={() => setKioskStep('body-map')}
+                className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-brand-green"
+              >
+                <Edit3 size={13} />
+                <span>EDIT</span>
+              </button>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5 my-2">
+              {locations.length > 0 ? (
+                locations.map((loc) => (
+                  <span key={loc} className="px-2.5 py-1 bg-slate-100 text-slate-800 rounded-lg text-xs font-bold">
+                    {loc}
+                  </span>
+                ))
+              ) : (
+                <span className="text-xs text-slate-400 italic">General / Diffuse</span>
               )}
             </div>
           </div>
         </div>
 
-        {/* Card 3: Body Location & Pain */}
-        <div
-          style={{
-            backgroundColor: 'var(--color-bg-surface)',
-            padding: '20px 24px',
-            borderRadius: 'var(--radius-lg)',
-            border: '1.5px solid var(--color-border)',
-            boxShadow: 'var(--shadow-sm)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between'
-          }}
-        >
+        {/* Card 4: Severity & Vital Signs Telemetry */}
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700', fontSize: '16px', color: 'var(--color-wvsu-primary)' }}>
-                <MapPin size={18} />
-                <span>Body Location & Pain</span>
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
+              <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
+                <HeartPulse size={18} />
+                <span>Pain & Vital Signs</span>
               </div>
-              <Button
-                variant="subtle"
-                size="sm"
-                icon={Edit3}
-                onClick={() => setKioskStep('body-map')}
-                style={{ height: '32px', padding: '0 8px', fontSize: '13px' }}
+              <button
+                onClick={() => setKioskStep('pain-duration')}
+                className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-brand-green"
               >
-                EDIT
-              </Button>
+                <Edit3 size={13} />
+                <span>EDIT</span>
+              </button>
             </div>
 
-            <div style={{ fontSize: '15px', color: 'var(--color-text-primary)', lineHeight: '24px' }}>
-              <div><strong>Selected Areas:</strong> {locations.length > 0 ? locations.join(', ') : 'Chest, Left Arm'}</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+            <div className="text-sm text-slate-800 space-y-1.5">
+              <div className="flex items-center gap-2">
                 <strong>Pain Score:</strong>
-                <span
-                  style={{
-                    padding: '2px 10px',
-                    borderRadius: 'var(--radius-full)',
-                    backgroundColor: intakeDraft.painLevel >= 8 ? '#FEE2E2' : '#FEF3C7',
-                    color: intakeDraft.painLevel >= 8 ? '#B91C1C' : '#B45309',
-                    fontWeight: '700',
-                    fontSize: '14px'
-                  }}
-                >
-                  {intakeDraft.painLevel || 8} / 10
+                <span className="px-2 py-0.5 rounded-full text-xs font-black bg-amber-100 text-amber-900">
+                  {intakeDraft.painLevel || 0} / 10
                 </span>
               </div>
               <div><strong>Duration:</strong> {intakeDraft.duration || '1–6 hours'}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 4: Additional Notes & Voice Memo */}
-        <div
-          style={{
-            backgroundColor: 'var(--color-bg-surface)',
-            padding: '20px 24px',
-            borderRadius: 'var(--radius-lg)',
-            border: '1.5px solid var(--color-border)',
-            boxShadow: 'var(--shadow-sm)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between'
-          }}
-        >
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700', fontSize: '16px', color: 'var(--color-wvsu-primary)' }}>
-                <MessageSquare size={18} />
-                <span>Additional Details</span>
-              </div>
-              <Button
-                variant="subtle"
-                size="sm"
-                icon={Edit3}
-                onClick={() => setKioskStep('additional-details')}
-                style={{ height: '32px', padding: '0 8px', fontSize: '13px' }}
-              >
-                EDIT
-              </Button>
-            </div>
-
-            <div style={{ fontSize: '14px', color: 'var(--color-text-primary)', lineHeight: '20px' }}>
-              <div>
-                <strong>Accompanying:</strong> {additional.length > 0 ? additional.join(', ') : 'None indicated'}
-              </div>
-              <div style={{ marginTop: '4px' }}>
-                <strong>Patient Notes:</strong> {intakeDraft.customNotes ? `"${intakeDraft.customNotes}"` : 'No written notes entered'}
-              </div>
-              <div style={{ marginTop: '4px' }}>
-                <strong>Voice Note:</strong> {intakeDraft.voiceNoteRecorded ? 'Attached (Available for nurse playback)' : 'None recorded'}
+              <div className="border-t border-slate-100 pt-1.5 mt-1.5">
+                <div className="text-xs font-bold text-slate-700">Right-Side PPG Sensor Telemetry:</div>
+                {vitals.spo2 ? (
+                  <div className="flex items-center gap-3 mt-1">
+                    <span className="text-xs font-bold text-emerald-800">SpO₂: {vitals.spo2}%</span>
+                    <span className="text-slate-300">•</span>
+                    <span className="text-xs font-bold text-emerald-800">Pulse: {vitals.pulseRate} BPM</span>
+                    <span className="text-slate-300">•</span>
+                    <span className="text-xs text-emerald-700">PI: {vitals.perfusionIndex || '4.2%'}</span>
+                  </div>
+                ) : (
+                  <div className="text-xs text-slate-500 italic mt-0.5">
+                    Sensor skipped — Triage nurse will record vitals manually
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation Buttons */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          maxWidth: '860px',
-          width: '100%',
-          margin: '20px auto 0',
-          paddingTop: '20px',
-          borderTop: '1px solid var(--color-border)'
-        }}
-      >
+      {/* Confirmation & Submission Zone */}
+      <div className="w-full max-w-4xl mx-auto flex items-center justify-between pt-4 border-t border-slate-200">
         <Button
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('additional-details')}
-          style={{ width: '180px' }}
+          onClick={() => setKioskStep('pain-duration')}
+          className="px-6"
         >
           Back / Balik
         </Button>
 
+        <div className="flex items-center gap-2 text-xs text-slate-500">
+          <ShieldCheck size={16} className="text-brand-green" />
+          <span>Ticket will print automatically at lower slot</span>
+        </div>
+
         <Button
           variant="primary"
           size="lg"
-          trailingIcon={ArrowRight}
-          onClick={() => setKioskStep('submission')}
-          style={{ width: '320px' }}
+          icon={Check}
+          onClick={submitKioskIntake}
+          className="px-10 py-4 text-lg font-bold shadow-xl bg-brand-green hover:bg-brand-green-hover"
         >
-          CONFIRM & CONTINUE
+          {kioskLanguage === 'hil'
+            ? 'IPASA SA NURSE / SEND TO NURSE >'
+            : 'SEND TO NURSE >'}
         </Button>
       </div>
     </div>

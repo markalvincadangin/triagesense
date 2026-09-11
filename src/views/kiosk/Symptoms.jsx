@@ -255,7 +255,7 @@ export function Symptoms() {
           variant="outline"
           size="md"
           icon={ArrowLeft}
-          onClick={() => setKioskStep('patient-info')}
+          onClick={() => setKioskStep('welcome')}
           style={{ width: '180px' }}
         >
           Back / Balik

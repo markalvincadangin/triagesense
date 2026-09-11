@@ -183,6 +183,78 @@ The **TriageSense Design System (TSDS)** is the single source of truth (SSOT) go
 
 ---
 
+### 2.6 Clinical Color Theory Architecture (Avoiding Blind Brand Application)
+
+#### Empirical & Physiological Foundations
+In emergency medical informatics, applying university or hospital brand colors indiscriminately is a recognized clinical safety risk:
+1. **Ocular Fatigue & Acute Patient Distress**:
+   - Patients presenting to an Emergency Department often suffer from photophobia, migraine, concussion, visual disturbance, or nausea.
+   - High-chroma saturated greens or high-saturation golds trigger cognitive fatigue and sensory overload under bright hospital fluorescent/LED fixtures ($4000\text{K}\text{--}5000\text{K}$).
+2. **Semiotic Hazard Confusion (Color Psychology in Triage)**:
+   - **Yellow / Gold**: Universally denotes **Caution, Biohazard, or ESI-3 Urgent Acuity** in clinical settings. Applying gold indiscriminately to primary action buttons or screen backgrounds induces subconscious alarm or error perception.
+   - **Green**: Universally denotes **Normal, Cleared, or Safe**. Using green for emergency nurse calls creates dangerous semantic ambiguity.
+   - **Red**: Quarantined strictly for **Emergency Life-Threatening Calls, ESI-1/2 Resuscitation Alerts, and Immediate Help**.
+
+#### The Calibrated 60-30-10 Clinical Proportion Rule
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        60-30-10 CLINICAL COLOR DISTRIBUTION MATRIX                     │
+├───────────────────┬──────────────┬───────────────────────────────┬─────────────────────┤
+│ Proportion / Role │ Hex Token    │ Functional Placement          │ Clinical Rationale  │
+├───────────────────┼──────────────┼───────────────────────────────┼─────────────────────┤
+│ 60% DOMINANT      │ `#FFFFFF`    │ Canvas backgrounds, card      │ Minimizes visual    │
+│ Low-Stress Base   │ `#F8F8F6`    │ surfaces, content containers, │ fatigue; clean,     │
+│ (Clinical Neutral)│ `#F1F5F9`    │ input field backgrounds.      │ hygienic aesthetic. │
+├───────────────────┼──────────────┼───────────────────────────────┼─────────────────────┤
+│ 30% STRUCTURAL    │ `#006B3F` /  │ App headers, sidebars,        │ Conveys institutional│
+│ Institutional     │ `#013b24`    │ structural framing, primary   │ authority, trust, & │
+│ (WVSUMC Emerald)  │ (Deep Green) │ navigation anchors, active tab│ university heritage │
+│                   │              │ indicators.                   │ without eye strain. │
+├───────────────────┼──────────────┼───────────────────────────────┼─────────────────────┤
+│ 10% SEMANTIC      │ `#F2B705`    │ • WVSUMC Gold: Seals, badges  │ High-salience visual│
+│ Functional Accents│ (Gold)       │   (paired strictly with navy).│ signals; immediately│
+│ & Alert Signaling │ `#DC2626`    │ • Emergency Red: ESI-1/2,     │ guides attention to │
+│                   │ (Red)        │   Call Nurse assistance.      │ critical actions.   │
+│                   │ `#0057A8`    │ • Clinical Blue: Interactive  │                     │
+│                   │ (Med Blue)   │   focus rings, info chips.    │                     │
+└───────────────────┴──────────────┴───────────────────────────────┴─────────────────────┘
+```
+
+#### Accessibility Governance Matrix: WCAG 2.1 Level AAA Verification
+* **Canvas Text**: Deep Charcoal Navy (`#172B4D`) on `#FFFFFF` / `#F8F8F6` $\rightarrow$ **$13.26 : 1$** (passes AAA $7:1$).
+* **Institutional Primary Button**: White (`#FFFFFF`) on Deep Emerald (`#006B3F`) $\rightarrow$ **$6.61 : 1$** (passes AAA Large).
+* **Strict Gold Text Prohibition**: White text on gold is strictly forbidden ($1.82:1$ failure). Gold elements must strictly pair with Deep Navy (`#172B4D`) $\rightarrow$ **$7.76 : 1$** (passes AAA $7:1$).
+
+---
+
+### 2.7 Hardware Engineering Specification: Integrated Right-Side Vital Signs Sensor Bay
+
+#### Medical Terminology & Classification
+* **Component Name**: **Integrated Multi-Wavelength Photoplethysmography (PPG) & Pulse Oximetry Sensor Chamber** (also designated *Optical Vitals Well*, *Finger Sensor Bay*, or *Embedded Non-Invasive Pulse Oximeter Module*).
+* **Physiological Telemetry Captured**:
+  1. **Blood Oxygen Saturation ($\text{SpO}_2\%$)**: Measured via dual red ($660\text{ nm}$) and infrared ($940\text{ nm}$) optical absorption through the digital capillary bed. Critical for identifying acute hypoxia ($<90\%$ ESI-2 alert).
+  2. **Pulse Rate (PR in BPM)**: Arterial pulsatile frequency detecting tachycardia ($>100\text{ bpm}$) or bradycardia ($<50\text{ bpm}$).
+  3. **Perfusion Index (PI %)**: Ratio of pulsatile to non-pulsatile light absorption, verifying signal strength ($0.02\%\text{ to }20\%$).
+  4. **Continuous Plethysmogram Waveform**: Real-time arterial pulse wave verifying sensor engagement.
+
+#### Physical Chassis & Anthropometric Ergonomics (ADA Title III §707 & BP 344)
+* **Location**: Mounted flush into the **right lateral bezel/chassis** of the kiosk totem at a height of **$980\text{ mm}$ to $1050\text{ mm}$ above the finished floor**.
+* **Posture Angulation**: Tilted at a **$20^\circ\text{ to }25^\circ$ downward angle** matching natural resting forearm pronation for both seated wheelchair users and standing adult/pediatric patients.
+* **Chamber Affordance**: Soft, contoured funnel lined with medical-grade, antibacterial silicone to comfortably seat index or middle fingers of all adult and pediatric sizes.
+* **Illuminated Visual Halo Ring**:
+  * *Pulsing Cyan*: Standby / Ready for Finger Insertion.
+  * *Pulsing Amber*: Finger detected / Calibrating capillary waveform.
+  * *Solid Emerald Green*: Signal locked / Measuring (5-second acquisition).
+  * *Pulsing Red*: Sensor misalignment or excessive motion artifact.
+* **Nosocomial Infection Control**:
+  * Smooth, seamless wipeable polycarbonate chassis with internal automated micro-pulse UV-C sanitization between patient sessions.
+
+#### Clinical Governance Guardrail: Pre-Triage Screening Only
+* The kiosk explicitly labels vitals as: *"Preliminary automated screening telemetry. Final clinical triage determination and vital sign verification performed by licensed triage nurse."*
+* Telemetry automatically populates into `PatientDossier.jsx` under `Kiosk PPG Sensor Telemetry`, pre-filling objective data while leaving the nurse in 100% control of final ESI assignment.
+
+---
+
 ## 3. Atomic Component Library Specification
 
 ### 3.1 Button Component (`<TouchButton>`)
@@ -214,18 +286,19 @@ The **TriageSense Design System (TSDS)** is the single source of truth (SSOT) go
 
 ---
 
-### 3.2 Persistent 5-Stage Stepper (`<StepIndicator>`)
-*Keeps patient grounded in the intake progression (NN/g Heuristic #1).*
+### 3.2 Persistent 5-Stage Stepper (`<ProgressStepper>`)
+*Keeps patient grounded in the 5-step intake progression derived directly from the clinical rough sketch (NN/g Heuristic #1).*
 
 ```
-   (1)            (2)            (3)            (4)            (5)
-[Language] ──── [Identify] ──── [Details] ──── [Symptoms] ──── [Review]
-   ●-✓            ●-✓            ● (Active)       ○              ○
+   (1)             (2)             (3)                 (4)                 (5)
+[Identify] ──── [Symptoms] ──── [Body Map] ──── [Severity & Vitals] ──── [Summary]
+   ●-✓             ●-✓          ● (Active)              ○                   ○
 ```
-- **Completed Node**: Solid Green (`#006B3F`) circle with white checkmark icon.
-- **Active Node**: Green border, pulsing white core, bold navy text label.
-- **Upcoming Node**: Slate outline (`#D5E2DE`), grey number glyph, muted label.
-- **Connecting Line**: $3\text{px}$ track; fills green progressively as steps complete.
+- **Stage 1 (Identify)**: Welcome, dialect selection pills, and demographic input.
+- **Stage 2 (Symptoms)**: 6-tile chief complaint grid with voice memo recording.
+- **Stage 3 (Body Map)**: Interactive anatomical silhouette tap and zone selection.
+- **Stage 4 (Severity & Vitals)**: Wong-Baker facial pain scale, duration chips, and Right-Side PPG Sensor Bay.
+- **Stage 5 (Summary)**: Final review, Send to Nurse submission, and printed thermal queue ticket.
 
 ---
 

@@ -17,7 +17,15 @@ const DEFAULT_INTAKE_DRAFT = {
   duration: '1–6 hours',
   additionalSymptoms: [],
   customNotes: '',
-  voiceNoteRecorded: false
+  voiceNoteRecorded: false,
+  vitals: {
+    spo2: null,
+    pulseRate: null,
+    perfusionIndex: null,
+    measuredAt: null,
+    method: 'kiosk-ppg-sensor',
+    skipped: false
+  }
 };
 
 export function TriageProvider({ children }) {
@@ -145,6 +153,16 @@ export function TriageProvider({ children }) {
     });
   };
 
+  const updateVitals = (vitalsData) => {
+    setIntakeDraft((prev) => ({
+      ...prev,
+      vitals: {
+        ...prev.vitals,
+        ...vitalsData
+      }
+    }));
+  };
+
   // Submit Intake: Kiosk -> Central State -> Admin Queue
   const submitKioskIntake = () => {
     const generatedNum = Math.floor(1000 + Math.random() * 9000);
@@ -182,9 +200,23 @@ export function TriageProvider({ children }) {
       additionalSymptoms: intakeDraft.additionalSymptoms,
       customNotes: intakeDraft.customNotes,
       voiceNoteRecorded: intakeDraft.voiceNoteRecorded,
+      vitalsTelemetry: {
+        spo2: intakeDraft.vitals?.spo2 || null,
+        pulseRate: intakeDraft.vitals?.pulseRate || null,
+        perfusionIndex: intakeDraft.vitals?.perfusionIndex || null,
+        capturedAt: intakeDraft.vitals?.measuredAt || null,
+        source: intakeDraft.vitals?.spo2 ? 'Kiosk PPG Sensor (Right Slot)' : 'None (Skipped/Manual)'
+      },
       nurseAssessment: {
         assignedESI: null, // Strictly clinician-assigned! Never calculated by kiosk
-        vitals: { bp: '', hr: '', temp: '', o2: '', rr: '' },
+        vitals: {
+          bp: '',
+          hr: intakeDraft.vitals?.pulseRate ? `${intakeDraft.vitals.pulseRate} bpm` : '',
+          temp: '',
+          o2: intakeDraft.vitals?.spo2 ? `${intakeDraft.vitals.spo2}%` : '',
+          rr: '',
+          source: intakeDraft.vitals?.spo2 ? 'Kiosk PPG Sensor' : 'Manual Triage Needed'
+        },
         clinicalNotes: '',
         bedDisposition: 'Pending Nurse Assessment',
         nurseName: '',
@@ -314,6 +346,7 @@ export function TriageProvider({ children }) {
     intakeDraft,
     updateDraft,
     updateDraftPatientInfo,
+    updateVitals,
     toggleSymptom,
     toggleBodyLocation,
     toggleAdditionalSymptom,
