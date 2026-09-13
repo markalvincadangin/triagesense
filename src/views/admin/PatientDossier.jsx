@@ -18,7 +18,8 @@ import {
   CheckCircle2,
   ArrowLeft,
   Download,
-  Sparkles
+  Sparkles,
+  User
 } from 'lucide-react';
 
 export function PatientDossier() {
