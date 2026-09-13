@@ -277,7 +277,7 @@ export function PatientInfo() {
               type="text"
               inputMode="numeric"
               size="kiosk"
-              placeholder="YYYY-MM-DD"
+              placeholder={t('patientInfo.dobPlaceholder') || 'YYYY-MM-DD'}
               maxLength={10}
               value={patient.dob || ''}
               inputClassName={`font-mono tracking-wider ${
