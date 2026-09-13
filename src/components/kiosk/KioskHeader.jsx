@@ -4,7 +4,7 @@ import { useTriage } from '../../context/TriageContext';
 import wvsumcLogo from '../../assets/wvsumc-logo.png';
 
 export function KioskHeader({ onLogoClick }) {
-  const { kioskLanguage, setKioskLanguage, triggerEmergencyModal, t } = useTriage();
+  const { kioskStep, kioskLanguage, setKioskLanguage, triggerEmergencyModal, t } = useTriage();
   const [currentTime, setCurrentTime] = useState('');
   const [isSpeaking, setIsSpeaking] = useState(false);
 
@@ -20,6 +20,22 @@ export function KioskHeader({ onLogoClick }) {
     return () => clearInterval(interval);
   }, []);
 
+  // Stop active speech synthesis when navigating to another step or switching language
+  useEffect(() => {
+    if (isSpeaking && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+  }, [kioskStep, kioskLanguage]);
+
+  useEffect(() => {
+    return () => {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
   const handleReadAloud = () => {
     if (isSpeaking) {
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
@@ -27,22 +43,23 @@ export function KioskHeader({ onLogoClick }) {
       return;
     }
 
-    setIsSpeaking(true);
+    const textToSpeak = t(`readAloudGuidance.${kioskStep}`) || t('header.readAloudPrompt');
 
     if ('speechSynthesis' in window) {
-      const phrases = {
-        hil: 'Maayong adlaw sa WVSU Medical Center Emergency Room. Sunda ang mga tikang sa screen agud mabuligan ka gilayon sang nurse.',
-        en: 'Welcome to WVSU Medical Center Emergency Check-In. Please follow the steps on screen so the nurse can assist you.',
-        fil: 'Maligayang pagdating sa WVSU Medical Center Emergency Room. Sundin ang mga hakbang sa screen upang matulungan ka agad ng nurse.',
-        ceb: 'Maayong pag-abot sa WVSU Medical Center Emergency Room. Sunda ang mga lakang sa screen aron matabangan ka dayon sa nurse.'
-      };
-      const textToSpeak = phrases[kioskLanguage] || phrases.en;
+      window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(textToSpeak);
-      utterance.rate = 0.95;
+      utterance.rate = 0.92;
+      utterance.pitch = 1.0;
+      utterance.lang = kioskLanguage === 'en' ? 'en-US' : 'fil-PH';
+
+      utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
       utterance.onerror = () => setIsSpeaking(false);
+
       window.speechSynthesis.speak(utterance);
+      setIsSpeaking(true);
     } else {
+      setIsSpeaking(true);
       setTimeout(() => setIsSpeaking(false), 3000);
     }
   };
