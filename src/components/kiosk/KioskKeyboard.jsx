@@ -48,6 +48,8 @@ export function KioskKeyboard({
 
   return (
     <div
+      role="region"
+      aria-label="On-Screen Virtual Keyboard"
       className={`w-full max-w-[960px] mx-auto bg-slate-100/95 backdrop-blur-sm border-2 border-border-main rounded-3xl p-4 shadow-xl select-none flex flex-col gap-2.5 animate-fadeIn ${className}`}
     >
       {/* Keyboard Header / Active Target Bar */}

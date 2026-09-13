@@ -1,11 +1,11 @@
 import React from 'react';
-import { AlertCircle, AlertTriangle, CheckCircle2, Clock } from 'lucide-react';
+import { AlertCircle, AlertTriangle, Clock } from 'lucide-react';
 import { useTriage } from '../../context/TriageContext';
 import { Modal } from '../common/Modal';
 import { Button } from '../common/Button';
 
 export function AssistanceModal({ isOpen, onCancel, onConfirm }) {
-  const { t, kioskLanguage } = useTriage();
+  const { t } = useTriage();
 
   const symptomsList = [
     t('assistanceModal.symptoms.0', 'Severe, crushing chest pain'),
@@ -16,7 +16,11 @@ export function AssistanceModal({ isOpen, onCancel, onConfirm }) {
 
   return (
     <Modal isOpen={isOpen} onClose={onCancel} maxWidth="760px" contained={true}>
-      <div className="p-8 sm:p-10 flex flex-col gap-6 select-none font-sans">
+      <div
+        role="alertdialog"
+        aria-labelledby="assistance-modal-title"
+        className="p-8 sm:p-10 flex flex-col gap-6 select-none font-sans"
+      >
         {/* Warning Badge & Icon */}
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-2xl bg-red-100 border-2 border-red-300 flex items-center justify-center text-emergency shrink-0 shadow-2xs">
@@ -24,7 +28,10 @@ export function AssistanceModal({ isOpen, onCancel, onConfirm }) {
           </div>
 
           <div>
-            <h2 className="text-2xl sm:text-3xl font-black text-text-primary leading-tight tracking-tight">
+            <h2
+              id="assistance-modal-title"
+              className="text-2xl sm:text-3xl font-black text-text-primary leading-tight tracking-tight"
+            >
               {t('assistanceModal.title')}
             </h2>
             <div className="text-sm sm:text-base font-bold text-emergency mt-0.5">

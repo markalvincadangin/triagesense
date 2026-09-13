@@ -42,7 +42,7 @@ export function TriageProvider({ children }) {
   // Admin Navigation Tab ('live-queue' | 'patient-dossier' | 'emergency-console' | 'patient-directory' | 'analytics' | 'fleet-manager')
   const [activeAdminTab, setActiveAdminTab] = useState('live-queue');
 
-  // Kiosk Session State ('welcome' | 'language' | 'identification' | 'patient-info' | 'symptoms' | 'body-map' | 'pain-duration' | 'additional-details' | 'review' | 'submission' | 'confirmation')
+  // Kiosk Session State ('welcome' | 'patient-info' | 'symptoms' | 'body-map' | 'pain-duration' | 'review' | 'confirmation')
   const [kioskStep, setKioskStep] = useState('welcome');
   const [kioskLanguage, setKioskLanguage] = useState('en'); // 'en' | 'hil' | 'fil' | 'ceb'
   const [intakeDraft, setIntakeDraft] = useState(DEFAULT_INTAKE_DRAFT);

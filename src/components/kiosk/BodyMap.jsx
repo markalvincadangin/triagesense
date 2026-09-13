@@ -307,6 +307,7 @@ export function BodyMap({ selectedLocations = [], onToggleLocation }) {
               <button
                 key={region.id}
                 type="button"
+                aria-pressed={active}
                 onClick={() => onToggleLocation(region.id, activeView)}
                 className={`min-h-[76px] px-5 py-4 rounded-2xl border-2 flex items-center justify-between cursor-pointer text-left transition-all duration-150 group ${
                   active

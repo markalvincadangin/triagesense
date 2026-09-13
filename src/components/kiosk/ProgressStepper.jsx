@@ -13,35 +13,18 @@ const STAGE_KEYS = [
 export function ProgressStepper({ currentStep }) {
   const { t } = useTriage();
 
-  // Map step code to 1-based stage number
+  // Map active kiosk step to 1-based stage number (Official 5-Step ESI Model)
   const getActiveStageNumber = () => {
     switch (currentStep) {
-      case 'welcome':
-      case 'language':
-      case 'identification':
       case 'patient-info':
-      case 'K01':
-      case 'K02':
-      case 'K03':
-      case 'K04':
         return 1;
       case 'symptoms':
-      case 'K05':
         return 2;
       case 'body-map':
-      case 'K06':
         return 3;
       case 'pain-duration':
-      case 'additional-details':
-      case 'K07':
-      case 'K08':
         return 4;
       case 'review':
-      case 'submission':
-      case 'confirmation':
-      case 'K09':
-      case 'K10':
-      case 'K11':
         return 5;
       default:
         return 1;

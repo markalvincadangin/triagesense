@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, Volume2, VolumeX, AlertCircle, Globe } from 'lucide-react';
+import { Volume2, VolumeX, AlertCircle, Globe } from 'lucide-react';
 import { useTriage } from '../../context/TriageContext';
 import wvsumcLogo from '../../assets/wvsumc-logo.png';
 

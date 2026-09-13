@@ -76,7 +76,11 @@ export function PainScale({ value = 0, onChange }) {
       </div>
 
       {/* 11-Pill Numeric Touch Button Matrix - Responsive Fluid Sizing */}
-      <div className="grid grid-cols-11 gap-1 sm:gap-2 md:gap-2.5 w-full py-2 px-0.5">
+      <div
+        role="radiogroup"
+        aria-label="Pain Severity Scale 0 to 10"
+        className="grid grid-cols-11 gap-1 sm:gap-2 md:gap-2.5 w-full py-2 px-0.5"
+      >
         {PAIN_SCORES.map((score) => {
           const isSelected = value === score;
           const scoreInfo = getSeverityInfo(score);
@@ -85,6 +89,9 @@ export function PainScale({ value = 0, onChange }) {
             <div key={score} className="flex items-center justify-center">
               <button
                 type="button"
+                role="radio"
+                aria-checked={isSelected}
+                aria-label={`Pain score ${score}: ${scoreInfo.tier}`}
                 onClick={() => onChange(score)}
                 className={`w-full aspect-square max-w-[68px] rounded-full font-black text-base sm:text-xl md:text-2xl lg:text-3xl flex items-center justify-center cursor-pointer transition-all duration-150 relative ${
                   isSelected

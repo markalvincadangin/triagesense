@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTriage } from '../../context/TriageContext';
-import { Wifi, Activity, QrCode, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Wifi, Activity } from 'lucide-react';
 
 /**
  * TRIAGESENSE KIOSK — MECHANICAL PROTOTYPE VISUALIZATION

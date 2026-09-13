@@ -15,7 +15,11 @@ export function DurationSelector({ value, onChange }) {
   const { t } = useTriage();
 
   return (
-    <div className="grid grid-cols-2 gap-4 w-full max-w-[880px] mx-auto select-none">
+    <div
+      role="radiogroup"
+      aria-label="Symptom Duration"
+      className="grid grid-cols-2 gap-4 w-full max-w-[880px] mx-auto select-none"
+    >
       {DURATION_KEYS.map((key) => {
         const isSelected = value === key;
         const localizedLabel = t(`durations.${key}`, key);
@@ -24,6 +28,8 @@ export function DurationSelector({ value, onChange }) {
           <button
             key={key}
             type="button"
+            role="radio"
+            aria-checked={isSelected}
             onClick={() => onChange(key)}
             className={`min-h-[80px] p-5 sm:px-6 rounded-2xl flex items-center justify-between cursor-pointer text-left transition-all duration-150 border-2 group ${
               isSelected
