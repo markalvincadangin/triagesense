@@ -39,13 +39,12 @@ import {
 // ─── Screen name maps for navigation & labels ───────────────────────────────
 const KIOSK_SCREENS = [
   { key: 'welcome', label: 'Welcome' },
-  { key: 'patient-info', label: 'Patient Info' },
-  { key: 'symptoms', label: 'Symptoms' },
-  { key: 'body-map', label: 'Body Map' },
-  { key: 'pain-duration', label: 'Pain & Pulse' },
-  { key: 'additional-details', label: 'Extra Details' },
-  { key: 'review', label: 'Review & Send' },
-  { key: 'confirmation', label: 'Confirmation' }
+  { key: 'patient-info', label: '1. Patient Info' },
+  { key: 'symptoms', label: '2. Symptoms' },
+  { key: 'body-map', label: '3. Body Map' },
+  { key: 'pain-duration', label: '4. Pain & Vitals' },
+  { key: 'review', label: '5. Review & Send' },
+  { key: 'confirmation', label: 'Ticket Slip' }
 ];
 
 const ADMIN_SCREENS = [
@@ -1390,14 +1389,14 @@ export function DemoControls() {
                     <div className="flex items-center justify-between">
                       <label className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
                         <Smartphone size={11} />
-                        Kiosk Flow (8 Steps)
+                        Kiosk 5-Step Flow
                       </label>
                       <span className="text-[10px] text-slate-300 font-mono">
-                        Step {KIOSK_SCREENS.findIndex(s => s.key === kioskStep) + 1} of 8
+                        {KIOSK_SCREENS.findIndex(s => s.key === kioskStep) + 1} of {KIOSK_SCREENS.length}
                       </span>
                     </div>
                     <div className="grid grid-cols-2 gap-1.5">
-                      {KIOSK_SCREENS.map((screen, idx) => {
+                      {KIOSK_SCREENS.map((screen) => {
                         const isActive = viewMode === 'kiosk' && kioskStep === screen.key;
                         return (
                           <button
@@ -1414,7 +1413,7 @@ export function DemoControls() {
                             }`}
                           >
                             <span className="truncate">
-                              {idx + 1}. {screen.label}
+                              {screen.label}
                             </span>
                             {isActive && <Check size={12} className="text-white shrink-0 ml-1" />}
                           </button>
