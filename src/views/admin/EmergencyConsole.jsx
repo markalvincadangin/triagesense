@@ -4,15 +4,10 @@ import { Button } from '../../components/common/Button';
 import { Card } from '../../components/common/Card';
 import {
   AlertTriangle,
-  Clock,
-  MapPin,
   CheckCircle2,
-  Mic,
-  Volume2,
   Send,
   Radio,
-  ShieldCheck,
-  RotateCcw
+  ShieldCheck
 } from 'lucide-react';
 
 export function EmergencyConsole() {

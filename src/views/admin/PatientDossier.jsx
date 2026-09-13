@@ -7,7 +7,6 @@ import { FormInput } from '../../components/common/FormInput';
 import { StatCard } from '../../components/common/StatCard';
 import { AlertBanner } from '../../components/common/AlertBanner';
 import {
-  User,
   Heart,
   Thermometer,
   Activity,
@@ -18,10 +17,6 @@ import {
   Save,
   CheckCircle2,
   ArrowLeft,
-  Calendar,
-  Phone,
-  Clock,
-  AlertTriangle,
   Download,
   Sparkles
 } from 'lucide-react';

@@ -3,7 +3,7 @@ import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
 import { Card } from '../../components/common/Card';
 import { AlertBanner } from '../../components/common/AlertBanner';
-import { Server, Wifi, Battery, Printer, Clock, Sliders, CheckCircle2, ShieldCheck, RefreshCw } from 'lucide-react';
+import { Server, Wifi, Sliders, RefreshCw } from 'lucide-react';
 
 export function FleetManager() {
   const { kiosks, settings, setSettings } = useTriage();

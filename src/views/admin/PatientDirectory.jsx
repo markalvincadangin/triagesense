@@ -69,7 +69,7 @@ export function PatientDirectory() {
                     <tr
                       key={item.id}
                       className={`h-14 transition-colors ${
-                        isSelected ? 'bg-brand-green-light' : 'bg-white hover:bg-slate-50'
+                        isSelected ? 'bg-brand-green-light' : 'bg-white hover:bg-canvas'
                       }`}
                     >
                       <td className="px-5 font-mono font-bold text-brand-green text-xs">

@@ -20,7 +20,6 @@ import {
   Eye,
   EyeOff,
   Navigation,
-  ChevronRight,
   Sparkles,
   UserCheck,
   HeartPulse,
@@ -80,14 +79,15 @@ export function DemoControls() {
   const [zoomLevel, setZoomLevel] = useState(100);
   const ZOOM_STEPS = [50, 67, 75, 80, 90, 100, 110, 125, 150];
 
-  // ─── Screenshot flash feedback ───────────────────────────────────────────
+  // ─── Screenshot flash feedback & copy status ────────────────────────────
   const [screenshotFlash, setScreenshotFlash] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  // ─── Active Category Tab ────────────────────────────────────────────────
+  const [activeTab, setActiveTab] = useState('display'); // 'display' | 'sensors' | 'screens'
 
   // ─── Page label overlay toggle ───────────────────────────────────────────
   const [showPageLabel, setShowPageLabel] = useState(false);
-
-  // ─── Quick nav accordion ─────────────────────────────────────────────────
-  const [navExpanded, setNavExpanded] = useState(false);
 
   // ─── Draggable position state ────────────────────────────────────────────
   const [position, setPosition] = useState(() => {
@@ -341,6 +341,8 @@ export function DemoControls() {
         await navigator.clipboard.write([
           new ClipboardItem({ 'image/png': blob })
         ]);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
       }
     } catch (err) {
       console.error('Copy to clipboard failed:', err);
@@ -448,7 +450,7 @@ export function DemoControls() {
               ? 'bg-red-500 text-white animate-shake'
               : activeHardwareSensor.status === 'success'
               ? 'bg-emerald-500 text-white'
-              : 'bg-[#0060DF] text-white animate-pulse'
+              : 'bg-brand-blue text-white animate-pulse'
           }`}>
             {activeHardwareSensor.type === 'qr' && <QrCode size={18} />}
             {activeHardwareSensor.type === 'nfc' && <Wifi size={18} className="rotate-90" />}
@@ -526,555 +528,64 @@ export function DemoControls() {
         ═══════════════════════════════════════════════════════════════════ */}
         {isOpen && (
           <div
-            className={`absolute w-80 max-w-[90vw] max-h-[85vh] overflow-y-auto bg-slate-900/95 text-slate-100 rounded-2xl shadow-2xl border border-slate-700/80 backdrop-blur-2xl p-4 animate-fade-in flex flex-col gap-3 ${
+            className={`absolute w-[390px] max-w-[92vw] max-h-[85vh] overflow-y-auto bg-slate-900/98 text-slate-100 rounded-2xl shadow-2xl border border-slate-700/80 backdrop-blur-2xl p-4 animate-fade-in flex flex-col gap-3.5 ${
               isNearRight ? 'right-0' : 'left-0'
             } ${isNearBottom ? 'bottom-14' : 'top-14'}`}
           >
             {/* ── Top Bar ─────────────────────────────────────────────── */}
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div className="flex items-center justify-between pb-2.5 border-b border-slate-800">
               <div className="flex items-center gap-2">
-                <GripHorizontal size={14} className="text-slate-500" />
-                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-                  Presentation Controls
-                </h2>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-                title="Close (Esc)"
-              >
-                <X size={14} />
-              </button>
-            </div>
-
-            {/* ── Viewport Mode Switcher ───────────────────────────────── */}
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                Active Viewport
-              </label>
-              <div className="grid grid-cols-3 gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => { setViewMode('kiosk'); }}
-                  className={`flex flex-col items-center gap-1 py-2 px-1 rounded-lg text-xs font-semibold transition-all ${
-                    viewMode === 'kiosk'
-                      ? 'bg-brand-green text-white shadow'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                  }`}
-                >
-                  <Smartphone size={15} strokeWidth={2} />
-                  <span>Kiosk</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => { setViewMode('admin'); }}
-                  className={`flex flex-col items-center gap-1 py-2 px-1 rounded-lg text-xs font-semibold transition-all ${
-                    viewMode === 'admin'
-                      ? 'bg-brand-blue text-white shadow'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                  }`}
-                >
-                  <Monitor size={15} strokeWidth={2} />
-                  <span>Staff</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => { setViewMode('split'); }}
-                  className={`flex flex-col items-center gap-1 py-2 px-1 rounded-lg text-xs font-semibold transition-all ${
-                    viewMode === 'split'
-                      ? 'bg-blue-600 text-white shadow'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                  }`}
-                >
-                  <Columns size={15} strokeWidth={2} />
-                  <span>Dual</span>
-                </button>
-              </div>
-            </div>
-
-            {/* ── Kiosk CAD Framing Switcher ─────────────────────────────── */}
-            {(viewMode === 'kiosk' || viewMode === 'split') && (
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                    Kiosk CAD View
-                  </label>
-                  <span className="text-[9px] font-mono text-emerald-400 font-semibold">
-                    {kioskFraming === 'totem' ? '1,780mm Spec' : '23.8" Touch'}
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800">
-                  <button
-                    type="button"
-                    onClick={() => setKioskFraming('focus')}
-                    className={`py-2 px-2 rounded-lg text-xs font-semibold transition-all flex flex-col items-center gap-1 ${
-                      kioskFraming === 'focus'
-                        ? 'bg-brand-green text-white shadow'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                    }`}
-                  >
-                    <Smartphone size={14} />
-                    <span>Screen Focus</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setKioskFraming('totem')}
-                    className={`py-2 px-2 rounded-lg text-xs font-semibold transition-all flex flex-col items-center gap-1 ${
-                      kioskFraming === 'totem'
-                        ? 'bg-brand-blue text-white shadow'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                    }`}
-                  >
-                    <Monitor size={14} />
-                    <span>Full Totem (CAD)</span>
-                  </button>
+                <GripHorizontal size={15} className="text-slate-500 cursor-grab" />
+                <div>
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+                    Demo & Testing Controls
+                  </h2>
+                  <p className="text-[10px] text-slate-400">
+                    TriageSense • WVSU Medical Center
+                  </p>
                 </div>
               </div>
-            )}
-
-            {/* ── Zoom Controls ────────────────────────────────────────── */}
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                Zoom
-              </label>
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={zoomOut}
-                  disabled={zoomLevel <= ZOOM_STEPS[0]}
-                  className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 flex items-center justify-center text-slate-300 transition-colors border border-slate-700/50"
-                  title="Zoom Out"
-                >
-                  <ZoomOut size={14} />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={resetZoom}
-                  className="flex-1 h-8 rounded-lg bg-slate-800/60 hover:bg-slate-700/60 text-xs font-bold text-slate-200 border border-slate-700/50 transition-colors"
-                  title="Reset to 100%"
-                >
-                  {zoomLevel}%
-                </button>
-
-                <button
-                  type="button"
-                  onClick={zoomIn}
-                  disabled={zoomLevel >= ZOOM_STEPS[ZOOM_STEPS.length - 1]}
-                  className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 flex items-center justify-center text-slate-300 transition-colors border border-slate-700/50"
-                  title="Zoom In"
-                >
-                  <ZoomIn size={14} />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={toggleFullscreen}
-                  className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition-colors border border-slate-700/50"
-                  title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
-                >
-                  {isFullscreen ? <Minimize size={14} /> : <Maximize size={14} />}
-                </button>
-              </div>
-            </div>
-
-            {/* ── Screenshot & Capture ──────────────────────────────────── */}
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                Capture
-              </label>
-              <div className="grid grid-cols-2 gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => captureScreenshot('current')}
-                  className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700/50 transition-colors"
-                  title="Download screenshot of current page as PNG"
-                >
-                  <Camera size={13} />
-                  <span>Save PNG</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={copyScreenshotToClipboard}
-                  className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700/50 transition-colors"
-                  title="Copy screenshot to clipboard (Ctrl+V to paste)"
-                >
-                  <Clipboard size={13} />
-                  <span>Copy</span>
-                </button>
-              </div>
-
-              {/* Dual view: separate kiosk / admin capture */}
-              {viewMode === 'split' && (
-                <div className="grid grid-cols-2 gap-1.5 mt-0.5">
-                  <button
-                    type="button"
-                    onClick={() => captureScreenshot('kiosk')}
-                    className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-emerald-900/40 hover:bg-emerald-800/50 text-[11px] font-semibold text-emerald-300 border border-emerald-700/40 transition-colors"
-                  >
-                    <Smartphone size={11} />
-                    <span>Kiosk Only</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => captureScreenshot('admin')}
-                    className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-blue-900/40 hover:bg-blue-800/50 text-[11px] font-semibold text-blue-300 border border-blue-700/40 transition-colors"
-                  >
-                    <Monitor size={11} />
-                    <span>Staff Only</span>
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* ── Demo Shortcuts & Presets (Evaluator Tools) ──────────────── */}
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1.5">
-                <Sparkles size={11} className="text-brand-gold" />
-                Demo Simulations & Presets
-              </label>
-              <div className="flex flex-col gap-1">
-                <button
-                  type="button"
-                  onClick={handleAutofillSeniorPatient}
-                  className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700/90 text-xs font-semibold text-slate-200 border border-slate-700/60 transition-colors group cursor-pointer"
-                  title="Populate Step 1 with senior patient (Juan Dela Cruz, 70yo)"
-                >
-                  <div className="flex items-center gap-2">
-                    <UserCheck size={14} className="text-emerald-400 group-hover:scale-110 transition-transform" />
-                    <span>Autofill Patient (Juan, 70yo)</span>
-                  </div>
-                  <span className="text-[10px] text-slate-400">Step 1</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleAutofillCompleteCase}
-                  className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700/90 text-xs font-semibold text-slate-200 border border-slate-700/60 transition-colors group cursor-pointer"
-                  title="Populate complete emergency case with vitals, pain level, and notes ready for review"
-                >
-                  <div className="flex items-center gap-2">
-                    <HeartPulse size={14} className="text-red-400 group-hover:scale-110 transition-transform" />
-                    <span>Autofill Acute Case (Chest Pain)</span>
-                  </div>
-                  <span className="text-[10px] text-slate-400">Review</span>
-                </button>
-              </div>
-            </div>
-
-            {/* ── Hardware Sensor Simulation Bay (NN/g Heuristics #1, #2, #7, #9) ── */}
-            <div className="flex flex-col gap-1.5 p-2 rounded-xl bg-slate-950/70 border border-slate-800">
-              <div className="flex items-center justify-between">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
-                  <Radio size={11} className="text-blue-400" />
-                  Hardware Sensor Triggers
-                </label>
-                {activeHardwareSensor?.status && activeHardwareSensor.status !== 'idle' && (
-                  <button
-                    type="button"
-                    onClick={cancelHardwareSensor}
-                    className="text-[9px] font-bold text-red-400 hover:text-red-300 underline cursor-pointer"
-                    title="Cancel active sensor reading (NN/g #3 User Control)"
-                  >
-                    Cancel / Eject
-                  </button>
-                )}
-              </div>
-
-              {/* Active Sensor Status Pill */}
-              {activeHardwareSensor?.status && activeHardwareSensor.status !== 'idle' && (
-                <div className={`p-2 rounded-lg text-[11px] font-semibold flex items-center gap-2 ${
-                  activeHardwareSensor.status === 'error' ? 'bg-red-950/80 text-red-300 border border-red-800/80' :
-                  activeHardwareSensor.status === 'success' ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-800/80' :
-                  'bg-blue-950/80 text-blue-300 border border-blue-800/80 animate-pulse'
-                }`}>
-                  <div className={`w-2 h-2 rounded-full ${
-                    activeHardwareSensor.status === 'error' ? 'bg-red-400' :
-                    activeHardwareSensor.status === 'success' ? 'bg-emerald-400' : 'bg-blue-400 animate-ping'
-                  }`} />
-                  <span className="truncate">{activeHardwareSensor.message}</span>
-                </div>
-              )}
-
-              {/* Identity Sensors */}
-              <div className="flex flex-col gap-1 mt-0.5">
-                <span className="text-[9px] font-bold uppercase text-slate-400 px-1">
-                  1. Identification Sensors (NFC & QR)
-                </span>
-                <div className="grid grid-cols-2 gap-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      triggerHardwareSensor('qr', {
-                        payload: {
-                          fullName: 'Maria Elena C. Lopez',
-                          dob: '1978-08-14',
-                          gender: 'Female',
-                          contact: '0917-882-9014',
-                          identification: 'PhilHealth QR'
-                        }
-                      });
-                    }}
-                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
-                    title="Simulate presenting QR code to optical scanner bay"
-                  >
-                    <QrCode size={13} className="text-blue-400 shrink-0" />
-                    <span className="truncate">Scan QR Code</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      triggerHardwareSensor('nfc', {
-                        payload: {
-                          fullName: 'Juan Dela Cruz y Santos',
-                          dob: '1956-04-12',
-                          gender: 'Male',
-                          contact: '0917-555-1234',
-                          identification: 'PhilSys National ID NFC'
-                        }
-                      });
-                    }}
-                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
-                    title="Simulate tapping 13.56 MHz PhilSys smart card on NFC wave pad"
-                  >
-                    <Wifi size={13} className="text-emerald-400 rotate-90 shrink-0" />
-                    <span className="truncate">Tap NFC Card</span>
-                  </button>
-                </div>
-
+              <div className="flex items-center gap-1">
                 <button
                   type="button"
                   onClick={() => {
-                    triggerHardwareSensor('qr', {
-                      isError: true,
-                      errorMessage: 'Scanner Bay: Barcode obscured or unreadable. Please wipe code and hold steady.'
-                    });
+                    resetDemoData();
                   }}
-                  className="flex items-center justify-between px-2 py-1 rounded-lg bg-red-950/40 hover:bg-red-900/50 text-[10px] font-semibold text-red-300 border border-red-900/60 transition-colors cursor-pointer"
-                  title="Simulate unreadable barcode (Demonstrates NN/g Heuristic #9 Error Recovery)"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-800/80 transition-colors cursor-pointer"
+                  title="Reset Demo State to Initial"
                 >
-                  <span className="flex items-center gap-1.5">
-                    <AlertCircle size={11} className="text-red-400" />
-                    Simulate Scan Error (NN/g #9)
-                  </span>
-                  <span className="text-[9px] text-red-400/80">Fault</span>
+                  <RotateCcw size={13} />
                 </button>
-              </div>
-
-              {/* Medical Vitals Sensors */}
-              <div className="flex flex-col gap-1 mt-1">
-                <span className="text-[9px] font-bold uppercase text-slate-400 px-1">
-                  2. Vitals Sensors (PPG Bay & Thermal)
-                </span>
-                <div className="grid grid-cols-2 gap-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      triggerHardwareSensor('ppg', {
-                        payload: {
-                          spo2: 98,
-                          pulseRate: 74,
-                          perfusionIndex: '4.2%',
-                          temperature: '36.8°C'
-                        }
-                      });
-                      if (kioskStep !== 'pain-duration') {
-                        setViewMode('kiosk');
-                        setKioskStep('pain-duration');
-                      }
-                    }}
-                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
-                    title="Simulate inserting finger into Vital Signs Bay with normal healthy metrics"
-                  >
-                    <Activity size={13} className="text-emerald-400 shrink-0" />
-                    <span className="truncate">PPG Vitals (Normal)</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      triggerHardwareSensor('ppg', {
-                        payload: {
-                          spo2: 91,
-                          pulseRate: 122,
-                          perfusionIndex: '2.1%',
-                          temperature: '38.5°C'
-                        }
-                      });
-                      if (kioskStep !== 'pain-duration') {
-                        setViewMode('kiosk');
-                        setKioskStep('pain-duration');
-                      }
-                    }}
-                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
-                    title="Simulate inserting finger with acute hypoxic tachycardia (91% SpO2, 122 bpm)"
-                  >
-                    <Activity size={13} className="text-red-400 shrink-0" />
-                    <span className="truncate">PPG Vitals (Acute)</span>
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-2 gap-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      triggerHardwareSensor('thermal', {
-                        payload: { temperature: '36.6°C' }
-                      });
-                    }}
-                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
-                    title="Simulate overhead infrared core forehead scan (36.6°C Normal)"
-                  >
-                    <Thermometer size={13} className="text-cyan-400 shrink-0" />
-                    <span className="truncate">Temp (36.6°C)</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      triggerHardwareSensor('thermal', {
-                        payload: { temperature: '38.9°C' }
-                      });
-                    }}
-                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
-                    title="Simulate overhead infrared core forehead scan (38.9°C High Fever)"
-                  >
-                    <Thermometer size={13} className="text-amber-400 shrink-0" />
-                    <span className="truncate">Fever (38.9°C)</span>
-                  </button>
-                </div>
-
                 <button
                   type="button"
-                  onClick={() => {
-                    triggerHardwareSensor('ppg', {
-                      isError: true,
-                      errorMessage: 'Vital Signs Bay: Motion artifact / loose finger contact. Please remain steady.'
-                    });
-                    if (kioskStep !== 'pain-duration') {
-                      setViewMode('kiosk');
-                      setKioskStep('pain-duration');
-                    }
-                  }}
-                  className="flex items-center justify-between px-2 py-1 rounded-lg bg-amber-950/40 hover:bg-amber-900/50 text-[10px] font-semibold text-amber-300 border border-amber-900/60 transition-colors cursor-pointer"
-                  title="Simulate finger motion artifact error (Demonstrates NN/g Heuristic #9 Error Recovery)"
+                  onClick={() => setIsOpen(false)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors cursor-pointer"
+                  title="Close Controls (Esc)"
                 >
-                  <span className="flex items-center gap-1.5">
-                    <AlertCircle size={11} className="text-amber-400" />
-                    Simulate Motion Artifact (NN/g #9)
-                  </span>
-                  <span className="text-[9px] text-amber-400/80">Artifact</span>
+                  <X size={14} />
                 </button>
               </div>
             </div>
 
-            {/* ── Quick Page Navigation ─────────────────────────────────── */}
-            <div className="flex flex-col gap-1.5">
-              <button
-                type="button"
-                onClick={() => setNavExpanded(!navExpanded)}
-                className="flex items-center justify-between w-full text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-200 transition-colors"
-              >
-                <span className="flex items-center gap-1.5">
-                  <Navigation size={10} />
-                  Quick Navigate
-                </span>
-                <ChevronRight size={12} className={`transition-transform ${navExpanded ? 'rotate-90' : ''}`} />
-              </button>
-
-              {navExpanded && (
-                <div className="flex flex-col gap-2 animate-fade-in">
-                  {/* Kiosk screens */}
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400 px-1">Kiosk Screens</span>
-                    <div className="grid grid-cols-2 gap-1">
-                      {KIOSK_SCREENS.map((screen) => (
-                        <button
-                          key={screen.key}
-                          type="button"
-                          onClick={() => {
-                            setViewMode('kiosk');
-                            setKioskStep(screen.key);
-                          }}
-                          className={`text-left px-2 py-1.5 rounded-lg text-[11px] font-medium transition-colors ${
-                            viewMode === 'kiosk' && kioskStep === screen.key
-                              ? 'bg-emerald-600 text-white'
-                              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                          }`}
-                        >
-                          {screen.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Admin screens */}
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-blue-400 px-1">Staff Portal Screens</span>
-                    <div className="grid grid-cols-2 gap-1">
-                      {ADMIN_SCREENS.map((screen) => (
-                        <button
-                          key={screen.key}
-                          type="button"
-                          onClick={() => {
-                            setViewMode('admin');
-                            setActiveAdminTab(screen.key);
-                          }}
-                          className={`text-left px-2 py-1.5 rounded-lg text-[11px] font-medium transition-colors ${
-                            viewMode === 'admin' && activeAdminTab === screen.key
-                              ? 'bg-blue-600 text-white'
-                              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                          }`}
-                        >
-                          {screen.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* ── Page Label Toggle ──────────────────────────────────────── */}
-            <div className="flex items-center justify-between px-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                <Tag size={10} />
-                Page Label Overlay
-              </span>
-              <button
-                type="button"
-                onClick={() => setShowPageLabel(!showPageLabel)}
-                className={`w-9 h-5 rounded-full flex items-center transition-colors ${
-                  showPageLabel ? 'bg-brand-green justify-end' : 'bg-slate-700 justify-start'
-                }`}
-              >
-                <span className="w-4 h-4 rounded-full bg-white shadow-sm mx-0.5 transition-transform flex items-center justify-center">
-                  {showPageLabel ? <Eye size={8} className="text-emerald-700" /> : <EyeOff size={8} className="text-slate-500" />}
-                </span>
-              </button>
-            </div>
-
-            {/* ── Active Emergency Alert Quick Jump ─────────────────────── */}
+            {/* ── Active Emergency Alert Banner (Global) ───────────────── */}
             {emergencyAlert.active && (
-              <div className="p-2.5 rounded-xl bg-red-950/80 border border-red-800/70 flex flex-col gap-2">
-                <div className="flex items-center gap-2 text-xs font-bold text-red-300">
-                  <AlertTriangle size={14} className="text-red-400 shrink-0 animate-pulse" />
-                  <span>Emergency Broadcast Active</span>
+              <div className="p-3 rounded-xl bg-red-950/90 border border-red-800/90 flex flex-col gap-2 shadow-lg shadow-red-950/40">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs font-bold text-red-300">
+                    <AlertTriangle size={14} className="text-red-400 shrink-0 animate-pulse" />
+                    <span>Emergency Call Broadcast</span>
+                  </div>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-red-900/80 text-red-200 font-semibold">
+                    {emergencyAlert.elapsedSeconds}s elapsed
+                  </span>
                 </div>
                 <p className="text-[11px] text-red-200/90 leading-tight">
-                  {emergencyAlert.kioskId} ({emergencyAlert.elapsedSeconds}s)
+                  Origin: {emergencyAlert.kioskId}
                 </p>
                 <button
                   type="button"
                   onClick={handleOpenEmergencyConsole}
-                  className="w-full py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow"
+                  className="w-full py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow cursor-pointer"
                 >
                   <ExternalLink size={12} />
                   <span>Open Emergency Console</span>
@@ -1082,25 +593,651 @@ export function DemoControls() {
               </div>
             )}
 
-            {/* ── Reset Demo State ──────────────────────────────────────── */}
-            <div className="pt-1.5 border-t border-slate-800 flex flex-col gap-2">
+            {/* ── Category Navigation Tabs ─────────────────────────────── */}
+            <div className="grid grid-cols-3 p-1 bg-slate-950/80 rounded-xl border border-slate-800 gap-1">
               <button
                 type="button"
-                onClick={() => {
-                  resetDemoData();
-                  setIsOpen(false);
-                }}
-                className="w-full py-1.5 px-3 bg-slate-800 hover:bg-slate-700/80 text-slate-200 hover:text-white rounded-xl text-xs font-semibold border border-slate-700/50 flex items-center justify-center gap-2 transition-colors"
+                onClick={() => setActiveTab('display')}
+                className={`py-1.5 px-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  activeTab === 'display'
+                    ? 'bg-slate-800 text-white shadow-sm border border-slate-700/60'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                }`}
               >
-                <RotateCcw size={13} strokeWidth={2} />
-                <span>Reset Demo State</span>
+                <Monitor size={13} />
+                <span>Display</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('sensors')}
+                className={`py-1.5 px-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  activeTab === 'sensors'
+                    ? 'bg-slate-800 text-white shadow-sm border border-slate-700/60'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                }`}
+              >
+                <Sparkles size={13} className="text-brand-gold" />
+                <span>Sensors</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('screens')}
+                className={`py-1.5 px-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  activeTab === 'screens'
+                    ? 'bg-slate-800 text-white shadow-sm border border-slate-700/60'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                }`}
+              >
+                <Navigation size={13} />
+                <span>Screens</span>
               </button>
             </div>
 
+            {/* ═══════════════════════════════════════════════════════════════
+                TAB 1: DISPLAY & VIEWPORT CONTROLS
+            ═══════════════════════════════════════════════════════════════ */}
+            {activeTab === 'display' && (
+              <div className="flex flex-col gap-3.5 animate-fade-in">
+                {/* ── Viewport Mode Switcher ─────────────────────────────── */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      Display Mode
+                    </label>
+                    <span className="text-[10px] text-slate-400 font-medium">
+                      {viewMode === 'kiosk' ? 'Patient Facing' : viewMode === 'admin' ? 'Staff Workstation' : 'Side-by-Side Dual'}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800">
+                    <button
+                      type="button"
+                      onClick={() => { setViewMode('kiosk'); }}
+                      className={`flex flex-col items-center gap-1 py-2 px-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        viewMode === 'kiosk'
+                          ? 'bg-brand-green text-white shadow'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                      }`}
+                    >
+                      <Smartphone size={15} strokeWidth={2} />
+                      <span>Kiosk</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => { setViewMode('admin'); }}
+                      className={`flex flex-col items-center gap-1 py-2 px-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        viewMode === 'admin'
+                          ? 'bg-brand-blue text-white shadow'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                      }`}
+                    >
+                      <Monitor size={15} strokeWidth={2} />
+                      <span>Staff</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => { setViewMode('split'); }}
+                      className={`flex flex-col items-center gap-1 py-2 px-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        viewMode === 'split'
+                          ? 'bg-blue-600 text-white shadow'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                      }`}
+                    >
+                      <Columns size={15} strokeWidth={2} />
+                      <span>Dual View</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* ── Kiosk Framing Switcher (Screen Focus vs Totem CAD) ─── */}
+                {(viewMode === 'kiosk' || viewMode === 'split') && (
+                  <div className="flex flex-col gap-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        Kiosk Enclosure Framing
+                      </label>
+                      <span className="text-[10px] font-medium text-emerald-400">
+                        {kioskFraming === 'focus' ? 'Clean 23.8" Screen' : '1,780mm Hardware Enclosure'}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-1.5 bg-slate-950/80 p-1.5 rounded-xl border border-slate-800">
+                      <button
+                        type="button"
+                        onClick={() => setKioskFraming('focus')}
+                        className={`py-2 px-2.5 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                          kioskFraming === 'focus'
+                            ? 'bg-brand-green text-white shadow'
+                            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                        }`}
+                      >
+                        <Smartphone size={14} />
+                        <div className="flex flex-col text-left">
+                          <span className="leading-tight">Screen Focus</span>
+                          <span className="text-[9px] font-normal opacity-80">Clean display</span>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setKioskFraming('totem')}
+                        className={`py-2 px-2.5 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                          kioskFraming === 'totem'
+                            ? 'bg-brand-blue text-white shadow'
+                            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                        }`}
+                      >
+                        <Monitor size={14} />
+                        <div className="flex flex-col text-left">
+                          <span className="leading-tight">Full Totem</span>
+                          <span className="text-[9px] font-normal opacity-80">CAD housing</span>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── Zoom & Canvas Scale ──────────────────────────────── */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      Canvas Scale
+                    </label>
+                    <span className="text-[10px] font-mono text-slate-400">
+                      {zoomLevel}%
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={zoomOut}
+                      disabled={zoomLevel <= ZOOM_STEPS[0]}
+                      className="w-9 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 flex items-center justify-center text-slate-300 transition-colors border border-slate-700/50 cursor-pointer"
+                      title="Zoom Out"
+                    >
+                      <ZoomOut size={14} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={resetZoom}
+                      className="flex-1 h-8 rounded-lg bg-slate-800/60 hover:bg-slate-700/60 text-xs font-bold text-slate-200 border border-slate-700/50 transition-colors cursor-pointer"
+                      title="Reset to 100%"
+                    >
+                      Reset (100%)
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={zoomIn}
+                      disabled={zoomLevel >= ZOOM_STEPS[ZOOM_STEPS.length - 1]}
+                      className="w-9 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 flex items-center justify-center text-slate-300 transition-colors border border-slate-700/50 cursor-pointer"
+                      title="Zoom In"
+                    >
+                      <ZoomIn size={14} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={toggleFullscreen}
+                      className="w-9 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition-colors border border-slate-700/50 cursor-pointer"
+                      title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+                    >
+                      {isFullscreen ? <Minimize size={14} /> : <Maximize size={14} />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* ── Screenshot & Capture ──────────────────────────────── */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    Export & Screenshots
+                  </label>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => captureScreenshot('current')}
+                      className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700/50 transition-colors cursor-pointer"
+                      title="Download high-resolution PNG of current active screen"
+                    >
+                      <Camera size={13} />
+                      <span>Save PNG</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={copyScreenshotToClipboard}
+                      className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-xs font-semibold border transition-colors cursor-pointer ${
+                        copied
+                          ? 'bg-emerald-900/60 text-emerald-200 border-emerald-600'
+                          : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700/50'
+                      }`}
+                      title="Copy screenshot directly to clipboard"
+                    >
+                      {copied ? <Check size={13} className="text-emerald-400" /> : <Clipboard size={13} />}
+                      <span>{copied ? 'Copied!' : 'Copy to Clipboard'}</span>
+                    </button>
+                  </div>
+
+                  {/* Dual view: separate kiosk / admin capture */}
+                  {viewMode === 'split' && (
+                    <div className="grid grid-cols-2 gap-1.5 mt-0.5">
+                      <button
+                        type="button"
+                        onClick={() => captureScreenshot('kiosk')}
+                        className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-emerald-950/50 hover:bg-emerald-900/60 text-[11px] font-semibold text-emerald-300 border border-emerald-800/50 transition-colors cursor-pointer"
+                      >
+                        <Smartphone size={11} />
+                        <span>Kiosk Screen Only</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => captureScreenshot('admin')}
+                        className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-blue-950/50 hover:bg-blue-900/60 text-[11px] font-semibold text-blue-300 border border-blue-800/50 transition-colors cursor-pointer"
+                      >
+                        <Monitor size={11} />
+                        <span>Staff Console Only</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* ── Page Label Toggle ─────────────────────────────────── */}
+                <div className="flex items-center justify-between p-2 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                  <div className="flex flex-col">
+                    <span className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                      <Tag size={12} className="text-brand-gold" />
+                      Screen Label Badge
+                    </span>
+                    <span className="text-[10px] text-slate-400">
+                      Display active page name banner on screen
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowPageLabel(!showPageLabel)}
+                    className={`w-10 h-5 rounded-full flex items-center transition-colors p-0.5 cursor-pointer ${
+                      showPageLabel ? 'bg-brand-green justify-end' : 'bg-slate-700 justify-start'
+                    }`}
+                  >
+                    <span className="w-4 h-4 rounded-full bg-white shadow-sm transition-transform flex items-center justify-center">
+                      {showPageLabel ? <Eye size={9} className="text-emerald-700" /> : <EyeOff size={9} className="text-slate-500" />}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* ═══════════════════════════════════════════════════════════════
+                TAB 2: SENSORS & DEMO PRESETS
+            ═══════════════════════════════════════════════════════════════ */}
+            {activeTab === 'sensors' && (
+              <div className="flex flex-col gap-3.5 animate-fade-in">
+                {/* ── Demo Patient Autofill Presets ────────────────────────── */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1.5">
+                    <Sparkles size={11} className="text-brand-gold" />
+                    Demo Patient Scenarios
+                  </label>
+                  <div className="flex flex-col gap-1.5">
+                    <button
+                      type="button"
+                      onClick={handleAutofillSeniorPatient}
+                      className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-left border border-slate-700/70 transition-colors group cursor-pointer"
+                      title="Populate Step 1 with senior patient (Juan Dela Cruz, 70yo)"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-emerald-950/80 border border-emerald-700/60 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                        <UserCheck size={15} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-semibold text-slate-200">
+                            Senior Citizen Intake
+                          </span>
+                          <span className="text-[9px] font-mono px-1 rounded bg-slate-900 text-slate-400 border border-slate-700/50">
+                            Step 1
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-400 mt-0.5 leading-snug">
+                          Juan Dela Cruz (70y) • PhilSys ID, senior demographics
+                        </p>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleAutofillCompleteCase}
+                      className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-left border border-slate-700/70 transition-colors group cursor-pointer"
+                      title="Populate complete emergency case with vitals, pain level, and notes ready for review"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-red-950/80 border border-red-700/60 flex items-center justify-center text-red-400 shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                        <HeartPulse size={15} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-semibold text-slate-200">
+                            Acute Emergency Case
+                          </span>
+                          <span className="text-[9px] font-mono px-1 rounded bg-red-950 text-red-300 border border-red-800/60">
+                            Review
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-400 mt-0.5 leading-snug">
+                          Severe chest pain (Level 8) • 114 bpm, 93% SpO2
+                        </p>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                {/* ── Hardware Sensor Simulation Bay ────────────────────── */}
+                <div className="flex flex-col gap-2.5 p-2.5 rounded-xl bg-slate-950/70 border border-slate-800">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
+                      <Radio size={11} className="text-blue-400" />
+                      Hardware Sensor Simulation
+                    </label>
+                    {activeHardwareSensor?.status && activeHardwareSensor.status !== 'idle' && (
+                      <button
+                        type="button"
+                        onClick={cancelHardwareSensor}
+                        className="text-[10px] font-bold text-red-400 hover:text-red-300 underline cursor-pointer"
+                        title="Cancel active sensor reading"
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Active Sensor Status Pill */}
+                  {activeHardwareSensor?.status && activeHardwareSensor.status !== 'idle' && (
+                    <div className={`p-2 rounded-lg text-[11px] font-semibold flex items-center gap-2 ${
+                      activeHardwareSensor.status === 'error' ? 'bg-red-950/80 text-red-300 border border-red-800/80' :
+                      activeHardwareSensor.status === 'success' ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-800/80' :
+                      'bg-blue-950/80 text-blue-300 border border-blue-800/80 animate-pulse'
+                    }`}>
+                      <div className={`w-2 h-2 rounded-full ${
+                        activeHardwareSensor.status === 'error' ? 'bg-red-400' :
+                        activeHardwareSensor.status === 'success' ? 'bg-emerald-400' : 'bg-blue-400 animate-ping'
+                      }`} />
+                      <span className="truncate">{activeHardwareSensor.message}</span>
+                    </div>
+                  )}
+
+                  {/* 1. Identification Scanners */}
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 px-0.5">
+                      Patient Identification (QR & NFC)
+                    </span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          triggerHardwareSensor('qr', {
+                            payload: {
+                              fullName: 'Maria Elena C. Lopez',
+                              dob: '1978-08-14',
+                              gender: 'Female',
+                              contact: '0917-882-9014',
+                              identification: 'PhilHealth QR'
+                            }
+                          });
+                        }}
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        title="Simulate presenting QR code to optical scanner bay"
+                      >
+                        <QrCode size={13} className="text-blue-400 shrink-0" />
+                        <span className="truncate">Scan QR Code</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          triggerHardwareSensor('nfc', {
+                            payload: {
+                              fullName: 'Juan Dela Cruz y Santos',
+                              dob: '1956-04-12',
+                              gender: 'Male',
+                              contact: '0917-555-1234',
+                              identification: 'PhilSys National ID NFC'
+                            }
+                          });
+                        }}
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        title="Simulate tapping contactless PhilSys smart card on NFC wave pad"
+                      >
+                        <Wifi size={13} className="text-emerald-400 rotate-90 shrink-0" />
+                        <span className="truncate">Tap NFC Card</span>
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        triggerHardwareSensor('qr', {
+                          isError: true,
+                          errorMessage: 'Scanner Bay: Barcode obscured or unreadable. Please wipe code and hold steady.'
+                        });
+                      }}
+                      className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-900/50 text-[11px] font-semibold text-red-300 border border-red-900/60 transition-colors cursor-pointer"
+                      title="Simulate unreadable barcode (Demonstrates Error Recovery flow)"
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <AlertCircle size={12} className="text-red-400" />
+                        Simulate Code Read Failure
+                      </span>
+                      <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-red-900/60 text-red-300 font-mono">Error Demo</span>
+                    </button>
+                  </div>
+
+                  {/* 2. Medical Vitals Sensors */}
+                  <div className="flex flex-col gap-1.5 pt-1 border-t border-slate-800/80">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 px-0.5">
+                      Vitals & Temperature Sensors
+                    </span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          triggerHardwareSensor('ppg', {
+                            payload: {
+                              spo2: 98,
+                              pulseRate: 74,
+                              perfusionIndex: '4.2%',
+                              temperature: '36.8°C'
+                            }
+                          });
+                          if (kioskStep !== 'pain-duration') {
+                            setViewMode('kiosk');
+                            setKioskStep('pain-duration');
+                          }
+                        }}
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        title="Simulate normal vitals reading (98% SpO2, 74 bpm)"
+                      >
+                        <Activity size={13} className="text-emerald-400 shrink-0" />
+                        <span className="truncate">Normal Vitals (98%/74)</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          triggerHardwareSensor('ppg', {
+                            payload: {
+                              spo2: 91,
+                              pulseRate: 122,
+                              perfusionIndex: '2.1%',
+                              temperature: '38.5°C'
+                            }
+                          });
+                          if (kioskStep !== 'pain-duration') {
+                            setViewMode('kiosk');
+                            setKioskStep('pain-duration');
+                          }
+                        }}
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        title="Simulate acute vitals reading (91% SpO2, 122 bpm)"
+                      >
+                        <Activity size={13} className="text-red-400 shrink-0" />
+                        <span className="truncate">Critical Vitals (91%/122)</span>
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          triggerHardwareSensor('thermal', {
+                            payload: { temperature: '36.6°C' }
+                          });
+                        }}
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        title="Simulate infrared core forehead scan (36.6°C Normal)"
+                      >
+                        <Thermometer size={13} className="text-cyan-400 shrink-0" />
+                        <span className="truncate">Normal Temp (36.6°C)</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          triggerHardwareSensor('thermal', {
+                            payload: { temperature: '38.9°C' }
+                          });
+                        }}
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        title="Simulate infrared core forehead scan (38.9°C High Fever)"
+                      >
+                        <Thermometer size={13} className="text-amber-400 shrink-0" />
+                        <span className="truncate">Fever Temp (38.9°C)</span>
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        triggerHardwareSensor('ppg', {
+                          isError: true,
+                          errorMessage: 'Vital Signs Bay: Motion artifact / loose finger contact. Please remain steady.'
+                        });
+                        if (kioskStep !== 'pain-duration') {
+                          setViewMode('kiosk');
+                          setKioskStep('pain-duration');
+                        }
+                      }}
+                      className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-amber-950/40 hover:bg-amber-900/50 text-[11px] font-semibold text-amber-300 border border-amber-900/60 transition-colors cursor-pointer"
+                      title="Simulate finger motion artifact error (Demonstrates Error Recovery flow)"
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <AlertCircle size={12} className="text-amber-400" />
+                        Simulate Motion Artifact
+                      </span>
+                      <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-amber-900/60 text-amber-300 font-mono">Fault Demo</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ═══════════════════════════════════════════════════════════════
+                TAB 3: SCREEN DIRECT NAVIGATOR
+            ═══════════════════════════════════════════════════════════════ */}
+            {activeTab === 'screens' && (
+              <div className="flex flex-col gap-3.5 animate-fade-in">
+                {/* ── Kiosk Screens Flow ─────────────────────────────────── */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                      <Smartphone size={11} />
+                      Kiosk Flow (8 Steps)
+                    </label>
+                    <span className="text-[10px] text-slate-400 font-mono">
+                      Step {KIOSK_SCREENS.findIndex(s => s.key === kioskStep) + 1} of 8
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {KIOSK_SCREENS.map((screen, idx) => {
+                      const isActive = viewMode === 'kiosk' && kioskStep === screen.key;
+                      return (
+                        <button
+                          key={screen.key}
+                          type="button"
+                          onClick={() => {
+                            setViewMode('kiosk');
+                            setKioskStep(screen.key);
+                          }}
+                          className={`text-left px-2.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-between cursor-pointer ${
+                            isActive
+                              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-900/40 ring-1 ring-emerald-400'
+                              : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700/80 border border-slate-700/50'
+                          }`}
+                        >
+                          <span className="truncate">
+                            {idx + 1}. {screen.label}
+                          </span>
+                          {isActive && <Check size={12} className="text-white shrink-0 ml-1" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* ── Staff Workstation Screens ──────────────────────────── */}
+                <div className="flex flex-col gap-1.5 pt-1 border-t border-slate-800/80">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
+                      <Monitor size={11} />
+                      Staff Workstation (6 Views)
+                    </label>
+                    <span className="text-[10px] text-slate-400 font-mono">
+                      Clinical Console
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {ADMIN_SCREENS.map((screen) => {
+                      const isActive = viewMode === 'admin' && activeAdminTab === screen.key;
+                      return (
+                        <button
+                          key={screen.key}
+                          type="button"
+                          onClick={() => {
+                            setViewMode('admin');
+                            setActiveAdminTab(screen.key);
+                          }}
+                          className={`text-left px-2.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-between cursor-pointer ${
+                            isActive
+                              ? 'bg-blue-600 text-white shadow-md shadow-blue-900/40 ring-1 ring-blue-400'
+                              : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700/80 border border-slate-700/50'
+                          }`}
+                        >
+                          <span className="truncate">{screen.label}</span>
+                          {isActive && <Check size={12} className="text-white shrink-0 ml-1" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* ── Footer ──────────────────────────────────────────────── */}
-            <div className="pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] text-slate-400">
-              <span>Drag icon to reposition</span>
-              <span>CIT 213 HCI 2</span>
+            <div className="pt-2 border-t border-slate-800/70 flex items-center justify-between text-[11px] text-slate-400">
+              <span className="flex items-center gap-1">
+                <GripHorizontal size={12} className="text-slate-500" />
+                Drag handle to reposition
+              </span>
+              <button
+                type="button"
+                onClick={resetDemoData}
+                className="hover:text-amber-400 transition-colors flex items-center gap-1 cursor-pointer"
+                title="Reset intake forms and sensor mocks"
+              >
+                <RotateCcw size={10} />
+                <span>Reset State</span>
+              </button>
             </div>
           </div>
         )}

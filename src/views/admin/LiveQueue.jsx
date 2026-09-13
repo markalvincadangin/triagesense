@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { RECENT_ACTIVITIES } from '../../data/demoData';
+import { StatusBadge } from '../../components/common/StatusBadge';
+import { StatCard } from '../../components/common/StatCard';
 import {
   Users,
   Clock,
@@ -16,8 +18,7 @@ import {
   Server,
   Star,
   Activity,
-  Layers,
-  Sparkles
+  Layers
 } from 'lucide-react';
 
 export function LiveQueue() {
@@ -65,100 +66,19 @@ export function LiveQueue() {
     currentPage * itemsPerPage
   );
 
-  // Status Badge Helper
-  const renderStatusBadge = (status) => {
-    switch (status) {
-      case 'In Triage':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">
-            <Bed size={12} />
-            <span>In Triage</span>
-          </span>
-        );
-      case 'Waiting':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-            <Star size={11} className="fill-amber-500 text-amber-500" />
-            <span>Waiting</span>
-          </span>
-        );
-      case 'New':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200">
-            <Activity size={12} />
-            <span>New</span>
-          </span>
-        );
-      case 'Completed':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <CheckCircle2 size={12} />
-            <span>Completed</span>
-          </span>
-        );
-      default:
-        return <span className="text-xs text-slate-600">{status}</span>;
-    }
-  };
-
-  // Pain Pill Helper
+  // Pain Pill Severity Indicator
   const renderPainBadge = (level) => {
     const p = level || 0;
-    let bg = 'bg-emerald-50 text-emerald-700 border-emerald-200';
-    if (p >= 8) bg = 'bg-red-50 text-red-700 border-red-200';
-    else if (p >= 7) bg = 'bg-orange-50 text-orange-700 border-orange-200';
-    else if (p >= 5) bg = 'bg-amber-50 text-amber-700 border-amber-200';
+    let colorClass = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    if (p >= 8) colorClass = 'bg-red-50 text-emergency border-red-200';
+    else if (p >= 7) colorClass = 'bg-orange-50 text-orange-700 border-orange-200';
+    else if (p >= 5) colorClass = 'bg-amber-50 text-amber-700 border-amber-200';
 
     return (
-      <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold border ${bg}`}>
+      <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold border ${colorClass}`}>
         {p}/10
       </span>
     );
-  };
-
-  // ESI Badge Helper
-  const renderEsiBadge = (esi) => {
-    if (!esi) {
-      return (
-        <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500 border border-slate-200">
-          Pending Nurse Exam
-        </span>
-      );
-    }
-    switch (esi) {
-      case 'ESI-1':
-        return (
-          <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800 border border-red-300">
-            ESI-1
-          </span>
-        );
-      case 'ESI-2':
-        return (
-          <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-100 text-orange-800 border border-orange-300">
-            ESI-2
-          </span>
-        );
-      case 'ESI-3':
-        return (
-          <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300">
-            ESI-3
-          </span>
-        );
-      case 'ESI-4':
-        return (
-          <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-800 border border-sky-300">
-            ESI-4
-          </span>
-        );
-      case 'ESI-5':
-        return (
-          <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-            ESI-5
-          </span>
-        );
-      default:
-        return <span className="text-xs font-bold text-slate-600">{esi}</span>;
-    }
   };
 
   return (
@@ -166,19 +86,19 @@ export function LiveQueue() {
       {/* Top Title Bar */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-[24px] font-extrabold text-slate-900 tracking-tight leading-tight">
+          <h1 className="text-[24px] font-extrabold text-text-primary tracking-tight leading-tight">
             Live Emergency Triage Queue
           </h1>
-          <p className="text-[13px] text-slate-500 mt-0.5">
+          <p className="text-[13px] text-text-secondary mt-0.5">
             Real-time patient registrations and clinical nurse assessments.
           </p>
         </div>
 
-        {/* View Layout Toggle (Toggle Right Rail for Full Width Inspo 2 vs Dual Rail Inspo 1) */}
+        {/* View Layout Toggle */}
         <button
           type="button"
           onClick={() => setShowRightRail(!showRightRail)}
-          className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-xs transition-colors"
+          className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border-main bg-white text-xs font-semibold text-text-primary hover:bg-canvas shadow-xs transition-colors"
           title="Toggle Operational Side Panel"
         >
           <Layers size={14} />
@@ -186,71 +106,36 @@ export function LiveQueue() {
         </button>
       </div>
 
-      {/* 4 Stat Metric KPI Cards in a Row */}
+      {/* 4 Standardized StatCard KPI Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Card 1: Patients Registered */}
-        <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
-            <Users size={24} strokeWidth={2.2} />
-          </div>
-          <div>
-            <div className="text-xs font-semibold text-slate-500">Patients Registered</div>
-            <div className="text-2xl font-black text-slate-900 leading-tight">
-              {totalIntakes}
-            </div>
-            <div className="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-0.5">
-              <span>↑ 2 today</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 2: Waiting for Triage */}
-        <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-            <Clock size={24} strokeWidth={2.2} />
-          </div>
-          <div>
-            <div className="text-xs font-semibold text-slate-500">Waiting for Triage</div>
-            <div className="text-2xl font-black text-slate-900 leading-tight">
-              {waitingCount}
-            </div>
-            <div className="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-0.5">
-              <span>↑ 1</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 3: Under Assessment */}
-        <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-            <Bed size={24} strokeWidth={2.2} />
-          </div>
-          <div>
-            <div className="text-xs font-semibold text-slate-500">Under Assessment</div>
-            <div className="text-2xl font-black text-slate-900 leading-tight">
-              {inTriageCount}
-            </div>
-            <div className="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-0.5">
-              <span>↑ 2</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 4: Triage Completed */}
-        <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-            <CheckCircle2 size={24} strokeWidth={2.2} />
-          </div>
-          <div>
-            <div className="text-xs font-semibold text-slate-500">Completed</div>
-            <div className="text-2xl font-black text-slate-900 leading-tight">
-              {completedCount}
-            </div>
-            <div className="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-0.5">
-              <span>↑ 1</span>
-            </div>
-          </div>
-        </div>
+        <StatCard
+          label="Patients Registered"
+          value={totalIntakes}
+          subtext="↑ 2 today"
+          icon={Users}
+          variant="default"
+        />
+        <StatCard
+          label="Waiting for Triage"
+          value={waitingCount}
+          subtext="↑ 1"
+          icon={Clock}
+          variant="warning"
+        />
+        <StatCard
+          label="Under Assessment"
+          value={inTriageCount}
+          subtext="↑ 2"
+          icon={Bed}
+          variant="default"
+        />
+        <StatCard
+          label="Completed"
+          value={completedCount}
+          subtext="↑ 1"
+          icon={CheckCircle2}
+          variant="success"
+        />
       </div>
 
       {/* Filter Ribbon: Status Pills + ESI Filter + Search */}
@@ -326,11 +211,11 @@ export function LiveQueue() {
       {/* Main Content Area: Table (Left) + Right Operational Rail (Right) */}
       <div className="flex gap-5 items-start">
         {/* Left Column: Live Queue Table */}
-        <div className="flex-1 bg-white rounded-2xl border border-slate-100 shadow-xs overflow-hidden">
+        <div className="flex-1 bg-white rounded-2xl border border-border-main shadow-subtle overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-100 bg-slate-50/70 text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">
+                <tr className="border-b border-border-main bg-canvas text-[11px] font-extrabold text-text-secondary uppercase tracking-wider">
                   <th className="py-3.5 px-4 text-center w-12">#</th>
                   <th className="py-3.5 px-4 w-20">Time</th>
                   <th className="py-3.5 px-4 w-32">Ticket #</th>
@@ -343,7 +228,7 @@ export function LiveQueue() {
                   <th className="py-3.5 px-4 text-right w-24">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-xs">
+              <tbody className="divide-y divide-border-main text-xs">
                 {paginatedIntakes.length > 0 ? (
                   paginatedIntakes.map((item, idx) => {
                     const rowNumber = (currentPage - 1) * itemsPerPage + idx + 1;
@@ -354,32 +239,32 @@ export function LiveQueue() {
                     return (
                       <tr
                         key={item.id}
-                        className="hover:bg-emerald-50/30 transition-colors group cursor-pointer"
+                        className="hover:bg-brand-green-50 transition-colors group cursor-pointer"
                         onClick={() => selectIntakeForDossier(item.id)}
                       >
                         {/* Sequence Number */}
-                        <td className="py-4 px-4 text-center font-bold text-slate-400">
+                        <td className="py-4 px-4 text-center font-bold text-text-secondary">
                           {rowNumber}
                         </td>
 
                         {/* Arrival Time */}
-                        <td className="py-4 px-4 font-semibold text-slate-600 whitespace-nowrap">
+                        <td className="py-4 px-4 font-semibold text-text-secondary whitespace-nowrap">
                           {item.timestamp}
                         </td>
 
                         {/* Ticket Identifier */}
                         <td className="py-4 px-4 whitespace-nowrap">
-                          <span className="font-mono font-bold text-emerald-700">
+                          <span className="font-mono font-bold text-brand-green">
                             {item.id}
                           </span>
                         </td>
 
                         {/* Patient Demographics */}
                         <td className="py-4 px-4">
-                          <div className="font-bold text-slate-900 text-[13px]">
+                          <div className="font-bold text-text-primary text-[13px]">
                             {patient.fullName || 'Patient Intake'}
                           </div>
-                          <div className="text-[11px] text-slate-600 font-medium mt-0.5">
+                          <div className="text-[11px] text-text-secondary font-medium mt-0.5">
                             {patient.age ? `${patient.age}y` : ''}
                             {patient.gender ? ` • ${patient.gender}` : ''}
                             {item.language ? ` • ${item.language}` : ''}
@@ -388,7 +273,7 @@ export function LiveQueue() {
 
                         {/* Chief Complaint */}
                         <td className="py-4 px-4 max-w-[260px]">
-                          <div className="font-black text-slate-950 text-[13px] tracking-tight leading-snug truncate" title={symptomsStr}>
+                          <div className="font-black text-text-primary text-[13px] tracking-tight leading-snug truncate" title={symptomsStr}>
                             {symptomsStr || 'Subjective complaints'}
                           </div>
                           <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
@@ -422,12 +307,12 @@ export function LiveQueue() {
 
                         {/* Workflow Status */}
                         <td className="py-4 px-4 whitespace-nowrap">
-                          {renderStatusBadge(item.status)}
+                          <StatusBadge type="status" value={item.status} />
                         </td>
 
                         {/* ESI Acuity */}
                         <td className="py-4 px-4 text-center whitespace-nowrap">
-                          {renderEsiBadge(item.nurseAssessment?.assignedESI)}
+                          <StatusBadge type="acuity" value={item.nurseAssessment?.assignedESI} />
                         </td>
 
                         {/* Open Action Button */}
@@ -532,27 +417,27 @@ export function LiveQueue() {
             </button>
 
             {/* 2. Recent Activity Card */}
-            <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-xs flex flex-col gap-3">
-              <div className="text-xs font-bold text-slate-800">Recent Activity</div>
+            <div className="bg-white rounded-2xl p-4 border border-border-main shadow-subtle flex flex-col gap-3">
+              <div className="text-xs font-bold text-text-primary">Recent Activity</div>
 
               <div className="flex flex-col gap-3.5 relative pl-2">
                 {/* Timeline vertical connector */}
-                <div className="absolute left-[11px] top-2 bottom-2 w-[1.5px] bg-slate-100" />
+                <div className="absolute left-[11px] top-2 bottom-2 w-[1.5px] bg-border-main" />
 
                 {RECENT_ACTIVITIES.map((act) => (
                   <div key={act.id} className="flex items-start justify-between gap-2 relative z-10">
                     <div className="flex items-start gap-2.5">
                       <span className={`w-2 h-2 rounded-full ${act.dotColor} mt-1.5 shrink-0 ring-4 ring-white`} />
                       <div>
-                        <div className="text-xs font-semibold text-slate-800 leading-tight">
+                        <div className="text-xs font-semibold text-text-primary leading-tight">
                           {act.text}
                         </div>
-                        <div className="text-[11px] text-slate-400 mt-0.5">
+                        <div className="text-[11px] text-text-secondary mt-0.5">
                           {act.token}
                         </div>
                       </div>
                     </div>
-                    <span className="text-[10px] font-bold text-slate-400 whitespace-nowrap">
+                    <span className="text-[10px] font-bold text-text-secondary whitespace-nowrap">
                       {act.time}
                     </span>
                   </div>
@@ -561,76 +446,76 @@ export function LiveQueue() {
             </div>
 
             {/* 3. Quick Actions Card */}
-            <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-xs flex flex-col gap-2">
-              <div className="text-xs font-bold text-slate-800 mb-1">Quick Actions</div>
+            <div className="bg-white rounded-2xl p-4 border border-border-main shadow-subtle flex flex-col gap-2">
+              <div className="text-xs font-bold text-text-primary mb-1">Quick Actions</div>
 
               <button
                 type="button"
                 onClick={() => setActiveAdminTab('emergency-console')}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-left"
+                className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-canvas transition-colors text-left"
               >
                 <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-red-50 text-red-600 flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-lg bg-red-50 text-emergency flex items-center justify-center">
                     <AlertTriangle size={15} />
                   </div>
-                  <span className="text-xs font-semibold text-slate-700">Emergency Console</span>
+                  <span className="text-xs font-semibold text-text-primary">Emergency Console</span>
                 </div>
-                <ChevronRight size={14} className="text-slate-400" />
+                <ChevronRight size={14} className="text-text-secondary" />
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveAdminTab('patient-directory')}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-left"
+                className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-canvas transition-colors text-left"
               >
                 <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-lg bg-blue-50 text-brand-blue flex items-center justify-center">
                     <FolderArchive size={15} />
                   </div>
-                  <span className="text-xs font-semibold text-slate-700">Patient Directory</span>
+                  <span className="text-xs font-semibold text-text-primary">Patient Directory</span>
                 </div>
-                <ChevronRight size={14} className="text-slate-400" />
+                <ChevronRight size={14} className="text-text-secondary" />
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveAdminTab('analytics')}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-left"
+                className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-canvas transition-colors text-left"
               >
                 <div className="flex items-center gap-2.5">
                   <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
                     <BarChart3 size={15} />
                   </div>
-                  <span className="text-xs font-semibold text-slate-700">View Reports</span>
+                  <span className="text-xs font-semibold text-text-primary">View Reports</span>
                 </div>
-                <ChevronRight size={14} className="text-slate-400" />
+                <ChevronRight size={14} className="text-text-secondary" />
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveAdminTab('fleet-manager')}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-left"
+                className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-canvas transition-colors text-left"
               >
                 <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-50 text-brand-green flex items-center justify-center">
                     <Server size={15} />
                   </div>
-                  <span className="text-xs font-semibold text-slate-700">Kiosk Settings</span>
+                  <span className="text-xs font-semibold text-text-primary">Kiosk Settings</span>
                 </div>
-                <ChevronRight size={14} className="text-slate-400" />
+                <ChevronRight size={14} className="text-text-secondary" />
               </button>
             </div>
 
             {/* 4. Nurse-Controlled ESI Informational Card (Clinical Governance Callout) */}
             <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-100 flex items-start gap-2.5">
-              <div className="w-6 h-6 rounded-full bg-emerald-700 text-white flex items-center justify-center shrink-0 mt-0.5">
+              <div className="w-6 h-6 rounded-full bg-brand-green text-white flex items-center justify-center shrink-0 mt-0.5">
                 <Info size={14} strokeWidth={2.5} />
               </div>
               <div>
-                <div className="text-xs font-bold text-emerald-900 leading-tight">
+                <div className="text-xs font-bold text-brand-green-900 leading-tight">
                   Nurse-Controlled ESI
                 </div>
-                <p className="text-[11px] text-emerald-700 mt-1 leading-normal">
+                <p className="text-[11px] text-brand-green-700 mt-1 leading-normal">
                   ESI is manually assigned by the nurse based on clinical assessment.
                 </p>
               </div>

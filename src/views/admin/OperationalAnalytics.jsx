@@ -5,6 +5,14 @@ import { StatCard } from '../../components/common/StatCard';
 import { AlertBanner } from '../../components/common/AlertBanner';
 import { BarChart3, Clock, TrendingUp, Users, Globe, Info, Activity } from 'lucide-react';
 
+const COMPLAINT_COLOR_CLASSES = {
+  'Chest Pain / Cardiac': 'bg-emergency',
+  'Respiratory / Dyspnea': 'bg-orange-500',
+  'Abdominal / Gastro': 'bg-amber-500',
+  'Trauma & Lacerations': 'bg-brand-blue',
+  'Fever & Infectious': 'bg-brand-green',
+};
+
 export function OperationalAnalytics() {
   const { analytics } = useTriage();
 
@@ -80,10 +88,10 @@ export function OperationalAnalytics() {
                   <span>{item.name}</span>
                   <span className="font-bold">{item.count} pts ({item.percent})</span>
                 </div>
-                <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-2.5 bg-canvas rounded-full overflow-hidden border border-border-main/50">
                   <div
-                    className="h-full rounded-full transition-all"
-                    style={{ width: item.percent, backgroundColor: item.color }}
+                    className={`h-full rounded-full transition-all ${COMPLAINT_COLOR_CLASSES[item.name] || 'bg-brand-green'}`}
+                    style={{ width: item.percent }}
                   />
                 </div>
               </div>
@@ -105,7 +113,7 @@ export function OperationalAnalytics() {
                   <span>{lang.dialect}</span>
                   <span className="font-bold">{lang.count} users ({lang.percent})</span>
                 </div>
-                <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-2.5 bg-canvas rounded-full overflow-hidden border border-border-main/50">
                   <div
                     className="h-full bg-brand-green rounded-full transition-all"
                     style={{ width: lang.percent }}
