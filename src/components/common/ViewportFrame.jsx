@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { DemoControls } from './DemoControls';
-import { KioskEnclosure, TOTEM_WIDTH, TOTEM_HEIGHT, FOCUS_HEIGHT } from '../kiosk/KioskEnclosure';
+import { KioskEnclosure, TOTEM_WIDTH, TOTEM_HEIGHT, FOCUS_WIDTH, FOCUS_HEIGHT } from '../kiosk/KioskEnclosure';
 
 export function ViewportFrame({ kioskContent, adminContent }) {
   const { viewMode, kioskFraming } = useTriage();
@@ -23,17 +23,16 @@ export function ViewportFrame({ kioskContent, adminContent }) {
 
   const { width: winW, height: winH } = dimensions;
 
-  // Effective Totem Reference Height based on CAD Framing Mode
-  // - 'focus': Focuses on 23.8" Touchscreen + Peripherals (FOCUS_HEIGHT = 2700 px) for optimal legibility & touch ergonomics
-  // - 'totem': Full Freestanding Totem (TOTEM_HEIGHT = 3600 px)
-  const effectiveTotemH = kioskFraming === 'totem' ? TOTEM_HEIGHT : FOCUS_HEIGHT;
+  // Active kiosk canvas dimensions based on framing mode
+  const kioskW = kioskFraming === 'totem' ? TOTEM_WIDTH : FOCUS_WIDTH;
+  const kioskH = kioskFraming === 'totem' ? TOTEM_HEIGHT : FOCUS_HEIGHT;
 
-  // 1. STANDALONE KIOSK SCALING (Canonical Width: 1340 px, Height: effectiveTotemH)
-  const kioskPadY = 48; // Padding for comfortable top & bottom margins
-  const kioskPadX = 48; // Padding for left & right margins
+  // 1. STANDALONE KIOSK SCALING
+  const kioskPadY = 48;
+  const kioskPadX = 48;
   const standaloneKioskScale = Math.min(
-    (winH - kioskPadY) / effectiveTotemH,
-    (winW - kioskPadX) / TOTEM_WIDTH
+    (winH - kioskPadY) / kioskH,
+    (winW - kioskPadX) / kioskW
   );
 
   // 2. DUAL VIEW BALANCED SCALING (~28% Kiosk / ~72% Staff Portal)
@@ -43,10 +42,10 @@ export function ViewportFrame({ kioskContent, adminContent }) {
   const availW = Math.max(winW - dualPadX, 600);
   const dualGap = 32;
 
-  let dualKioskScale = (availH * 0.95) / effectiveTotemH;
+  let dualKioskScale = (availH * 0.95) / kioskH;
   let dualAdminScale = (availH * 0.88) / 1080;
 
-  const totalWidthNeeded = (TOTEM_WIDTH * dualKioskScale) + dualGap + (1920 * dualAdminScale);
+  const totalWidthNeeded = (kioskW * dualKioskScale) + dualGap + (1920 * dualAdminScale);
   if (totalWidthNeeded > availW) {
     const widthShrinkRatio = availW / totalWidthNeeded;
     dualKioskScale *= widthShrinkRatio;

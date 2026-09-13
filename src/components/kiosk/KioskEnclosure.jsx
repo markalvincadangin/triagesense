@@ -12,7 +12,11 @@ import { Wifi, Activity, QrCode, Sparkles, CheckCircle2, AlertCircle } from 'luc
  */
 export const TOTEM_WIDTH = 1340;
 export const TOTEM_HEIGHT = 3600;
-export const FOCUS_HEIGHT = 2700;
+
+// Screen-only framing: just the 23.8" FHD display + thin bezel
+export const SCREEN_BEZEL = 20; // px — thin device bezel on all sides
+export const FOCUS_WIDTH = 1080 + SCREEN_BEZEL * 2;  // 1120
+export const FOCUS_HEIGHT = 1920 + SCREEN_BEZEL * 2; // 1960
 
 export function KioskEnclosure({ children, scale = 1.0, framing = 'focus' }) {
   const { activeHardwareSensor, lastSubmittedId, kioskFraming } = useTriage();
@@ -23,7 +27,49 @@ export function KioskEnclosure({ children, scale = 1.0, framing = 'focus' }) {
   const isPpgActive = activeHardwareSensor?.type === 'ppg';
   const isThermalActive = activeHardwareSensor?.type === 'thermal';
 
-  const effectiveHeight = currentFraming === 'totem' ? TOTEM_HEIGHT : FOCUS_HEIGHT;
+  // ── Screen Focus: just the display panel + thin device bezel ─────────────
+  if (currentFraming === 'focus') {
+    return (
+      <div
+        style={{
+          width: `${FOCUS_WIDTH * scale}px`,
+          height: `${FOCUS_HEIGHT * scale}px`,
+          position: 'relative',
+        }}
+        className="select-none"
+      >
+        {/* Scaled screen-only frame */}
+        <div
+          style={{
+            width: `${FOCUS_WIDTH}px`,
+            height: `${FOCUS_HEIGHT}px`,
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+          }}
+          className="bg-slate-950 rounded-[36px] shadow-2xl overflow-hidden border-[3px] border-slate-800"
+        >
+          {/* 23.8" FHD Touchscreen — fills the inner frame */}
+          <div
+            className="overflow-hidden bg-canvas"
+            style={{
+              width: '1080px',
+              height: '1920px',
+              margin: `${SCREEN_BEZEL}px`,
+              borderRadius: '20px',
+            }}
+          >
+            {children}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Full Totem (CAD): complete chassis enclosure ───────────────────
+  const effectiveHeight = TOTEM_HEIGHT;
 
   return (
     <div
