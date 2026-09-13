@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import QRCode from 'qrcode';
+import JsBarcode from 'jsbarcode';
 import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
-import { Card } from '../../components/common/Card';
 import wvsumcLogo from '../../assets/wvsumc-logo.png';
 import {
   CheckCircle2,
@@ -13,127 +14,91 @@ import {
   AlertTriangle,
   FileText,
   Smartphone,
-  ScanLine,
-  QrCode
+  ScanLine
 } from 'lucide-react';
 
 /**
- * Deterministic Vector 2D QR Code Generator
- * Renders an authentic 25x25 QR Matrix with genuine finder patterns,
- * timing tracks, alignment pattern, and data modules.
+ * 100% Authentic Scannable 2D QR Code
+ * Generates an ISO/IEC 18004 standards-compliant QR Code using 'qrcode'.
+ * Scannable by any iOS / Android camera phone.
  */
-function QRCodeSVG({ value, size = 96 }) {
-  const n = 25;
-  const grid = Array(n).fill(0).map(() => Array(n).fill(0));
+function ScannableQRCode({ value, size = 88 }) {
+  const [dataUrl, setDataUrl] = useState('');
 
-  const placeFinder = (r0, c0) => {
-    for (let r = 0; r < 7; r++) {
-      for (let c = 0; c < 7; c++) {
-        if (
-          r === 0 || r === 6 || c === 0 || c === 6 ||
-          (r >= 2 && r <= 4 && c >= 2 && c <= 4)
-        ) {
-          grid[r0 + r][c0 + c] = 1;
-        }
+  useEffect(() => {
+    let isMounted = true;
+    QRCode.toDataURL(value, {
+      errorCorrectionLevel: 'M',
+      margin: 1,
+      width: size * 3, // 3x high-resolution rendering
+      color: {
+        dark: '#0f172a',
+        light: '#ffffff'
       }
-    }
-  };
+    })
+      .then((url) => {
+        if (isMounted) setDataUrl(url);
+      })
+      .catch((err) => {
+        console.error('QR code generation failed:', err);
+      });
 
-  placeFinder(0, 0);
-  placeFinder(0, n - 7);
-  placeFinder(n - 7, 0);
+    return () => {
+      isMounted = false;
+    };
+  }, [value, size]);
 
-  for (let i = 8; i < n - 8; i++) {
-    if (i % 2 === 0) {
-      grid[6][i] = 1;
-      grid[i][6] = 1;
-    }
-  }
-
-  for (let r = 16; r <= 20; r++) {
-    for (let c = 16; c <= 20; c++) {
-      if (r === 16 || r === 20 || c === 16 || c === 20 || (r === 18 && c === 18)) {
-        grid[r][c] = 1;
-      }
-    }
-  }
-
-  let hash = 0;
-  for (let i = 0; i < value.length; i++) {
-    hash = (hash * 31 + value.charCodeAt(i)) & 0xffffffff;
-  }
-  for (let r = 0; r < n; r++) {
-    for (let c = 0; c < n; c++) {
-      const inFinder1 = r < 8 && c < 8;
-      const inFinder2 = r < 8 && c >= n - 8;
-      const inFinder3 = r >= n - 8 && c < 8;
-      const inTiming = r === 6 || c === 6;
-      const inAlign = r >= 16 && r <= 20 && c >= 16 && c <= 20;
-      if (!inFinder1 && !inFinder2 && !inFinder3 && !inTiming && !inAlign) {
-        const bit = ((hash ^ (r * 19 + c * 37)) & (1 << ((r + c) % 16))) !== 0;
-        grid[r][c] = bit ? 1 : 0;
-      }
-    }
+  if (!dataUrl) {
+    return (
+      <div
+        style={{ width: size, height: size }}
+        className="bg-slate-100 rounded-lg flex items-center justify-center text-[9px] text-slate-400 font-mono animate-pulse"
+      >
+        Generating...
+      </div>
+    );
   }
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${n} ${n}`} className="shape-rendering-crispEdges">
-      <rect width={n} height={n} fill="white" />
-      {grid.map((row, r) =>
-        row.map((cell, c) =>
-          cell ? <rect key={`${r}-${c}`} x={c} y={r} width={1} height={1} fill="#0f172a" /> : null
-        )
-      )}
-    </svg>
+    <img
+      src={dataUrl}
+      alt="Scannable QR Code"
+      style={{ width: size, height: size }}
+      className="rounded-lg shadow-2xs object-contain"
+    />
   );
 }
 
 /**
- * Realistic 1D Barcode (Code-128 emulation)
- * Renders guard bars, variable width stripes, and human-readable code.
+ * 100% Authentic Scannable 1D Barcode (Code-128)
+ * Generates an authentic Code-128 barcode using 'jsbarcode'.
+ * Scannable by standard hospital handheld barcode scanners.
  */
-function BarcodeSVG({ value, width = 230, height = 38 }) {
-  const bars = [2, 1, 1, 2, 3, 2];
-  for (let i = 0; i < value.length; i++) {
-    const code = value.charCodeAt(i);
-    bars.push(
-      (code % 3) + 1,
-      ((code >> 2) % 3) + 1,
-      ((code >> 4) % 3) + 1,
-      ((code >> 1) % 2) + 1
-    );
-  }
-  bars.push(2, 3, 3, 1, 1, 1, 2);
+function ScannableBarcode({ value, width = 1.3, height = 36 }) {
+  const svgRef = useRef(null);
 
-  const totalUnits = bars.reduce((a, b) => a + b, 0);
-  let currentX = 0;
+  useEffect(() => {
+    if (svgRef.current && value) {
+      try {
+        JsBarcode(svgRef.current, value, {
+          format: 'CODE128',
+          lineColor: '#0f172a',
+          width: width,
+          height: height,
+          displayValue: true,
+          fontSize: 11,
+          font: 'monospace',
+          fontOptions: 'bold',
+          textMargin: 3,
+          margin: 0
+        });
+      } catch (err) {
+        console.error('Barcode generation failed:', err);
+      }
+    }
+  }, [value, width, height]);
 
-  return (
-    <div className="flex flex-col items-center">
-      <svg width={width} height={height} viewBox={`0 0 ${totalUnits} ${height}`} className="shape-rendering-crispEdges">
-        <rect width={totalUnits} height={height} fill="white" />
-        {bars.map((barWidth, idx) => {
-          const isBar = idx % 2 === 0;
-          const x = currentX;
-          currentX += barWidth;
-          if (!isBar) return null;
-          return (
-            <rect
-              key={idx}
-              x={x}
-              y={0}
-              width={barWidth}
-              height={height}
-              fill="#0f172a"
-            />
-          );
-        })}
-      </svg>
-      <span className="text-[11px] font-mono font-bold tracking-widest text-slate-700 mt-1">
-        *{value}*
-      </span>
-    </div>
-  );
+  return <svg ref={svgRef} className="max-w-full overflow-visible" />;
 }
 
 export function TicketConfirmation() {
@@ -151,6 +116,9 @@ export function TicketConfirmation() {
   const patientAge = submittedRecord?.patientInfo?.age || '70';
   const patientGender = submittedRecord?.patientInfo?.gender || 'Male';
   const chiefComplaint = submittedRecord?.symptoms?.join(', ') || 'Chest Pain, Shortness of Breath';
+
+  // Real URL that patient smartphones will open upon scanning
+  const mobileTrackingUrl = `https://markalvincadangin.github.io/triagesense/?ticket=${referenceCode}`;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -182,14 +150,19 @@ export function TicketConfirmation() {
         </h2>
       </div>
 
-      {/* 2. Main Content Flow: Realistic Thermal Queue Ticket + Waiting Guide */}
+      {/* 2. Main Content Flow: Realistic Queue Ticket + Waiting Guide */}
       <div className="w-full max-w-[820px] mx-auto my-3 flex flex-col items-center gap-4 shrink-0">
         {/* Realistic Thermal Queue Slip Card */}
         <div className="w-full bg-[#FFFDF9] rounded-2xl border border-slate-300 shadow-xl relative overflow-hidden flex flex-col text-slate-800 animate-fade-in font-sans">
-          {/* Top Perforation / Tear Notch */}
-          <div className="w-full border-b border-dashed border-slate-300 py-1 px-4 bg-slate-50/80 flex items-center justify-between text-[10px] font-mono text-slate-400 select-none">
-            <span>✂ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ✂</span>
-            <span className="hidden sm:inline font-bold">TEAR HERE</span>
+          {/* Top Perforation Tear Line */}
+          <div className="w-full relative py-1 px-4 bg-slate-100/70 border-b border-dashed border-slate-300 flex items-center justify-between text-[10px] font-mono text-slate-400 select-none overflow-hidden">
+            <div className="flex items-center gap-2 overflow-hidden">
+              <span className="text-slate-500 font-bold">✂</span>
+              <span className="tracking-[4px] text-slate-400 font-semibold whitespace-nowrap overflow-hidden">
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+              </span>
+            </div>
+            <span className="font-bold shrink-0 ml-2 text-slate-500 uppercase tracking-widest text-[9px]">TEAR HERE</span>
           </div>
 
           <div className="p-5 sm:p-6 flex flex-col gap-3.5">
@@ -250,12 +223,12 @@ export function TicketConfirmation() {
               </div>
             </div>
 
-            {/* 4. Dual Scannable Validation Section (QR Code for Patient + Barcode for Nurse Desk) */}
+            {/* 4. Dual Scannable Validation Section (Real QR Code for Patient + Real Barcode for Nurse Desk) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-2 border-t border-slate-200">
-              {/* Left: 2D QR Code for Mobile Patient Tracking */}
+              {/* Left: 100% Real 2D QR Code for Mobile Patient Tracking */}
               <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                <div className="p-1 bg-white border border-slate-300 rounded-lg shrink-0 shadow-2xs">
-                  <QRCodeSVG value={`https://triagesense.wvsumc.ph/q/${referenceCode}`} size={76} />
+                <div className="p-1 bg-white border border-slate-300 rounded-lg shrink-0 shadow-2xs flex items-center justify-center">
+                  <ScannableQRCode value={mobileTrackingUrl} size={80} />
                 </div>
                 <div className="text-left flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 text-xs font-black text-slate-900">
@@ -263,23 +236,25 @@ export function TicketConfirmation() {
                     <span>Patient Mobile Tracker</span>
                   </div>
                   <p className="text-[10px] text-slate-600 font-medium leading-tight mt-0.5">
-                    Scan with camera phone to view live queue position anywhere in the hospital.
+                    Point your camera phone at the QR code to track your queue line on mobile.
                   </p>
-                  <span className="inline-block mt-1 text-[9px] font-mono text-emerald-800 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                  <span className="inline-block mt-1 text-[9px] font-mono text-emerald-800 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 truncate max-w-full">
                     triagesense.wvsumc.ph/q/{referenceCode}
                   </span>
                 </div>
               </div>
 
-              {/* Right: 1D Barcode for Nurse Triage Desk Scanner */}
+              {/* Right: 100% Real 1D Barcode (Code-128) for Nurse Triage Desk Scanner */}
               <div className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs text-center">
-                <div className="flex items-center gap-1.5 text-xs font-black text-slate-900 mb-1">
+                <div className="flex items-center gap-1.5 text-xs font-black text-slate-900 mb-0.5">
                   <ScanLine size={13} className="text-blue-600 shrink-0" />
                   <span>Nurse Station EHR Barcode</span>
                 </div>
-                <BarcodeSVG value={referenceCode} width={220} height={34} />
+                <div className="flex items-center justify-center overflow-visible w-full py-0.5">
+                  <ScannableBarcode value={referenceCode} width={1.3} height={34} />
+                </div>
                 <p className="text-[9px] text-slate-500 font-medium leading-tight mt-0.5">
-                  Optical scanner barcode for triage desk clinician verification
+                  Laser scanner barcode for triage clinician desk verification
                 </p>
               </div>
             </div>
@@ -290,10 +265,15 @@ export function TicketConfirmation() {
             </div>
           </div>
 
-          {/* Bottom Perforation / Tear Line */}
-          <div className="w-full border-t border-dashed border-slate-300 py-1 px-4 bg-slate-50/80 flex items-center justify-between text-[10px] font-mono text-slate-400 select-none">
-            <span>✂ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ✂</span>
-            <span className="hidden sm:inline font-bold">END OF RECEIPT</span>
+          {/* Bottom Perforation Tear Line */}
+          <div className="w-full relative py-1 px-4 bg-slate-100/70 border-t border-dashed border-slate-300 flex items-center justify-between text-[10px] font-mono text-slate-400 select-none overflow-hidden">
+            <div className="flex items-center gap-2 overflow-hidden">
+              <span className="text-slate-500 font-bold">✂</span>
+              <span className="tracking-[4px] text-slate-400 font-semibold whitespace-nowrap overflow-hidden">
+                - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+              </span>
+            </div>
+            <span className="font-bold shrink-0 ml-2 text-slate-500 uppercase tracking-widest text-[9px]">END OF RECEIPT</span>
           </div>
         </div>
 
