@@ -89,6 +89,7 @@ export function DemoControls() {
   // ─── Screenshot flash feedback & copy status ────────────────────────────
   const [screenshotFlash, setScreenshotFlash] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isCapturing, setIsCapturing] = useState(false);
 
   // ─── Active Category Tab ────────────────────────────────────────────────
   const [activeTab, setActiveTab] = useState('display'); // 'display' | 'sensors' | 'screens'
@@ -269,41 +270,133 @@ export function DemoControls() {
     return () => document.removeEventListener('fullscreenchange', handleFsChange);
   }, []);
 
-  // ─── Screenshot capture (individual page content, not whole screen) ──────
-  const captureScreenshot = async (target = 'current') => {
-    try {
-      let element = null;
+  // ─── Filter demo control overlays from screenshot captures ───────────────
+  const captureFilter = (node) => {
+    if (!node) return true;
+    if (typeof node.getAttribute === 'function') {
+      if (node.getAttribute('aria-label') === 'Demo controls') return false;
+      if (node.hasAttribute('data-demo-controls')) return false;
+      if (node.hasAttribute('data-screenshot-flash')) return false;
+      if (node.hasAttribute('data-demo-label')) return false;
+      if (node.hasAttribute('data-demo-sensor-toast')) return false;
+    }
+    return true;
+  };
 
-      if (target === 'kiosk' || (target === 'current' && (viewMode === 'kiosk' || viewMode === 'split'))) {
-        element = document.querySelector('[data-kiosk-screen]');
+  // ─── Resolve target capture element, filename & dimensional options ───────
+  const resolveCaptureConfig = (target = 'current') => {
+    let mode = target;
+    if (target === 'current') {
+      if (viewMode === 'split') {
+        mode = 'dual';
+      } else if (viewMode === 'admin') {
+        mode = 'admin';
+      } else {
+        mode = 'kiosk';
       }
+    }
 
-      if (target === 'admin' || (target === 'current' && viewMode === 'admin')) {
-        element = document.querySelector('[data-admin-screen]');
-      }
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
 
-      if (!element) {
-        element = document.querySelector('[data-viewport-root]') || document.body;
-      }
+    // Dual View Mode: Captures the whole presentation viewport
+    if (mode === 'dual' || mode === 'whole') {
+      const viewportEl = document.querySelector('[data-viewport-root]');
+      const element = viewportEl || document.body;
+      const rect = element.getBoundingClientRect();
+      const width = Math.round(rect.width || window.innerWidth || 1920);
+      const height = Math.round(rect.height || window.innerHeight || 1080);
 
-      const { toPng } = await import('html-to-image');
+      return {
+        element,
+        filename: `TriageSense_Dual_View_${timestamp}.png`,
+        options: {
+          quality: 1.0,
+          pixelRatio: 2,
+          width,
+          height,
+          style: {
+            margin: '0px',
+            transform: 'none'
+          },
+          filter: captureFilter
+        }
+      };
+    }
 
-      setScreenshotFlash(true);
-      setTimeout(() => setScreenshotFlash(false), 300);
+    // Clinical Workstation Mode: Captures the 1920x1080 staff screen display only
+    if (mode === 'admin') {
+      const adminEl = document.querySelector('[data-admin-screen]');
+      const adminTabName = ADMIN_SCREENS.find((s) => s.key === activeAdminTab)?.label?.replace(/\s+/g, '_') || activeAdminTab;
 
-      const dataUrl = await toPng(element, {
+      return {
+        element: adminEl || document.querySelector('[data-viewport-root]') || document.body,
+        filename: `TriageSense_Staff_${adminTabName}_${timestamp}.png`,
+        options: {
+          quality: 1.0,
+          pixelRatio: 2,
+          backgroundColor: '#F8F8F6',
+          width: 1920,
+          height: 1080,
+          style: {
+            transform: 'none',
+            transformOrigin: 'top left',
+            margin: '0px',
+            position: 'static',
+            width: '1920px',
+            height: '1080px'
+          },
+          filter: captureFilter
+        }
+      };
+    }
+
+    // Kiosk Mode: Captures the 1080x1920 patient intake screen display only
+    const kioskEl = document.querySelector('[data-kiosk-screen]');
+    const kioskStepName = KIOSK_SCREENS.find((s) => s.key === kioskStep)?.label?.replace(/\s+/g, '_') || kioskStep;
+
+    return {
+      element: kioskEl || document.querySelector('[data-viewport-root]') || document.body,
+      filename: `TriageSense_Kiosk_${kioskStepName}_${timestamp}.png`,
+      options: {
         quality: 1.0,
         pixelRatio: 2,
-        backgroundColor: '#FFFFFF',
-        filter: (node) => {
-          if (node?.getAttribute?.('aria-label') === 'Demo controls') return false;
-          return true;
-        }
-      });
+        backgroundColor: '#F8F8F6',
+        width: 1080,
+        height: 1920,
+        style: {
+          transform: 'none',
+          transformOrigin: 'top left',
+          margin: '0px',
+          position: 'static',
+          width: '1080px',
+          height: '1920px'
+        },
+        filter: captureFilter
+      }
+    };
+  };
 
-      const pageName = getCurrentPageName();
-      const timestamp = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
-      const filename = `TriageSense_${pageName}_${timestamp}.png`;
+  // ─── Screenshot capture execution ─────────────────────────────────────────
+  const captureScreenshot = async (target = 'current') => {
+    if (isCapturing) return;
+    setIsCapturing(true);
+
+    const viewportRoot = document.querySelector('[data-viewport-root]');
+    const savedViewportTransform = viewportRoot?.style?.transform;
+
+    try {
+      if (viewportRoot && savedViewportTransform && savedViewportTransform !== 'none') {
+        viewportRoot.style.transform = 'none';
+      }
+
+      const { element, filename, options } = resolveCaptureConfig(target);
+      const { toPng } = await import('html-to-image');
+
+      const dataUrl = await toPng(element, options);
+
+      // Trigger shutter flash feedback AFTER capture completes
+      setScreenshotFlash(true);
+      setTimeout(() => setScreenshotFlash(false), 300);
 
       const link = document.createElement('a');
       link.download = filename;
@@ -311,38 +404,35 @@ export function DemoControls() {
       link.click();
     } catch (err) {
       console.error('Screenshot capture failed:', err);
+    } finally {
+      if (viewportRoot && savedViewportTransform && savedViewportTransform !== 'none') {
+        viewportRoot.style.transform = savedViewportTransform;
+      }
+      setIsCapturing(false);
     }
   };
 
-  // ─── Copy screenshot to clipboard ────────────────────────────────────────
-  const copyScreenshotToClipboard = async () => {
+  // ─── Copy screenshot to clipboard execution ──────────────────────────────
+  const copyScreenshotToClipboard = async (target = 'current') => {
+    if (isCapturing) return;
+    setIsCapturing(true);
+
+    const viewportRoot = document.querySelector('[data-viewport-root]');
+    const savedViewportTransform = viewportRoot?.style?.transform;
+
     try {
-      let element = null;
-
-      if (viewMode === 'kiosk' || viewMode === 'split') {
-        element = document.querySelector('[data-kiosk-screen]');
-      } else if (viewMode === 'admin') {
-        element = document.querySelector('[data-admin-screen]');
+      if (viewportRoot && savedViewportTransform && savedViewportTransform !== 'none') {
+        viewportRoot.style.transform = 'none';
       }
 
-      if (!element) {
-        element = document.querySelector('[data-viewport-root]') || document.body;
-      }
-
+      const { element, options } = resolveCaptureConfig(target);
       const { toBlob } = await import('html-to-image');
 
+      const blob = await toBlob(element, options);
+
+      // Trigger shutter flash feedback AFTER capture completes
       setScreenshotFlash(true);
       setTimeout(() => setScreenshotFlash(false), 300);
-
-      const blob = await toBlob(element, {
-        quality: 1.0,
-        pixelRatio: 2,
-        backgroundColor: '#FFFFFF',
-        filter: (node) => {
-          if (node?.getAttribute?.('aria-label') === 'Demo controls') return false;
-          return true;
-        }
-      });
 
       if (blob && navigator.clipboard?.write) {
         await navigator.clipboard.write([
@@ -353,6 +443,11 @@ export function DemoControls() {
       }
     } catch (err) {
       console.error('Copy to clipboard failed:', err);
+    } finally {
+      if (viewportRoot && savedViewportTransform && savedViewportTransform !== 'none') {
+        viewportRoot.style.transform = savedViewportTransform;
+      }
+      setIsCapturing(false);
     }
   };
 
@@ -500,12 +595,12 @@ export function DemoControls() {
     <>
       {/* Screenshot camera-flash overlay */}
       {screenshotFlash && (
-        <div className="fixed inset-0 z-[99999] bg-white/70 pointer-events-none" />
+        <div data-screenshot-flash="true" className="fixed inset-0 z-[99999] bg-white/70 pointer-events-none" />
       )}
 
       {/* Page label overlay (pinned to top-center of viewport) */}
       {showPageLabel && (
-        <div className="fixed top-3 left-1/2 -translate-x-1/2 z-[9998] px-4 py-1.5 bg-slate-900/90 text-white text-xs font-bold rounded-full border border-slate-700/80 backdrop-blur-xl shadow-lg flex items-center gap-2 pointer-events-none">
+        <div data-demo-label="true" className="fixed top-3 left-1/2 -translate-x-1/2 z-[9998] px-4 py-1.5 bg-slate-900/90 text-white text-xs font-bold rounded-full border border-slate-700/80 backdrop-blur-xl shadow-lg flex items-center gap-2 pointer-events-none">
           <Tag size={12} className="text-brand-gold" />
           <span>{viewMode === 'kiosk' ? 'Kiosk' : viewMode === 'admin' ? 'Staff Portal' : 'Dual View'}</span>
           <span className="text-slate-500">|</span>
@@ -515,7 +610,7 @@ export function DemoControls() {
 
       {/* NN/g Heuristic #1: Visibility of System Status (Hardware Sensor Telemetry Toast) */}
       {activeHardwareSensor?.status !== 'idle' && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[99998] px-5 py-2.5 rounded-2xl shadow-2xl border backdrop-blur-2xl flex items-center gap-3 animate-fade-in pointer-events-none transition-all duration-200 bg-slate-900/95 text-white border-slate-700/80">
+        <div data-demo-sensor-toast="true" className="fixed top-4 left-1/2 -translate-x-1/2 z-[99998] px-5 py-2.5 rounded-2xl shadow-2xl border backdrop-blur-2xl flex items-center gap-3 animate-fade-in pointer-events-none transition-all duration-200 bg-slate-900/95 text-white border-slate-700/80">
           <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
             activeHardwareSensor.status === 'error'
               ? 'bg-red-500 text-white animate-shake'
@@ -552,6 +647,7 @@ export function DemoControls() {
 
       <aside
         aria-label="Demo controls"
+        data-demo-controls="true"
         className="fixed z-[9999] font-sans select-none"
         style={{
           left: `${position.x}px`,
@@ -873,26 +969,44 @@ export function DemoControls() {
                     <div className="grid grid-cols-2 gap-1.5">
                       <button
                         type="button"
+                        disabled={isCapturing}
                         onClick={() => captureScreenshot('current')}
-                        className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white border border-slate-700/60 transition-colors cursor-pointer"
-                        title="Download high-resolution PNG of current active screen"
+                        className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-xs font-semibold text-white border transition-colors cursor-pointer ${
+                          isCapturing
+                            ? 'bg-slate-800/60 border-slate-700/40 text-slate-400 cursor-not-allowed'
+                            : 'bg-slate-800 hover:bg-slate-700 border-slate-700/60'
+                        }`}
+                        title={
+                          viewMode === 'split'
+                            ? 'Download high-resolution PNG of the complete dual presentation page'
+                            : viewMode === 'admin'
+                            ? 'Download high-resolution PNG of the clinical workstation screen only'
+                            : 'Download high-resolution PNG of the patient kiosk screen only'
+                        }
                       >
                         <Camera size={13} />
-                        <span>Save PNG</span>
+                        <span>{isCapturing ? 'Capturing...' : (viewMode === 'split' ? 'Save Dual Page' : 'Save Screen PNG')}</span>
                       </button>
 
                       <button
                         type="button"
-                        onClick={copyScreenshotToClipboard}
+                        disabled={isCapturing}
+                        onClick={() => copyScreenshotToClipboard('current')}
                         className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-xs font-semibold border transition-colors cursor-pointer ${
                           copied
                             ? 'bg-emerald-900/80 text-emerald-200 border-emerald-600'
+                            : isCapturing
+                            ? 'bg-slate-800/60 border-slate-700/40 text-slate-400 cursor-not-allowed'
                             : 'bg-slate-800 hover:bg-slate-700 text-white border-slate-700/60'
                         }`}
-                        title="Copy screenshot directly to clipboard"
+                        title={
+                          viewMode === 'split'
+                            ? 'Copy complete dual presentation page directly to clipboard'
+                            : 'Copy active screen display directly to clipboard'
+                        }
                       >
                         {copied ? <Check size={13} className="text-emerald-400" /> : <Clipboard size={13} />}
-                        <span>{copied ? 'Copied!' : 'Copy to Clipboard'}</span>
+                        <span>{copied ? 'Copied!' : (viewMode === 'split' ? 'Copy Dual Page' : 'Copy Screen')}</span>
                       </button>
                     </div>
 
@@ -901,8 +1015,10 @@ export function DemoControls() {
                       <div className="grid grid-cols-2 gap-1.5 mt-0.5">
                         <button
                           type="button"
+                          disabled={isCapturing}
                           onClick={() => captureScreenshot('kiosk')}
-                          className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-[11px] font-semibold text-emerald-200 border border-emerald-800/80 transition-colors cursor-pointer"
+                          className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-[11px] font-semibold text-emerald-200 border border-emerald-800/80 transition-colors cursor-pointer disabled:opacity-50"
+                          title="Capture and download 1080×1920 Kiosk touchscreen display only"
                         >
                           <Smartphone size={11} />
                           <span>Kiosk Screen Only</span>
@@ -910,8 +1026,10 @@ export function DemoControls() {
 
                         <button
                           type="button"
+                          disabled={isCapturing}
                           onClick={() => captureScreenshot('admin')}
-                          className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-blue-950 hover:bg-blue-900 text-[11px] font-semibold text-blue-200 border border-blue-800/80 transition-colors cursor-pointer"
+                          className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-blue-950 hover:bg-blue-900 text-[11px] font-semibold text-blue-200 border border-blue-800/80 transition-colors cursor-pointer disabled:opacity-50"
+                          title="Capture and download 1920×1080 Clinical workstation console only"
                         >
                           <Monitor size={11} />
                           <span>Staff Console Only</span>
