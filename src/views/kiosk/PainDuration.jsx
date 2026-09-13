@@ -99,24 +99,24 @@ export function PainDuration() {
   };
 
   return (
-    <div className="flex flex-col h-full px-12 py-8 bg-canvas select-none">
+    <div className="flex flex-col h-full px-4 sm:px-8 md:px-10 py-6 bg-canvas select-none">
       {/* Header */}
-      <div className="text-center shrink-0 mb-4">
-        <h1 className="text-4xl font-black text-text-primary tracking-tight leading-tight">
+      <div className="text-center shrink-0 mb-3">
+        <h1 className="text-3xl sm:text-4xl font-black text-text-primary tracking-tight leading-tight">
           {t('painDuration.stepTitle')}
         </h1>
-        <h2 className="text-xl font-bold text-brand-green mt-2">
+        <h2 className="text-base sm:text-xl font-bold text-brand-green mt-1">
           {t('painDuration.stepSubtitle')}
         </h2>
       </div>
 
       {/* Main Controls Stack */}
-      <div className="w-full max-w-[960px] mx-auto my-2 flex flex-col gap-6">
+      <div className="w-full max-w-[960px] mx-auto my-1 flex flex-col gap-4 sm:gap-6">
         {/* Section 1: Pain Rating Scale */}
         <Card variant="kiosk">
-          <div className="text-xl font-black text-text-primary mb-4 flex items-center justify-between">
+          <div className="text-lg sm:text-xl font-black text-text-primary mb-3 flex items-center justify-between">
             <span>{t('painDuration.scaleTitle')}</span>
-            <span className="text-sm text-text-secondary font-semibold">{t('painDuration.scaleSubtitle')}</span>
+            <span className="text-xs sm:text-sm text-text-secondary font-semibold">{t('painDuration.scaleSubtitle')}</span>
           </div>
           <PainScale
             value={intakeDraft.painLevel || 0}
@@ -126,7 +126,7 @@ export function PainDuration() {
 
         {/* Section 2: Duration Selector */}
         <Card variant="kiosk">
-          <div className="text-xl font-black text-text-primary mb-4">
+          <div className="text-lg sm:text-xl font-black text-text-primary mb-3">
             {t('painDuration.durationTitle')}
           </div>
           <DurationSelector
@@ -138,26 +138,26 @@ export function PainDuration() {
         {/* Section 3: Integrated PPG Pulse Oximeter Finger Sensor Bay */}
         <Card variant="kiosk" className="border-2 border-brand-green/40 relative overflow-hidden">
           {/* Header Accent */}
-          <div className="flex items-center justify-between border-b border-border-main pb-3.5 mb-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border-main pb-3 mb-3.5">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-brand-green-light flex items-center justify-center text-brand-green">
-                <Activity size={22} strokeWidth={2.5} />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-brand-green-light flex items-center justify-center text-brand-green shrink-0">
+                <Activity size={20} strokeWidth={2.5} />
               </div>
               <div>
-                <div className="text-lg font-black text-text-primary">
+                <div className="text-base sm:text-lg font-black text-text-primary leading-tight">
                   3. Preliminary Vitals Check (Vital Signs Sensor Bay)
                 </div>
-                <div className="text-sm text-text-secondary font-medium mt-0.5">
-                  Place your index finger into the illuminated Vital Signs Sensor Bay below the screen for 5 seconds
+                <div className="text-xs sm:text-sm text-text-secondary font-medium mt-0.5">
+                  Rest index finger into the illuminated sensor slot below screen for 5 seconds
                 </div>
               </div>
             </div>
 
             {/* Hardware Callout Tag */}
-            <div className="flex items-center gap-2 h-9 px-4 bg-brand-green-50 text-emerald-900 rounded-full border border-emerald-200 text-xs font-black tracking-wide animate-pulse">
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-              <span>SENSOR BAY READY • OPTICAL PPG</span>
-              <ArrowDownRight size={16} className="text-brand-green" />
+            <div className="hidden sm:flex items-center gap-1.5 h-8 px-3 bg-brand-green-50 text-emerald-900 rounded-full border border-emerald-200 text-xs font-black tracking-wide animate-pulse shrink-0">
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span>SENSOR BAY READY</span>
+              <ArrowDown size={14} className="text-brand-green" />
             </div>
           </div>
 
@@ -188,55 +188,48 @@ export function PainDuration() {
 
           {/* Interactive States */}
           {measuringStatus === 'idle' && (
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 rounded-2xl bg-canvas border-2 border-border-main shadow-subtle relative overflow-hidden">
-              {/* Left Side: Directional Hardware Callout (P1) */}
-              <div className="flex items-center gap-5 text-left flex-1">
-                {/* Physical Hardware Representation with Animated Downward Cue */}
-                <div className="flex flex-col items-center gap-1.5 shrink-0">
-                  <div className="w-22 h-22 rounded-2xl bg-slate-900 border-2 border-brand-green flex flex-col items-center justify-center text-emerald-400 shadow-md relative p-2 group">
-                    <div className="w-3 h-3 rounded-full bg-emergency animate-ping absolute top-2 right-2" />
-                    <Activity size={26} className="text-emerald-400" />
-                    <span className="text-[10px] font-mono font-black tracking-wider text-emerald-300 mt-1 uppercase text-center leading-tight">
-                      HARDWARE BAY
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1 text-emerald-800 font-black text-xs uppercase tracking-wider animate-bounce">
-                    <ArrowDown size={16} strokeWidth={3} className="text-brand-green" />
-                    <span>{t('sensorBay.lookDownShort') || 'LOOK DOWN ↓'}</span>
+            <div className="flex flex-col gap-4 p-4 sm:p-5 rounded-2xl bg-canvas border border-border-main shadow-subtle">
+              <div className="flex items-center gap-4">
+                {/* Physical Hardware Representation with Downward Cue */}
+                <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-slate-900 border-2 border-brand-green flex flex-col items-center justify-center text-emerald-400 shadow-md shrink-0 relative">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emergency animate-ping absolute top-1.5 right-1.5" />
+                  <Activity size={22} className="text-emerald-400" />
+                  <div className="flex items-center gap-0.5 text-emerald-300 font-mono font-black text-[9px] mt-1 uppercase">
+                    <span>SLOT 02</span>
                   </div>
                 </div>
 
-                <div>
-                  <div className="text-lg font-black text-text-primary leading-snug">
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm sm:text-base font-extrabold text-text-primary leading-snug">
                     {t('sensorBay.slotInstruction')}
                   </div>
-
-                  <div className="text-sm font-bold text-emerald-900 mt-2 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-brand-green shrink-0 animate-pulse" />
-                    <span>{t('sensorBay.doNotTapScreen')}</span>
-                  </div>
-
-                  <div className="text-sm text-text-secondary mt-1 font-medium">
-                    {t('sensorBay.slotDurationNotice')}
+                  <div className="flex items-center gap-2 text-xs font-bold text-emerald-800 mt-1.5 flex-wrap">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-900 border border-emerald-300 text-[11px]">
+                      <span className="w-1.5 h-1.5 rounded-full bg-brand-green animate-pulse" />
+                      Optical PPG Sensor
+                    </span>
+                    <span className="text-text-secondary text-[11px] font-medium">
+                      Takes ~5 seconds • Captures SpO₂ and pulse rate
+                    </span>
                   </div>
                 </div>
               </div>
 
-              {/* Right Side Action Buttons: Primary Scan & Strengthened Ghost Skip (P3) */}
-              <div className="flex items-center gap-3.5 shrink-0">
+              {/* Action Buttons Row */}
+              <div className="flex items-center gap-3 pt-1 border-t border-border-main/60">
                 <Button
                   variant="primary"
-                  size="lg"
+                  size="md"
                   icon={Activity}
                   onClick={handleStartMeasurement}
-                  className="h-16 px-8 text-lg font-black rounded-2xl whitespace-nowrap shadow-md"
+                  className="flex-1 h-12 sm:h-13 text-sm sm:text-base font-black rounded-xl shadow-md cursor-pointer"
                 >
                   {t('sensorBay.startScanBtn')}
                 </Button>
                 <button
                   type="button"
                   onClick={handleSkipMeasurement}
-                  className="h-16 px-6 text-base font-black text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 border-2 border-slate-300 hover:border-slate-400 rounded-2xl cursor-pointer transition-all shadow-subtle flex items-center justify-center whitespace-nowrap"
+                  className="h-12 sm:h-13 px-5 text-xs sm:text-sm font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 border border-slate-300 hover:border-slate-400 rounded-xl cursor-pointer transition-all shadow-subtle flex items-center justify-center whitespace-nowrap"
                 >
                   {t('sensorBay.skipBtn')}
                 </button>

@@ -75,21 +75,21 @@ export function PainScale({ value = 0, onChange }) {
         </div>
       </div>
 
-      {/* 11-Pill Numeric Touch Button Matrix - P2 Expanded Padding & Tremor Compensation */}
-      <div className="flex items-center justify-between gap-2 sm:gap-3 w-full py-2 px-1">
+      {/* 11-Pill Numeric Touch Button Matrix - Responsive Fluid Sizing */}
+      <div className="grid grid-cols-11 gap-1 sm:gap-2 md:gap-2.5 w-full py-2 px-0.5">
         {PAIN_SCORES.map((score) => {
           const isSelected = value === score;
           const scoreInfo = getSeverityInfo(score);
 
           return (
-            <div key={score} className="p-0.5 flex items-center justify-center">
+            <div key={score} className="flex items-center justify-center">
               <button
                 type="button"
                 onClick={() => onChange(score)}
-                className={`w-[68px] h-[68px] sm:w-[72px] sm:h-[72px] rounded-full font-black text-2xl sm:text-3xl flex items-center justify-center cursor-pointer transition-all duration-150 relative ${
+                className={`w-full aspect-square max-w-[68px] rounded-full font-black text-base sm:text-xl md:text-2xl lg:text-3xl flex items-center justify-center cursor-pointer transition-all duration-150 relative ${
                   isSelected
-                    ? `${scoreInfo.bgClass} scale-115 shadow-card-hover border-3 border-white ring-4 ring-brand-green/40 z-10`
-                    : 'bg-surface text-text-primary border-2 border-slate-300 hover:border-slate-500 shadow-subtle hover:scale-105 active:scale-95 hover:bg-slate-50'
+                    ? `${scoreInfo.bgClass} scale-110 shadow-card-hover border-2 sm:border-3 border-white ring-2 sm:ring-4 ring-brand-green/40 z-10`
+                    : 'bg-surface text-text-primary border border-slate-300 sm:border-2 hover:border-slate-500 shadow-subtle hover:scale-105 active:scale-95 hover:bg-slate-50'
                 }`}
               >
                 {score}
