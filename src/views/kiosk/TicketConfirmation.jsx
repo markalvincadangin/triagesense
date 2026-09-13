@@ -13,7 +13,8 @@ import {
   ArrowDown,
   Tv,
   AlertTriangle,
-  FileText
+  FileText,
+  Scissors
 } from 'lucide-react';
 
 /**
@@ -170,7 +171,7 @@ export function TicketConfirmation() {
             {/* Top Perforation Tear Line (Responsive Clean Dashed Divider) */}
             <div className="w-full relative py-1 px-4 bg-slate-100/70 border-b border-dashed border-slate-300 flex items-center justify-between text-[10px] font-mono text-slate-400 select-none overflow-hidden">
               <div className="flex items-center gap-2 flex-1 mr-3">
-                <span className="text-slate-500 font-bold text-xs">✂</span>
+                <Scissors size={12} className="text-slate-400 -rotate-90 shrink-0" />
                 <div className="flex-1 border-b border-dashed border-slate-300 h-0" />
               </div>
               <span className="font-bold shrink-0 text-slate-500 uppercase tracking-widest text-[9px]">TEAR HERE</span>
@@ -223,7 +224,7 @@ export function TicketConfirmation() {
             {/* Bottom Perforation Tear Line (Responsive Clean Dashed Divider) */}
             <div className="w-full relative py-1 px-4 bg-slate-100/70 border-t border-dashed border-slate-300 flex items-center justify-between text-[10px] font-mono text-slate-400 select-none overflow-hidden">
               <div className="flex items-center gap-2 flex-1 mr-3">
-                <span className="text-slate-500 font-bold text-xs">✂</span>
+                <Scissors size={12} className="text-slate-400 -rotate-90 shrink-0" />
                 <div className="flex-1 border-b border-dashed border-slate-300 h-0" />
               </div>
               <span className="font-bold shrink-0 text-slate-500 uppercase tracking-widest text-[9px]">END OF RECEIPT</span>
