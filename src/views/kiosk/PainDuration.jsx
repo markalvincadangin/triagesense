@@ -144,10 +144,10 @@ export function PainDuration() {
               </div>
               <div>
                 <div className="text-base sm:text-lg font-black text-text-primary leading-tight">
-                  3. Preliminary Vitals Check (Vital Signs Sensor Bay)
+                  {t('painDuration.vitalsTitle')}
                 </div>
                 <div className="text-xs sm:text-sm text-text-secondary font-medium mt-0.5">
-                  Rest index finger into the illuminated sensor slot below screen for 5 seconds
+                  {t('painDuration.vitalsSubtitle')}
                 </div>
               </div>
             </div>
@@ -155,7 +155,7 @@ export function PainDuration() {
             {/* Hardware Callout Tag */}
             <div className="hidden sm:flex items-center gap-1.5 h-8 px-3 bg-brand-green-50 text-emerald-900 rounded-full border border-emerald-200 text-xs font-black tracking-wide animate-pulse shrink-0">
               <div className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>SENSOR BAY READY</span>
+              <span>{t('painDuration.sensorReady')}</span>
               <ArrowDown size={14} className="text-brand-green" />
             </div>
           </div>
@@ -242,7 +242,7 @@ export function PainDuration() {
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-emergency animate-ping" />
                   <span className="text-sm font-mono text-emerald-400 font-bold">
-                    Sampling PPG Infrared Telemetry...
+                    {t('painDuration.sensorMeasuring')}
                   </span>
                 </div>
                 <div className="text-sm font-mono text-slate-400 font-semibold">
@@ -287,7 +287,7 @@ export function PainDuration() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5 text-emerald-950 font-black text-base">
                   <CheckCircle2 size={24} className="text-brand-green shrink-0" />
-                  <span>Preliminary Vitals Recorded Successfully!</span>
+                  <span>{t('painDuration.sensorComplete')}</span>
                 </div>
                 <button
                   type="button"
@@ -302,7 +302,7 @@ export function PainDuration() {
               {/* Telemetry Result Chips */}
               <div className={`grid gap-4 ${vitals.temperature ? 'grid-cols-4' : 'grid-cols-3'}`}>
                 <div className="bg-surface p-4 rounded-2xl border border-emerald-200 text-center shadow-subtle">
-                  <div className="text-xs font-bold text-text-secondary uppercase tracking-wide">SpO₂ (Blood Oxygen)</div>
+                  <div className="text-xs font-bold text-text-secondary uppercase tracking-wide">{t('painDuration.oxygen')}</div>
                   <div className="text-3xl font-black text-brand-green mt-1">
                     {vitals.spo2 || 98}%
                   </div>
@@ -312,7 +312,7 @@ export function PainDuration() {
                 </div>
 
                 <div className="bg-surface p-4 rounded-2xl border border-emerald-200 text-center shadow-subtle">
-                  <div className="text-xs font-bold text-text-secondary uppercase tracking-wide">Pulse Rate</div>
+                  <div className="text-xs font-bold text-text-secondary uppercase tracking-wide">{t('painDuration.heartRate')}</div>
                   <div className="text-3xl font-black text-brand-green mt-1">
                     {vitals.pulseRate || 76} <span className="text-sm font-semibold">BPM</span>
                   </div>
@@ -322,7 +322,7 @@ export function PainDuration() {
                 </div>
 
                 <div className="bg-surface p-4 rounded-2xl border border-emerald-200 text-center shadow-subtle">
-                  <div className="text-xs font-bold text-text-secondary uppercase tracking-wide">Perfusion Index (PI)</div>
+                  <div className="text-xs font-bold text-text-secondary uppercase tracking-wide">{t('painDuration.perfusion')}</div>
                   <div className="text-3xl font-black text-brand-green mt-1">
                     {vitals.perfusionIndex || '4.2%'}
                   </div>

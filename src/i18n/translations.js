@@ -1,7 +1,8 @@
 /**
  * TriageSense Clinical Localization Dictionary (i18n)
+ * Standardized to 5-Step ESI Clinical Triage Workflow
  * Supported Dialects:
- *  - en: English (Default)
+ *  - en: English (Standard Clinical Default)
  *  - hil: Hiligaynon / Ilonggo (Primary Western Visayas Dialect)
  *  - fil: Filipino / Tagalog (National Language)
  *  - ceb: Cebuano / Bisaya (Central Visayas)
@@ -39,41 +40,6 @@ export const translations = {
         'review': 'Step 5 of 5 • Review & Let the Nurse Know'
       }
     },
-    language: {
-      badge: 'Language Selection',
-      title: 'Select Your Preferred Dialect',
-      subtitle: 'Choose the language you are most comfortable using',
-      regions: {
-        hil: 'Ilonggo • Panay & Guimaras',
-        en: 'Standard Clinical Interface',
-        fil: 'Tagalog • Pambansang Wika',
-        ceb: 'Bisaya • Central Visayas'
-      }
-    },
-    identification: {
-      title: 'Patient Identification',
-      subtitle: 'Choose how you would like to identify yourself at this terminal',
-      scanning: 'Scanning',
-      holdSteady: 'please hold steady...',
-      options: {
-        hospitalId: {
-          title: 'WVSUMC Patient Hospital ID',
-          desc: 'Scan barcode at the Scanner Bay (right) or enter your hospital ID number'
-        },
-        qrCode: {
-          title: 'PhilHealth or National ID QR',
-          desc: 'Hold digital or physical QR code directly under the Scanner Bay on the right'
-        },
-        nfc: {
-          title: 'NFC Contactless Card Tap',
-          desc: 'Tap your hospital health card or PhilSys smart card against the NFC pad on the left'
-        },
-        manual: {
-          title: 'Manual Patient Registration',
-          desc: 'Register manually using the on-screen touchscreen keyboard'
-        }
-      }
-    },
     painScale: {
       selected: 'Selected',
       rangeNoPain: '0 = No Pain',
@@ -101,8 +67,11 @@ export const translations = {
     durations: {
       'Less than 1 hour': 'Less than 1 hour',
       '1–6 hours': '1 to 6 hours',
+      '1-6 hours': '1 to 6 hours',
       '6–24 hours': '6 to 24 hours',
+      '6-24 hours': '6 to 24 hours',
       '1–3 days': '1 to 3 days',
+      '1-3 days': '1 to 3 days',
       'More than 3 days': 'More than 3 days',
       'Not sure': 'Not sure'
     },
@@ -263,13 +232,6 @@ export const translations = {
       scaleTitle: '1. How Bad Does It Hurt Right Now?',
       scaleSubtitle: 'Tap the score that matches how you feel (0 = No Pain, 10 = Severe)',
       durationTitle: '2. How Long Have You Felt This Way?',
-      durations: {
-        'Just started (<1h)': 'Just started (<1 hour)',
-        '1–6 hours': '1 to 6 hours',
-        'Today (6–24h)': 'Today (6 to 24 hours)',
-        'A few days': 'A few days',
-        'More than a week': 'More than a week'
-      },
       vitalsTitle: '3. Preliminary Vitals Check (Vital Signs Sensor Bay)',
       vitalsSubtitle: 'Place your index finger into the illuminated Vital Signs Sensor Bay below the screen for 5 seconds',
       sensorReady: 'SENSOR BAY READY • OPTICAL PPG',
@@ -280,21 +242,6 @@ export const translations = {
       perfusion: 'Perfusion Index',
       btnBack: 'Back: Body Map',
       btnNext: 'Next: Review Answers'
-    },
-    additional: {
-      title: 'Additional Symptom Details',
-      subtitle: 'Any other symptoms you want the triage nurse to know about? (Optional)',
-      selectPrompt: 'Select Any Accompanying Symptoms:',
-      notesLabel: 'Additional Notes or Explanation (Optional):',
-      notesPlaceholder: 'Type or dictate any other details about your illness...',
-      voicePrompt: 'Or dictate notes with the microphone:',
-      items: {
-        Nausea: 'Nausea or Vomiting',
-        Dizziness: 'Dizziness or Vertigo',
-        'Loss of appetite': 'Loss of Appetite',
-        Fatigue: 'Extreme Body Weakness',
-        Other: 'Other Symptoms'
-      }
     },
     review: {
       stepTitle: 'Step 5 of 5: Check Your Answers Before Sending',
@@ -328,18 +275,6 @@ export const translations = {
       nurseAlertNotice: 'Your intake will be sent immediately to the ED Triage Nurse station.',
       btnBack: 'Back: Change Details',
       btnSubmit: 'SEND TO TRIAGE NURSE'
-    },
-    submission: {
-      stepTitle: 'Submit Intake Record',
-      readyTitle: 'Ready to Send to Triage Desk',
-      transmittingTitle: 'Packaging & Transmitting Record...',
-      description: 'Upon clicking submit, your patient-reported intake will be securely transmitted to the Authorized Nurse Workstation in the Emergency Department.',
-      disclaimerTitle: 'Important Clinical Notice:',
-      disclaimerText: '"TriageSense provides preliminary patient-reported information only. It does not diagnose medical conditions or replace clinical triage."',
-      privacyAssurance: 'Compliant with DOH Healthcare Privacy & Data Protection Protocols',
-      submitBtn: 'SUBMIT INTAKE TO TRIAGE DESK',
-      submittingBtn: 'TRANSMITTING INTAKE...',
-      backBtn: 'Back to Review'
     },
     confirmation: {
       hospitalDept: 'WVSU MEDICAL CENTER • EMERGENCY DEPARTMENT',
@@ -393,41 +328,6 @@ export const translations = {
         'review': 'Tikang 5 sang 5 • Lantawa Bag-o Ipadala sa Nurse'
       }
     },
-    language: {
-      badge: 'Pagpili sang Pulong',
-      title: 'Pilia ang Imo Hambal',
-      subtitle: 'Pilia ang pulong nga mas komportable ka gamiton',
-      regions: {
-        hil: 'Ilonggo • Panay kag Guimaras',
-        en: 'Ingles • Standard Clinical',
-        fil: 'Tagalog • Pambansang Wika',
-        ceb: 'Bisaya • Sentral Visayas'
-      }
-    },
-    identification: {
-      title: 'Pagpakilala sang Pasyente',
-      subtitle: 'Pilia kon paano mo luyag ipakilala ang imo kaugalingon sa sini nga kiosk',
-      scanning: 'Ginascan',
-      holdSteady: 'palihog indi paghulagon...',
-      options: {
-        hospitalId: {
-          title: 'WVSUMC Patient Hospital ID',
-          desc: 'I-scan ang barcode sa Scanner Bay (sa tuo) ukon isulat ang imo hospital ID number'
-        },
-        qrCode: {
-          title: 'PhilHealth ukon National ID QR',
-          desc: 'Itungod ang QR code sa idalom sang Scanner Bay sa tuo'
-        },
-        nfc: {
-          title: 'NFC Contactless Card Tap',
-          desc: 'I-tap ang imo hospital health card ukon PhilSys card sa NFC pad sa wala'
-        },
-        manual: {
-          title: 'Manwal nga Pagpalista',
-          desc: 'Ipasulod ang detalye gamit ang keyboard sa screen'
-        }
-      }
-    },
     painScale: {
       selected: 'Napili',
       rangeNoPain: '0 = Wala Sing Sakit',
@@ -455,8 +355,11 @@ export const translations = {
     durations: {
       'Less than 1 hour': 'Wala pa 1 ka oras',
       '1–6 hours': '1 tubtob 6 ka oras',
+      '1-6 hours': '1 tubtob 6 ka oras',
       '6–24 hours': '6 tubtob 24 ka oras',
+      '6-24 hours': '6 tubtob 24 ka oras',
       '1–3 days': '1 tubtob 3 ka adlaw',
+      '1-3 days': '1 tubtob 3 ka adlaw',
       'More than 3 days': 'Sobra sa 3 ka adlaw',
       'Not sure': 'Wala sigurado'
     },
@@ -550,31 +453,31 @@ export const translations = {
       errorRequired: 'Palihog magpili sang bisan isa ka balatian ukon pilia ang "Iban Pa nga Balatian".',
       selectedBadge: 'napili',
       btnBack: 'Balik: Impormasyon',
-      btnNext: 'Padayon: Diin Dampi sa Lawas?',
+      btnNext: 'Padayon: Diin Dampi sa Lawas',
       items: {
         'Chest Pain': {
-          label: 'Sakit sa Dughan',
-          desc: 'Gatig-a, gapit-os, ukon mabug-at nga pamatyag sa dughan'
+          label: 'Sakit ukon Ginapitlan sa Dughan',
+          desc: 'Mabug-at ang pamatyag, nagapiti, ukon nagapugok ang dughan'
         },
         'Shortness of Breath': {
-          label: 'Mabudlay Magginhawa',
-          desc: 'Kakulangan sa hangin, gahangos, ukon indi kahulag ang ginhawa'
+          label: 'Kalisod sa Pagginhawa',
+          desc: 'Kulang sa hangin, nagahangos, ukon nagasagitsit ang ginhawa'
         },
         'Fever': {
-          label: 'Mataas nga Hilanat',
-          desc: 'Mainit ang lawas, nagakurog, nagapalamalhas'
+          label: 'Mataas nga Hilanat kag Pangkurog',
+          desc: 'Init katama ang lawas, nagapangurog, nagapamalhas'
         },
         'Abdominal Pain': {
           label: 'Sakit sang Tiyan',
-          desc: 'Grabe nga kulba sang tiyan, galusod, ukon nagapilipit'
+          desc: 'Grabe nga sakit sa tiyan, nagakukot, ukon nagakumbulsyon ang tiyan'
         },
         'Headache': {
-          label: 'Sakit sang Ulo',
-          desc: 'Nagalukso-lukso nga sakit, galingin ang ulo, lipong'
+          label: 'Grabe nga Sakit sang Ulo',
+          desc: 'Nagakutok-kutok nga sakit, nagalipong, nagalipong ang panan-aw'
         },
         'Injury / Trauma': {
-          label: 'Disgrasya, Pilas, o Nabali',
-          desc: 'Madalom nga pilas, nagadugo, nabali nga tul-an, nahulog'
+          label: 'Aksidente, Pilas, ukon Pagkahulog',
+          desc: 'Madalom nga pilas, nagadugo, nabali-an, nahulog'
         },
         'Cough': {
           label: 'Ubo nga Indi Mag-untat',
@@ -604,7 +507,7 @@ export const translations = {
         Legs: 'Tiil kag Batiis'
       },
       selectedTitle: 'Mga Parte nga Napili',
-      noneSelected: 'Wala pa sing napili (pinduta ang laragway ukon buton sa ibabaw)',
+      noneSelected: 'Wala pa sing napili (pinduta ang laragway ukon mga buton sa ibabaw)',
       orientationFront: 'Atubang nga Posisyon',
       orientationBack: 'Likod nga Posisyon',
       errorRequired: 'Palihog magpili sang bisan isa ka parte sang lawas nga nagasakit.',
@@ -617,13 +520,6 @@ export const translations = {
       scaleTitle: '1. Daw Ano Kasakit ang Imo Ginabatyag Subong?',
       scaleSubtitle: 'Pilia ang numero nga nagasanto sa imo kasakit (0 = Wala Sakit, 10 = Grabe Katama)',
       durationTitle: '2. Pila Na Ka Oras ukon Adlaw nga Ginabatyag Ini?',
-      durations: {
-        'Just started (<1h)': 'Bag-o lang nagsugod (wala pa 1 ka oras)',
-        '1–6 hours': '1 tubtob 6 ka oras',
-        'Today (6–24h)': 'Subong nga adlaw (6 tubtob 24 ka oras)',
-        'A few days': 'Pila na ka adlaw',
-        'More than a week': 'Sobra na sa isa ka semana'
-      },
       vitalsTitle: '3. Pagsukol sang Vital Signs (Sensor Bay sa Idalom)',
       vitalsSubtitle: 'Isulod ang imo tudlo sa nasanagan nga sensor sa idalom sang screen sa sulod sang 5 ka segundo',
       sensorReady: 'HANDA ANG SENSOR • OPTICAL PPG',
@@ -634,21 +530,6 @@ export const translations = {
       perfusion: 'Perfusion Index',
       btnBack: 'Balik: Parte sang Lawas',
       btnNext: 'Padayon: Lantawa ang mga Sabat'
-    },
-    additional: {
-      title: 'Dugang nga Impormasyon sa Ginabatyag',
-      subtitle: 'May iban ka pa bala nga ginabatyag nga luyag mo mahibal-an sang nurse? (Opsyonal)',
-      selectPrompt: 'Pilia ang mga Upod nga Sintomas:',
-      notesLabel: 'Dugang nga Mensahe ukon Paathag (Opsyonal):',
-      notesPlaceholder: 'Isulat ukon ihambal ang iban pa nga detalye...',
-      voicePrompt: 'Ukon ihambal gamit ang mikropono:',
-      items: {
-        Nausea: 'Galingin ang Tiyan ukon Pagsuka',
-        Dizziness: 'Lipong ukon Galikaw ang Panan-aw',
-        'Loss of appetite': 'Wala Gana Magkaon',
-        Fatigue: 'Grabe nga Kapoy kag Palangluya',
-        Other: 'Iban Pa nga Ginabatyag'
-      }
     },
     review: {
       stepTitle: 'Tikang 5 sang 5: Lantawa ang Imo mga Sabat Bag-o Ipadala',
@@ -663,12 +544,12 @@ export const translations = {
       contactLabel: 'Kontak:',
       idMethodLabel: 'ID nga Gingamit:',
       noSymptomsSelected: 'Wala sing napili nga sintomas',
-      generalBody: 'Kabilugan / Tibuok Lawas',
+      generalBody: 'Kabilugan / Bilog nga Lawas',
       voiceMemoLabel: 'Voice Memo:',
       voiceMemoAttached: 'Nalakip para pamatian sang nurse',
       voiceMemoNone: 'Wala sing narekord',
       painScoreLabel: 'Iskor sang Kasakit:',
-      durationLabel: 'Kabayad:',
+      durationLabel: 'Kalawigon:',
       quickFingerCheckLabel: 'Pagsukol sang Tudlo:',
       sensorSkippedText: 'Ginlaktod ang sensor — Suklon sang nurse ang imo vitals sa triage desk',
       whatHappensNext: 'Ano ang Masunod Kon Mapadala ang Impormasyon?',
@@ -683,36 +564,24 @@ export const translations = {
       btnBack: 'Balik: Ilisi ang Sabat',
       btnSubmit: 'IPADALA SA TRIAGE NURSE'
     },
-    submission: {
-      stepTitle: 'Ipadala ang Rekord sa Pagpalista',
-      readyTitle: 'Handa Na Ipadala sa Triage Desk',
-      transmittingTitle: 'Ginatransmit ang Rekord...',
-      description: 'Sa pagpindot sang ipadala, ang imo ginlista hilway kag sigurado nga makalab-ot sa Authorized Nurse Workstation sa Emergency Department.',
-      disclaimerTitle: 'Importante nga Pahibalo sang Klinika:',
-      disclaimerText: '"Ang TriageSense nagahatag lamang sang pauna nga impormasyon. Wala ini nagadiagnose sang balatian ukon nagailis sa personal nga triage sang nurse."',
-      privacyAssurance: 'Nagasunod sa DOH Healthcare Privacy kag Data Protection Protocols',
-      submitBtn: 'IPADALA ANG INTAKE SA TRIAGE DESK',
-      submittingBtn: 'GINAPADALA ANG REKORD...',
-      backBtn: 'Balik sa Paglantaw'
-    },
     confirmation: {
-      hospitalDept: 'WVSU MEDICAL CENTER • DEPARTAMENTO SANG EMERGENCY',
-      title: 'Nakapalista Ka Na!',
+      hospitalDept: 'WVSU MEDICAL CENTER • EMERGENCY DEPARTMENT',
+      title: 'Nakarehistro Ka Na!',
       ticketReady: 'Tapos Na ang Pagpalista',
-      queueLabel: 'NUMERO SANG IMO LINYA:',
-      nurseWaiting: 'Palihog pungko sa waiting area. Tawgon sang triage nurse ang imo numero sa indi madugay.',
-      nextStepAssessment: 'Masunod nga Tikang: Personal nga Pagtantiya sang Nurse',
-      takeTicketSlot: 'Palihog kuhaa ang imo gi-print nga tiket sa idalom',
-      mobileTracking: 'I-scan gamit ang cellphone para masubay ang pila bisan diin sa ospital',
-      guideTitle: 'Ano ang imo himuon samtang nagahulat sa lobby:',
+      queueLabel: 'ANG IMO NUMERO SA PILA:',
+      nurseWaiting: 'Palihog pungko sa waiting area. Tawgon sang triage nurse ang imo numero.',
+      nextStepAssessment: 'Masunod: Personal nga Paglantaw sang Nurse',
+      takeTicketSlot: 'Palihog kuhaa ang imo na-print nga tiket sa idalom',
+      mobileTracking: 'I-scan gamit ang selpon para masubaybayan ang linya bisan diin sa ospital',
+      guideTitle: 'Ano ang himuon samtang nagahulat sa lobby:',
       guideStep1Title: '1. Uyati ang Imo Tiket',
-      guideStep1Desc: 'Hupti ini nga papel. Amo ini ang imo opisyal nga rekord para sa sini nga pagpa-ospital.',
-      guideStep2Title: '2. Bantayi ang mga Monitor',
-      guideStep2Desc: 'Magwa ang imo numero sa screen sang lobby kaupod ang tunog.',
+      guideStep1Desc: 'Uyati ini nga papel nga tiket. Ini ang opisyal nga rekord sang imo pagbisita.',
+      guideStep2Title: '2. Lantawa ang mga Monitor',
+      guideStep2Desc: 'Magakislap ang imo numero sa mga screen sa ibabaw upod ang pagpahibalo sa tingog.',
       guideStep3Title: '3. Kon Maglala ang Pamatyag',
-      guideStep3Desc: 'Pahibalu-a gilayon ang triage nurse kon magbaskog ang kasakit ukon kabudlay sa pagginhawa.',
+      guideStep3Desc: 'Pahibal-a dayon ang triage nurse kon maggrabe ang kasakit ukon pagginhawa.',
       resetTimerPrefix: 'Magabalik ang screen para sa masunod nga pasyente sa sulod sang',
-      doneBtn: 'TAPUS NA'
+      doneBtn: 'TAPOS NA'
     }
   },
 
@@ -747,41 +616,6 @@ export const translations = {
         'review': 'Hakbang 5 ng 5 • Suriin Bago Ipadala sa Nurse'
       }
     },
-    language: {
-      badge: 'Pagpili ng Wika',
-      title: 'Piliin ang Iyong Wika',
-      subtitle: 'Piliin ang wikang mas komportable kang gamitin',
-      regions: {
-        hil: 'Ilonggo • Panay at Guimaras',
-        en: 'Ingles • Standard Clinical',
-        fil: 'Tagalog • Pambansang Wika',
-        ceb: 'Bisaya • Gitnang Visayas'
-      }
-    },
-    identification: {
-      title: 'Pagkakakilanlan ng Pasyente',
-      subtitle: 'Piliin kung paano mo nais magpakilala sa terminal na ito',
-      scanning: 'Sinisuri',
-      holdSteady: 'mangyaring huwag galawin...',
-      options: {
-        hospitalId: {
-          title: 'WVSUMC Patient Hospital ID',
-          desc: 'I-scan ang barcode sa Scanner Bay (kanan) o ilagay ang hospital ID number'
-        },
-        qrCode: {
-          title: 'PhilHealth o National ID QR',
-          desc: 'Itapat ang QR code sa ilalim ng Scanner Bay sa kanan'
-        },
-        nfc: {
-          title: 'NFC Contactless Card Tap',
-          desc: 'Itap ang hospital health card o PhilSys smart card sa NFC pad sa kaliwa'
-        },
-        manual: {
-          title: 'Mano-manong Pagpapatala',
-          desc: 'Magpatala gamit ang touchscreen keyboard sa screen'
-        }
-      }
-    },
     painScale: {
       selected: 'Napili',
       rangeNoPain: '0 = Walang Sakit',
@@ -809,8 +643,11 @@ export const translations = {
     durations: {
       'Less than 1 hour': 'Wala pang 1 oras',
       '1–6 hours': '1 hanggang 6 na oras',
+      '1-6 hours': '1 hanggang 6 na oras',
       '6–24 hours': '6 hanggang 24 na oras',
+      '6-24 hours': '6 hanggang 24 na oras',
       '1–3 days': '1 hanggang 3 araw',
+      '1-3 days': '1 hanggang 3 araw',
       'More than 3 days': 'Mahigit 3 araw',
       'Not sure': 'Hindi sigurado'
     },
@@ -898,40 +735,40 @@ export const translations = {
       stepSubtitle: 'Piliin ang lahat ng sumasakit o iyong nararamdaman',
       tapAll: '(Piliin ang lahat ng nararapat)',
       voiceCardTitle: 'Mas nais mo bang magsalita kaysa pumindot?',
-      voiceCardSubtitle: 'Pindutin nang matagal para sa 5-segundong voice memo para sa triage nurse',
+      voiceCardSubtitle: 'Pindutin at hawakan para sa 5-segundong voice memo para sa triage nurse',
       voiceRecording: 'Itinatala ang boses...',
-      voiceSaved: 'Naitala na ang boses para sa nurse. Pindutin muli kung nais palitan.',
-      errorRequired: 'Mangyaring pumili ng kahit isang sintomas o piliin ang "Iba Pang Nararamdaman".',
+      voiceSaved: 'Nai-save ang boses para sa nurse. Pindutin muli kung nais palitan.',
+      errorRequired: 'Mangyaring pumili ng kahit isang sintomas o piliin ang "Iba Pang Karamdaman".',
       selectedBadge: 'napili',
       btnBack: 'Bumalik: Impormasyon',
-      btnNext: 'Magpatuloy: Saan sa Katawan?',
+      btnNext: 'Magpatuloy: Bahagi ng Katawan',
       items: {
         'Chest Pain': {
-          label: 'Paninikip o Sakit sa Dibdib',
-          desc: 'Mabigat, pumipisil, o naninikip na pakiramdam sa dibdib'
+          label: 'Sakit o Paninikip ng Dibdib',
+          desc: 'Mabigat, sumisikip, o parang dinadaganan ang dibdib'
         },
         'Shortness of Breath': {
-          label: 'Hirap Huminga',
-          desc: 'Kinakapos ng hininga, humahingal, o hirap kumuha ng hangin'
+          label: 'Hirap sa Paghinga',
+          desc: 'Kapos sa hangin, humihingal, o sumisipol ang paghinga'
         },
         'Fever': {
-          label: 'Mataas na Lagnat at Pangangatog',
+          label: 'Mataas na Lagnat at Panginginig',
           desc: 'Napakainit ng katawan, nanginginig, pinapawisan'
         },
         'Abdominal Pain': {
-          label: 'Sakit ng Tiyan',
-          desc: 'Matinding pananakit, pamumulikat, o paghilab ng tiyan'
+          label: 'Pananakit ng Tiyan',
+          desc: 'Matinding hilab, kirot, o pananakit sa tiyan'
         },
         'Headache': {
           label: 'Matinding Sakit ng Ulo',
-          desc: 'Pumipintig na migraine, pagkahilo, pagkalito'
+          desc: 'Kumikirot na migraine, nahihilo, naguguluhan'
         },
         'Injury / Trauma': {
-          label: 'Aksidente, Sugat, o Bali',
-          desc: 'Malalim na sugat, pagdurugo, nabaling buto, pagkahulog'
+          label: 'Aksidente, Sugat, o Pagkahulog',
+          desc: 'Malalim na sugat, nagdurugo, nabalian ng buto, nahulog'
         },
         'Cough': {
-          label: 'Ubong Hindi Humihinto',
+          label: 'Patuloy na Pag-ubo',
           desc: 'Patuloy na pag-ubo, may plema sa dibdib, masakit na lalamunan'
         },
         'Other': {
@@ -966,43 +803,21 @@ export const translations = {
       btnNext: 'Magpatuloy: Sakit at Vitals'
     },
     painDuration: {
-      stepTitle: 'Hakbang 4 ng 5: Gaano Kasakit at Pagsusuri ng Pulso',
-      stepSubtitle: 'Piliin ang antas ng sakit at ipasok ang daliri sa sensor sa ibaba para sa pulso at oxygen',
+      stepTitle: 'Hakbang 4 ng 5: Antas ng Sakit at Pagsusuri ng Pulso',
+      stepSubtitle: 'Piliin ang antas ng sakit at ipasok ang daliri sa sensor upang masukat ang pulso at oxygen',
       scaleTitle: '1. Gaano Kasakit ang Nararamdaman Mo Ngayon?',
-      scaleSubtitle: 'Piliin ang numerong tumutugma sa iyong sakit (0 = Walang Sakit, 10 = Napakasakit)',
-      durationTitle: '2. Gaano Na Katagal ang Nararamdamang Ito?',
-      durations: {
-        'Just started (<1h)': 'Kasisimula lamang (wala pang 1 oras)',
-        '1–6 hours': '1 hanggang 6 na oras',
-        'Today (6–24h)': 'Ngayong araw (6 hanggang 24 na oras)',
-        'A few days': 'Ilang araw na',
-        'More than a week': 'Mahigit isang linggo na'
-      },
-      vitalsTitle: '3. Pagsusuri ng Vital Signs (Sensor Bay sa Ibaba)',
-      vitalsSubtitle: 'Ipasok ang iyong hintuturo sa may ilaw na sensor bay sa ibaba ng screen nang 5 segundo',
+      scaleSubtitle: 'Pindutin ang numerong angkop sa iyong sakit (0 = Walang Sakit, 10 = Napakasakit)',
+      durationTitle: '2. Gaano Katagal Mo Nang Nararamdaman Ito?',
+      vitalsTitle: '3. Paunang Pagsusuri ng Vitals (Vital Signs Sensor Bay)',
+      vitalsSubtitle: 'Ipasok ang hintuturo sa may ilaw na sensor sa ilalim ng screen nang 5 segundo',
       sensorReady: 'HANDA ANG SENSOR • OPTICAL PPG',
-      sensorMeasuring: 'SINUSURI ANG PULSO AT OXYGEN... MANATILING KALMADO',
-      sensorComplete: 'NAITALA ANG VITALS • NALAKIP NA SA REKORD',
-      heartRate: 'Bilis ng Puso (Heart Rate)',
+      sensorMeasuring: 'SINUSUKAT ANG PULSO AT OXYGEN... MANATILING KALMADO',
+      sensorComplete: 'NAITALA ANG VITALS • NAIHANDA SA REKORD',
+      heartRate: 'Bilis ng Pulso',
       oxygen: 'Oxygen sa Dugo (SpO2)',
       perfusion: 'Perfusion Index',
       btnBack: 'Bumalik: Bahagi ng Katawan',
-      btnNext: 'Magpatuloy: Suriin ang mga Sagot'
-    },
-    additional: {
-      title: 'Karagdagang Impormasyon sa Sintomas',
-      subtitle: 'May iba ka pa bang nararamdaman na nais ipaalam sa nurse? (Opsyonal)',
-      selectPrompt: 'Piliin ang Iba Pang Kasamang Sintomas:',
-      notesLabel: 'Karagdagang Mensahe o Paliwanag (Opsyonal):',
-      notesPlaceholder: 'I-type o sabihin ang iba pang detalye ng iyong sakit...',
-      voicePrompt: 'O sabihin gamit ang mikropono:',
-      items: {
-        Nausea: 'Pagsusuka o Pagkahilo ng Tiyan',
-        Dizziness: 'Pagkahilo o Pag-ikot ng Paligid',
-        'Loss of appetite': 'Kawalan ng Gana Kumain',
-        Fatigue: 'Labis na Panghihina ng Katawan',
-        Other: 'Iba Pang Karamdaman'
-      }
+      btnNext: 'Magpatuloy: Suriin ang Sagot'
     },
     review: {
       stepTitle: 'Hakbang 5 ng 5: Suriin ang Sagot Bago Ipadala',
@@ -1033,38 +848,26 @@ export const translations = {
       step3Title: '3. Maupo sa Waiting Area',
       step3Desc: 'Mangyaring maupo. Tatawagin ng nurse ang iyong numero para sa personal na pagsusuri.',
       ticketPrintNote: 'Awtomatikong lalabas ang tiket sa ibaba ng screen',
-      nurseAlertNotice: 'Ang iyong pagpapalista ay agarang ipapadala sa Triage Nurse station.',
+      nurseAlertNotice: 'Ang iyong impormasyon ay agad na ipapadala sa Triage Nurse station.',
       btnBack: 'Bumalik: Baguhin ang Sagot',
       btnSubmit: 'IPADALA SA TRIAGE NURSE'
     },
-    submission: {
-      stepTitle: 'Isumite ang Rekord ng Pagpapalista',
-      readyTitle: 'Handa nang Ipadala sa Triage Desk',
-      transmittingTitle: 'Ipinapadala ang Rekord...',
-      description: 'Sa pagpindot ng isumite, ligtas at kumpidensyal na maipapadala ang iyong rekord sa Authorized Nurse Workstation sa Emergency Department.',
-      disclaimerTitle: 'Mahalagang Paunawa ng Klinika:',
-      disclaimerText: '"Ang TriageSense ay nagbibigay lamang ng paunang impormasyon. Hindi ito nagbibigay ng pinal na diyagnosis o pumapalit sa personal na triage ng nurse."',
-      privacyAssurance: 'Sumusunod sa mga Pamantayan ng DOH Healthcare Privacy at Data Protection',
-      submitBtn: 'ISUMITE ANG INTAKE SA TRIAGE DESK',
-      submittingBtn: 'IPINAPADALA ANG REKORD...',
-      backBtn: 'Bumalik sa Pagsusuri'
-    },
     confirmation: {
-      hospitalDept: 'WVSU MEDICAL CENTER • KAGAWARAN NG EMERGENCY',
-      title: 'Matagumpay ang Pagpapalista!',
-      ticketReady: 'Kumpleto na ang Pagpapalista',
-      queueLabel: 'NUMERO SA PILA:',
+      hospitalDept: 'WVSU MEDICAL CENTER • EMERGENCY DEPARTMENT',
+      title: 'Ikaw ay Nakarehistro Na!',
+      ticketReady: 'Tapos Na ang Pagpapatala',
+      queueLabel: 'IYONG NUMERO SA PILA:',
       nurseWaiting: 'Mangyaring maupo sa waiting area. Tatawagin ng triage nurse ang iyong numero sa lalong madaling panahon.',
       nextStepAssessment: 'Susunod na Hakbang: Personal na Pagsusuri ng Nurse',
-      takeTicketSlot: 'Pakikuha ang iyong nakalimbag na tiket sa ibaba',
-      mobileTracking: 'I-scan gamit ang cellphone upang masubaybayan ang pila kahit saan sa ospital',
-      guideTitle: 'Ano ang gagawin habang naghihintay sa lobby:',
+      takeTicketSlot: 'Mangyaring kunin ang iyong naka-print na tiket sa ibaba',
+      mobileTracking: 'I-scan gamit ang cellphone para masubaybayan ang pila saanman sa ospital',
+      guideTitle: 'Mga dapat gawin habang naghihintay sa lobby:',
       guideStep1Title: '1. Hawakan ang Iyong Tiket',
-      guideStep1Desc: 'Itabi ang papel na ito. Ito ang iyong opisyal na tala para sa pagpapatingin na ito.',
+      guideStep1Desc: 'Itago ang papel na tiket na ito. Ito ang opisyal na rekord ng iyong pagbisita.',
       guideStep2Title: '2. Bantayan ang mga Monitor',
-      guideStep2Desc: 'Lalabas ang iyong numero sa mga screen ng lobby kasabay ng anunsyo.',
+      guideStep2Desc: 'Kikislap ang iyong numero sa mga monitor sa itaas kasabay ng anunsyo sa boses.',
       guideStep3Title: '3. Kung Lumala ang Pakiramdam',
-      guideStep3Desc: 'Ipagbigay-alam agad sa triage nurse kung lumubha ang pananakit o hirap sa paghinga.',
+      guideStep3Desc: 'Ipagbigay-alam agad sa triage nurse kung lumala ang iyong pananakit o paghinga.',
       resetTimerPrefix: 'Babalik ang screen para sa susunod na pasyente sa loob ng',
       doneBtn: 'TAPOS NA'
     }
@@ -1101,41 +904,6 @@ export const translations = {
         'review': 'Lakang 5 sa 5 • Tan-awa Bag-o Ipadala sa Nurse'
       }
     },
-    language: {
-      badge: 'Pagpili og Pinulongan',
-      title: 'Pilia ang Imong Sinultihan',
-      subtitle: 'Pilia ang pinulongan nga mas komportable ka gamiton',
-      regions: {
-        hil: 'Ilonggo • Panay ug Guimaras',
-        en: 'Ingles • Standard Clinical',
-        fil: 'Tagalog • Pambansang Wika',
-        ceb: 'Bisaya • Central Visayas'
-      }
-    },
-    identification: {
-      title: 'Pagpaila sa Pasyente',
-      subtitle: 'Pilia kung giunsa nimo gustong magpaila niini nga terminal',
-      scanning: 'Gisusi',
-      holdSteady: 'palihug ayaw lihoka...',
-      options: {
-        hospitalId: {
-          title: 'WVSUMC Patient Hospital ID',
-          desc: 'I-scan ang barcode sa Scanner Bay (tuo) o isulat ang imong hospital ID number'
-        },
-        qrCode: {
-          title: 'PhilHealth o National ID QR',
-          desc: 'Itungod ang QR code ilalom sa Scanner Bay sa tuo'
-        },
-        nfc: {
-          title: 'NFC Contactless Card Tap',
-          desc: 'I-tap ang hospital health card o PhilSys card sa NFC pad sa wala'
-        },
-        manual: {
-          title: 'Mano-mano nga Pagpatala',
-          desc: 'Ibutang ang detalye gamit ang touchscreen keyboard sa screen'
-        }
-      }
-    },
     painScale: {
       selected: 'Napili',
       rangeNoPain: '0 = Walay Sakit',
@@ -1163,8 +931,11 @@ export const translations = {
     durations: {
       'Less than 1 hour': 'Wala pa 1 ka oras',
       '1–6 hours': '1 hangtod 6 ka oras',
+      '1-6 hours': '1 hangtod 6 ka oras',
       '6–24 hours': '6 hangtod 24 ka oras',
+      '6-24 hours': '6 hangtod 24 ka oras',
       '1–3 days': '1 hangtod 3 ka adlaw',
+      '1-3 days': '1 hangtod 3 ka adlaw',
       'More than 3 days': 'Sobra sa 3 ka adlaw',
       'Not sure': 'Dili sigurado'
     },
@@ -1258,35 +1029,35 @@ export const translations = {
       errorRequired: 'Palihug pagpili og bisan usa ka gibati o pilia ang "Uban Pang Gibati".',
       selectedBadge: 'napili',
       btnBack: 'Balik: Impormasyon',
-      btnNext: 'Padayon: Asa Dapit sa Lawas?',
+      btnNext: 'Padayon: Asa Dapit sa Lawas',
       items: {
         'Chest Pain': {
-          label: 'Sakit sa Dughan',
-          desc: 'Naghuot, nagpiot, o bug-at nga pamati sa dughan'
+          label: 'Sakit o Panakit sa Dughan',
+          desc: 'Mabug-at, naghuot, o nagpit-os nga pamati sa dughan'
         },
         'Shortness of Breath': {
-          label: 'Lisod Moginhawa',
-          desc: 'Kulang sa hangin, naghangos, o naghupos ang ginhawa'
+          label: 'Kalisod sa Pagginhawa',
+          desc: 'Kulang sa hangin, naghangos, o naghuni ang ginhawa'
         },
         'Fever': {
-          label: 'Taas nga Hilanat',
+          label: 'Taas nga Hilanat ug Pangkurog',
           desc: 'Init kaayo ang lawas, nagkurog, gipaningot'
         },
         'Abdominal Pain': {
           label: 'Sakit sa Tiyan',
-          desc: 'Grabe nga sakit sa tiyan, naglubag, o nagkuriat'
+          desc: 'Grabe nga hilab, sakit, o kramps sa tiyan'
         },
         'Headache': {
-          label: 'Sakit sa Ulo',
-          desc: 'Nagsakit og maayo, nagtuyok ang panan-aw, nalipong'
+          label: 'Grabe nga Sakit sa Ulo',
+          desc: 'Nagpitik-pitik nga labad sa ulo, nalipong, naglibog'
         },
         'Injury / Trauma': {
-          label: 'Aksidente, Samad, o Nabali',
-          desc: 'Lalom nga samad, nagdugo, nabali nga bukog, nahulog'
+          label: 'Aksidente, Samad, o Pagkahulog',
+          desc: 'Lawom nga samad, nagdugo, nabali-an og bukog, nahulog'
         },
         'Cough': {
           label: 'Ubo nga Dili Moundang',
-          desc: 'Sige og ubo, naay plema sa dughan, sakit ang tutunlan'
+          desc: 'Sige-sige nga pag-ubo, dunay plema sa dughan, sakit ang tutunlan'
         },
         'Other': {
           label: 'Uban Pang Gibati',
@@ -1320,43 +1091,21 @@ export const translations = {
       btnNext: 'Padayon: Kasakit ug Vitals'
     },
     painDuration: {
-      stepTitle: 'Lakang 4 sa 5: Unsa Ka Sakit ug Pagsukod sa Pulso',
-      stepSubtitle: 'Pilia unsa ka sakit ug isulod ang tudlo sa sensor sa ubos aron masukod ang pulso ug oxygen',
+      stepTitle: 'Lakang 4 sa 5: Kasakit ug Pagsukod sa Pulso',
+      stepSubtitle: 'Pilia ang kasakit ug isulod ang tudlo sa sensor aron masukod ang pulso ug oxygen',
       scaleTitle: '1. Unsa Ka Sakit ang Imong Gibati Karon?',
-      scaleSubtitle: 'Pilia ang numero nga nagtakdo sa imong sakit (0 = Walay Sakit, 10 = Grabe Kaayo)',
-      durationTitle: '2. Unsa Na Ka Dugay nga Gibati Kini?',
-      durations: {
-        'Just started (<1h)': 'Bag-o pa nagsugod (wala pa 1 ka oras)',
-        '1–6 hours': '1 hangtod 6 ka oras',
-        'Today (6–24h)': 'Karon adlawa (6 hangtod 24 ka oras)',
-        'A few days': 'Pipila na ka adlaw',
-        'More than a week': 'Sobra na sa usa ka semana'
-      },
-      vitalsTitle: '3. Pagsukod sa Vital Signs (Sensor Bay sa Ubos)',
-      vitalsSubtitle: 'Isulod ang imong tudlo sa may suga nga sensor bay sa ubos sa screen sulod sa 5 ka segundo',
-      sensorReady: 'ANDA ANG SENSOR • OPTICAL PPG',
-      sensorMeasuring: 'GISUKOD ANG PULSO UG OXYGEN... PABILIN NGA KALMA',
-      sensorComplete: 'NAREKORD ANG VITALS • NALAKIP NA SA REKORD',
-      heartRate: 'Pitik sa Kasingkasing',
+      scaleSubtitle: 'Pindota ang numero nga haom sa imong kasakit (0 = Walay Sakit, 10 = Grabe Kaayo)',
+      durationTitle: '2. Unsa Na Ka Dugay Imong Gibati Kini?',
+      vitalsTitle: '3. Pasiunang Pagsusi sa Vitals (Vital Signs Sensor Bay)',
+      vitalsSubtitle: 'Isulod ang tudlo sa may suga nga sensor sa ubos sa screen sulod sa 5 ka segundo',
+      sensorReady: 'ANDAM ANG SENSOR • OPTICAL PPG',
+      sensorMeasuring: 'GINASUKOD ANG PULSO UG OXYGEN... PABILIN NGA KALMA',
+      sensorComplete: 'NAREKORD ANG VITALS • NAAPIL NA SA REKORD',
+      heartRate: 'Kusog sa Pitik sa Kasingkasing',
       oxygen: 'Oxygen sa Dugo (SpO2)',
       perfusion: 'Perfusion Index',
       btnBack: 'Balik: Parte sa Lawas',
-      btnNext: 'Padayon: Tan-awa ang mga Tubag'
-    },
-    additional: {
-      title: 'Dugang nga Impormasyon sa Gibati',
-      subtitle: 'Naa pa ba kay laing gibati nga gusto nimong mahibaloan sa nurse? (Opsyonal)',
-      selectPrompt: 'Pilia ang mga Kaubang Sintomas:',
-      notesLabel: 'Dugang nga Mensahe o Pagpasabot (Opsyonal):',
-      notesPlaceholder: 'I-type o isulti ang ubang detalye sa imong sakit...',
-      voicePrompt: 'O isulti gamit ang mikropono:',
-      items: {
-        Nausea: 'Kasukaon o Pagsuka',
-        Dizziness: 'Pagkalipong o Pagtuyok sa Panan-aw',
-        'Loss of appetite': 'Walay Gana Mokaon',
-        Fatigue: 'Grabe nga Kaluyahon sa Lawas',
-        Other: 'Uban Pang Gibati'
-      }
+      btnNext: 'Padayon: Tan-awa ang Tubag'
     },
     review: {
       stepTitle: 'Lakang 5 sa 5: Tan-awa ang Imong mga Tubag Bag-o Ipadala',
@@ -1371,7 +1120,7 @@ export const translations = {
       contactLabel: 'Kontak:',
       idMethodLabel: 'ID nga Gigamit:',
       noSymptomsSelected: 'Walay napili nga sintomas',
-      generalBody: 'Tibuok / Tibuok Lawas',
+      generalBody: 'Kinatibuk-an / Tibuok Lawas',
       voiceMemoLabel: 'Voice Memo:',
       voiceMemoAttached: 'Nalakip aron paminawon sa nurse',
       voiceMemoNone: 'Walay narekord',
@@ -1391,32 +1140,20 @@ export const translations = {
       btnBack: 'Balik: Usba ang Tubag',
       btnSubmit: 'IPADALA SA TRIAGE NURSE'
     },
-    submission: {
-      stepTitle: 'Ipadala ang Rekord sa Pagpatala',
-      readyTitle: 'Andam Na Ipadala sa Triage Desk',
-      transmittingTitle: 'Gipadala ang Rekord...',
-      description: 'Inig pindot sa pagpadala, luwas ug pribado nga maabot ang imong rekord sa Authorized Nurse Workstation sa Emergency Department.',
-      disclaimerTitle: 'Importante nga Pahibalo sa Klinika:',
-      disclaimerText: '"Ang TriageSense naghatag lamang og pasiunang impormasyon. Wala kini nagahatag og pinal nga pagsusi sa sakit o nagpuli sa personal nga triage sa nurse."',
-      privacyAssurance: 'Nagsunod sa mga Sumbanan sa DOH Healthcare Privacy ug Data Protection',
-      submitBtn: 'IPADALA ANG INTAKE SA TRIAGE DESK',
-      submittingBtn: 'GIPADALA ANG REKORD...',
-      backBtn: 'Balik sa Pagsusi'
-    },
     confirmation: {
-      hospitalDept: 'WVSU MEDICAL CENTER • DEPARTAMENTO SA EMERGENCY',
-      title: 'Malampuson ang Pagpatala!',
-      ticketReady: 'Kompleto na ang Pagpatala',
-      queueLabel: 'NUMERO SA IMONG LINYA:',
+      hospitalDept: 'WVSU MEDICAL CENTER • EMERGENCY DEPARTMENT',
+      title: 'Narehistro Na Ka!',
+      ticketReady: 'Nahuman Na ang Pagpatala',
+      queueLabel: 'ANG IMONG NUMERO SA PILA:',
       nurseWaiting: 'Palihug lingkod sa waiting area. Tawgon sa triage nurse ang imong numero sa dili madugay.',
       nextStepAssessment: 'Sunod nga Lakang: Personal nga Pagsusi sa Nurse',
-      takeTicketSlot: 'Palihug kuhaa ang imong gi-print nga tiket sa ubos',
+      takeTicketSlot: 'Palihug kuhaa ang imong na-print nga tiket sa ubos',
       mobileTracking: 'I-scan gamit ang cellphone aron masubay ang linya bisan asa sa ospital',
-      guideTitle: 'Unsa ang buhaton samtang naghulat sa lobby:',
+      guideTitle: 'Mga angay buhaton samtang naghulat sa lobby:',
       guideStep1Title: '1. Hupti ang Imong Tiket',
-      guideStep1Desc: 'Tipigi kining papel nga tiket. Mao kini ang imong opisyal nga rekord.',
-      guideStep2Title: '2. Tan-awa ang mga Monitor',
-      guideStep2Desc: 'Mogawas ang imong numero sa mga display screen inubanan sa tingog.',
+      guideStep1Desc: 'Hupti kini nga papel nga tiket. Kini ang opisyal nga rekord sa imong pagbisita.',
+      guideStep2Title: '2. Bantayi ang mga Monitor',
+      guideStep2Desc: 'Mopitik ang imong numero sa mga screen sa ibabaw uban ang tingog nga pahibalo.',
       guideStep3Title: '3. Kon Mosamot ang Gibati',
       guideStep3Desc: 'Pahibalo dayon sa triage nurse kon mosamot ang kasakit o kalisod sa pagginhawa.',
       resetTimerPrefix: 'Mobalik ang screen alang sa sunod nga pasyente sulod sa',
@@ -1427,8 +1164,11 @@ export const translations = {
 
 /**
  * Helper to resolve nested dot-separated keys, e.g. 'welcome.title'
+ * Includes automatic hyphen / en-dash alias resilience and strict null-check fallback.
  */
 export function getTranslation(lang, key, fallback = '') {
+  if (!key) return fallback || '';
+
   const selectedDict = translations[lang] || translations.en;
   const parts = key.split('.');
   let current = selectedDict;
@@ -1446,9 +1186,9 @@ export function getTranslation(lang, key, fallback = '') {
           return fallback || key;
         }
       }
-      return engFallback || fallback || key;
+      return (engFallback !== undefined && engFallback !== null) ? engFallback : (fallback || key);
     }
   }
 
-  return current || fallback || key;
+  return (current !== undefined && current !== null) ? current : (fallback || key);
 }
