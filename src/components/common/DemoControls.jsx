@@ -528,19 +528,19 @@ export function DemoControls() {
         ═══════════════════════════════════════════════════════════════════ */}
         {isOpen && (
           <div
-            className={`absolute w-[390px] max-w-[92vw] max-h-[85vh] overflow-y-auto bg-slate-900/98 text-slate-100 rounded-2xl shadow-2xl border border-slate-700/80 backdrop-blur-2xl p-4 animate-fade-in flex flex-col gap-3.5 ${
+            className={`absolute w-[390px] max-w-[92vw] max-h-[85vh] overflow-y-auto bg-slate-900 text-slate-100 rounded-2xl shadow-2xl border border-slate-700/80 backdrop-blur-2xl p-4 animate-fade-in flex flex-col gap-3.5 ${
               isNearRight ? 'right-0' : 'left-0'
             } ${isNearBottom ? 'bottom-14' : 'top-14'}`}
           >
             {/* ── Top Bar ─────────────────────────────────────────────── */}
             <div className="flex items-center justify-between pb-2.5 border-b border-slate-800">
               <div className="flex items-center gap-2">
-                <GripHorizontal size={15} className="text-slate-500 cursor-grab" />
+                <GripHorizontal size={15} className="text-slate-400 cursor-grab" />
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-white">
                     Demo & Testing Controls
                   </h2>
-                  <p className="text-[10px] text-slate-400">
+                  <p className="text-[10px] text-slate-300">
                     TriageSense • WVSU Medical Center
                   </p>
                 </div>
@@ -551,7 +551,7 @@ export function DemoControls() {
                   onClick={() => {
                     resetDemoData();
                   }}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-800/80 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800 transition-colors cursor-pointer"
                   title="Reset Demo State to Initial"
                 >
                   <RotateCcw size={13} />
@@ -559,7 +559,7 @@ export function DemoControls() {
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
                   title="Close Controls (Esc)"
                 >
                   <X size={14} />
@@ -594,14 +594,14 @@ export function DemoControls() {
             )}
 
             {/* ── Category Navigation Tabs ─────────────────────────────── */}
-            <div className="grid grid-cols-3 p-1 bg-slate-950/80 rounded-xl border border-slate-800 gap-1">
+            <div className="grid grid-cols-3 p-1 bg-slate-950 rounded-xl border border-slate-800 gap-1">
               <button
                 type="button"
                 onClick={() => setActiveTab('display')}
                 className={`py-1.5 px-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   activeTab === 'display'
-                    ? 'bg-slate-800 text-white shadow-sm border border-slate-700/60'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                    ? 'bg-slate-800 text-white shadow-sm border border-slate-700/80'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
                 }`}
               >
                 <Monitor size={13} />
@@ -613,8 +613,8 @@ export function DemoControls() {
                 onClick={() => setActiveTab('sensors')}
                 className={`py-1.5 px-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   activeTab === 'sensors'
-                    ? 'bg-slate-800 text-white shadow-sm border border-slate-700/60'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                    ? 'bg-slate-800 text-white shadow-sm border border-slate-700/80'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
                 }`}
               >
                 <Sparkles size={13} className="text-brand-gold" />
@@ -626,8 +626,8 @@ export function DemoControls() {
                 onClick={() => setActiveTab('screens')}
                 className={`py-1.5 px-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   activeTab === 'screens'
-                    ? 'bg-slate-800 text-white shadow-sm border border-slate-700/60'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                    ? 'bg-slate-800 text-white shadow-sm border border-slate-700/80'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
                 }`}
               >
                 <Navigation size={13} />
@@ -643,21 +643,21 @@ export function DemoControls() {
                 {/* ── Viewport Mode Switcher ─────────────────────────────── */}
                 <div className="flex flex-col gap-1.5">
                   <div className="flex items-center justify-between">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-300">
                       Display Mode
                     </label>
-                    <span className="text-[10px] text-slate-400 font-medium">
+                    <span className="text-[10px] text-slate-300 font-medium">
                       {viewMode === 'kiosk' ? 'Patient Facing' : viewMode === 'admin' ? 'Staff Workstation' : 'Side-by-Side Dual'}
                     </span>
                   </div>
-                  <div className="grid grid-cols-3 gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800">
+                  <div className="grid grid-cols-3 gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
                     <button
                       type="button"
                       onClick={() => { setViewMode('kiosk'); }}
                       className={`flex flex-col items-center gap-1 py-2 px-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                         viewMode === 'kiosk'
                           ? 'bg-brand-green text-white shadow'
-                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                          : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                       }`}
                     >
                       <Smartphone size={15} strokeWidth={2} />
@@ -670,7 +670,7 @@ export function DemoControls() {
                       className={`flex flex-col items-center gap-1 py-2 px-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                         viewMode === 'admin'
                           ? 'bg-brand-blue text-white shadow'
-                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                          : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                       }`}
                     >
                       <Monitor size={15} strokeWidth={2} />
@@ -683,7 +683,7 @@ export function DemoControls() {
                       className={`flex flex-col items-center gap-1 py-2 px-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                         viewMode === 'split'
                           ? 'bg-blue-600 text-white shadow'
-                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                          : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                       }`}
                     >
                       <Columns size={15} strokeWidth={2} />
@@ -696,21 +696,21 @@ export function DemoControls() {
                 {(viewMode === 'kiosk' || viewMode === 'split') && (
                   <div className="flex flex-col gap-1.5">
                     <div className="flex items-center justify-between">
-                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-300">
                         Kiosk Enclosure Framing
                       </label>
                       <span className="text-[10px] font-medium text-emerald-400">
                         {kioskFraming === 'focus' ? 'Clean 23.8" Screen' : '1,780mm Hardware Enclosure'}
                       </span>
                     </div>
-                    <div className="grid grid-cols-2 gap-1.5 bg-slate-950/80 p-1.5 rounded-xl border border-slate-800">
+                    <div className="grid grid-cols-2 gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
                       <button
                         type="button"
                         onClick={() => setKioskFraming('focus')}
                         className={`py-2 px-2.5 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                           kioskFraming === 'focus'
                             ? 'bg-brand-green text-white shadow'
-                            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                            : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                         }`}
                       >
                         <Smartphone size={14} />
@@ -726,7 +726,7 @@ export function DemoControls() {
                         className={`py-2 px-2.5 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                           kioskFraming === 'totem'
                             ? 'bg-brand-blue text-white shadow'
-                            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                            : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                         }`}
                       >
                         <Monitor size={14} />
@@ -742,10 +742,10 @@ export function DemoControls() {
                 {/* ── Zoom & Canvas Scale ──────────────────────────────── */}
                 <div className="flex flex-col gap-1.5">
                   <div className="flex items-center justify-between">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-300">
                       Canvas Scale
                     </label>
-                    <span className="text-[10px] font-mono text-slate-400">
+                    <span className="text-[10px] font-mono text-slate-300">
                       {zoomLevel}%
                     </span>
                   </div>
@@ -754,7 +754,7 @@ export function DemoControls() {
                       type="button"
                       onClick={zoomOut}
                       disabled={zoomLevel <= ZOOM_STEPS[0]}
-                      className="w-9 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 flex items-center justify-center text-slate-300 transition-colors border border-slate-700/50 cursor-pointer"
+                      className="w-9 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 flex items-center justify-center text-slate-200 hover:text-white transition-colors border border-slate-700/60 cursor-pointer"
                       title="Zoom Out"
                     >
                       <ZoomOut size={14} />
@@ -763,7 +763,7 @@ export function DemoControls() {
                     <button
                       type="button"
                       onClick={resetZoom}
-                      className="flex-1 h-8 rounded-lg bg-slate-800/60 hover:bg-slate-700/60 text-xs font-bold text-slate-200 border border-slate-700/50 transition-colors cursor-pointer"
+                      className="flex-1 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white border border-slate-700/60 transition-colors cursor-pointer"
                       title="Reset to 100%"
                     >
                       Reset (100%)
@@ -773,7 +773,7 @@ export function DemoControls() {
                       type="button"
                       onClick={zoomIn}
                       disabled={zoomLevel >= ZOOM_STEPS[ZOOM_STEPS.length - 1]}
-                      className="w-9 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 flex items-center justify-center text-slate-300 transition-colors border border-slate-700/50 cursor-pointer"
+                      className="w-9 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-30 flex items-center justify-center text-slate-200 hover:text-white transition-colors border border-slate-700/60 cursor-pointer"
                       title="Zoom In"
                     >
                       <ZoomIn size={14} />
@@ -782,7 +782,7 @@ export function DemoControls() {
                     <button
                       type="button"
                       onClick={toggleFullscreen}
-                      className="w-9 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition-colors border border-slate-700/50 cursor-pointer"
+                      className="w-9 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-200 hover:text-white transition-colors border border-slate-700/60 cursor-pointer"
                       title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
                     >
                       {isFullscreen ? <Minimize size={14} /> : <Maximize size={14} />}
@@ -792,14 +792,14 @@ export function DemoControls() {
 
                 {/* ── Screenshot & Capture ──────────────────────────────── */}
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-300">
                     Export & Screenshots
                   </label>
                   <div className="grid grid-cols-2 gap-1.5">
                     <button
                       type="button"
                       onClick={() => captureScreenshot('current')}
-                      className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700/50 transition-colors cursor-pointer"
+                      className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white border border-slate-700/60 transition-colors cursor-pointer"
                       title="Download high-resolution PNG of current active screen"
                     >
                       <Camera size={13} />
@@ -811,8 +811,8 @@ export function DemoControls() {
                       onClick={copyScreenshotToClipboard}
                       className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-xs font-semibold border transition-colors cursor-pointer ${
                         copied
-                          ? 'bg-emerald-900/60 text-emerald-200 border-emerald-600'
-                          : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700/50'
+                          ? 'bg-emerald-900/80 text-emerald-200 border-emerald-600'
+                          : 'bg-slate-800 hover:bg-slate-700 text-white border-slate-700/60'
                       }`}
                       title="Copy screenshot directly to clipboard"
                     >
@@ -827,7 +827,7 @@ export function DemoControls() {
                       <button
                         type="button"
                         onClick={() => captureScreenshot('kiosk')}
-                        className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-emerald-950/50 hover:bg-emerald-900/60 text-[11px] font-semibold text-emerald-300 border border-emerald-800/50 transition-colors cursor-pointer"
+                        className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-[11px] font-semibold text-emerald-200 border border-emerald-800/80 transition-colors cursor-pointer"
                       >
                         <Smartphone size={11} />
                         <span>Kiosk Screen Only</span>
@@ -836,7 +836,7 @@ export function DemoControls() {
                       <button
                         type="button"
                         onClick={() => captureScreenshot('admin')}
-                        className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-blue-950/50 hover:bg-blue-900/60 text-[11px] font-semibold text-blue-300 border border-blue-800/50 transition-colors cursor-pointer"
+                        className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-blue-950 hover:bg-blue-900 text-[11px] font-semibold text-blue-200 border border-blue-800/80 transition-colors cursor-pointer"
                       >
                         <Monitor size={11} />
                         <span>Staff Console Only</span>
@@ -846,13 +846,13 @@ export function DemoControls() {
                 </div>
 
                 {/* ── Page Label Toggle ─────────────────────────────────── */}
-                <div className="flex items-center justify-between p-2 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                <div className="flex items-center justify-between p-2 rounded-xl bg-slate-950 border border-slate-800">
                   <div className="flex flex-col">
-                    <span className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                    <span className="text-xs font-semibold text-white flex items-center gap-1.5">
                       <Tag size={12} className="text-brand-gold" />
                       Screen Label Badge
                     </span>
-                    <span className="text-[10px] text-slate-400">
+                    <span className="text-[10px] text-slate-300">
                       Display active page name banner on screen
                     </span>
                   </div>
@@ -876,7 +876,6 @@ export function DemoControls() {
             ═══════════════════════════════════════════════════════════════ */}
             {activeTab === 'sensors' && (
               <div className="flex flex-col gap-3.5 animate-fade-in">
-                {/* ── Demo Patient Autofill Presets ────────────────────────── */}
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1.5">
                     <Sparkles size={11} className="text-brand-gold" />
@@ -886,7 +885,7 @@ export function DemoControls() {
                     <button
                       type="button"
                       onClick={handleAutofillSeniorPatient}
-                      className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-left border border-slate-700/70 transition-colors group cursor-pointer"
+                      className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-left border border-slate-700/70 transition-colors group cursor-pointer"
                       title="Populate Step 1 with senior patient (Juan Dela Cruz, 70yo)"
                     >
                       <div className="w-8 h-8 rounded-lg bg-emerald-950/80 border border-emerald-700/60 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
@@ -894,14 +893,14 @@ export function DemoControls() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-semibold text-slate-200">
+                          <span className="text-xs font-semibold text-white">
                             Senior Citizen Intake
                           </span>
-                          <span className="text-[9px] font-mono px-1 rounded bg-slate-900 text-slate-400 border border-slate-700/50">
+                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-700">
                             Step 1
                           </span>
                         </div>
-                        <p className="text-[10px] text-slate-400 mt-0.5 leading-snug">
+                        <p className="text-[10px] text-slate-300 mt-0.5 leading-snug">
                           Juan Dela Cruz (70y) • PhilSys ID, senior demographics
                         </p>
                       </div>
@@ -910,7 +909,7 @@ export function DemoControls() {
                     <button
                       type="button"
                       onClick={handleAutofillCompleteCase}
-                      className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-left border border-slate-700/70 transition-colors group cursor-pointer"
+                      className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-left border border-slate-700/70 transition-colors group cursor-pointer"
                       title="Populate complete emergency case with vitals, pain level, and notes ready for review"
                     >
                       <div className="w-8 h-8 rounded-lg bg-red-950/80 border border-red-700/60 flex items-center justify-center text-red-400 shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
@@ -918,14 +917,14 @@ export function DemoControls() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-semibold text-slate-200">
+                          <span className="text-xs font-semibold text-white">
                             Acute Emergency Case
                           </span>
-                          <span className="text-[9px] font-mono px-1 rounded bg-red-950 text-red-300 border border-red-800/60">
+                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-950 text-red-300 border border-red-800/80">
                             Review
                           </span>
                         </div>
-                        <p className="text-[10px] text-slate-400 mt-0.5 leading-snug">
+                        <p className="text-[10px] text-slate-300 mt-0.5 leading-snug">
                           Severe chest pain (Level 8) • 114 bpm, 93% SpO2
                         </p>
                       </div>
@@ -934,7 +933,7 @@ export function DemoControls() {
                 </div>
 
                 {/* ── Hardware Sensor Simulation Bay ────────────────────── */}
-                <div className="flex flex-col gap-2.5 p-2.5 rounded-xl bg-slate-950/70 border border-slate-800">
+                <div className="flex flex-col gap-2.5 p-2.5 rounded-xl bg-slate-950 border border-slate-800">
                   <div className="flex items-center justify-between">
                     <label className="text-[10px] font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
                       <Radio size={11} className="text-blue-400" />
@@ -969,7 +968,7 @@ export function DemoControls() {
 
                   {/* 1. Identification Scanners */}
                   <div className="flex flex-col gap-1.5">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 px-0.5">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-slate-300 px-0.5">
                       Patient Identification (QR & NFC)
                     </span>
                     <div className="grid grid-cols-2 gap-1.5">
@@ -986,7 +985,7 @@ export function DemoControls() {
                             }
                           });
                         }}
-                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-white border border-slate-700/60 transition-colors cursor-pointer"
                         title="Simulate presenting QR code to optical scanner bay"
                       >
                         <QrCode size={13} className="text-blue-400 shrink-0" />
@@ -1006,7 +1005,7 @@ export function DemoControls() {
                             }
                           });
                         }}
-                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-white border border-slate-700/60 transition-colors cursor-pointer"
                         title="Simulate tapping contactless PhilSys smart card on NFC wave pad"
                       >
                         <Wifi size={13} className="text-emerald-400 rotate-90 shrink-0" />
@@ -1022,20 +1021,20 @@ export function DemoControls() {
                           errorMessage: 'Scanner Bay: Barcode obscured or unreadable. Please wipe code and hold steady.'
                         });
                       }}
-                      className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-900/50 text-[11px] font-semibold text-red-300 border border-red-900/60 transition-colors cursor-pointer"
+                      className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-red-950/50 hover:bg-red-900/60 text-[11px] font-semibold text-red-200 border border-red-900/80 transition-colors cursor-pointer"
                       title="Simulate unreadable barcode (Demonstrates Error Recovery flow)"
                     >
                       <span className="flex items-center gap-1.5">
                         <AlertCircle size={12} className="text-red-400" />
                         Simulate Code Read Failure
                       </span>
-                      <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-red-900/60 text-red-300 font-mono">Error Demo</span>
+                      <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-red-900/80 text-red-200 font-mono">Error Demo</span>
                     </button>
                   </div>
 
                   {/* 2. Medical Vitals Sensors */}
-                  <div className="flex flex-col gap-1.5 pt-1 border-t border-slate-800/80">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 px-0.5">
+                  <div className="flex flex-col gap-1.5 pt-1 border-t border-slate-800">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-slate-300 px-0.5">
                       Vitals & Temperature Sensors
                     </span>
                     <div className="grid grid-cols-2 gap-1.5">
@@ -1055,7 +1054,7 @@ export function DemoControls() {
                             setKioskStep('pain-duration');
                           }
                         }}
-                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-white border border-slate-700/60 transition-colors cursor-pointer"
                         title="Simulate normal vitals reading (98% SpO2, 74 bpm)"
                       >
                         <Activity size={13} className="text-emerald-400 shrink-0" />
@@ -1078,7 +1077,7 @@ export function DemoControls() {
                             setKioskStep('pain-duration');
                           }
                         }}
-                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-white border border-slate-700/60 transition-colors cursor-pointer"
                         title="Simulate acute vitals reading (91% SpO2, 122 bpm)"
                       >
                         <Activity size={13} className="text-red-400 shrink-0" />
@@ -1094,7 +1093,7 @@ export function DemoControls() {
                             payload: { temperature: '36.6°C' }
                           });
                         }}
-                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-white border border-slate-700/60 transition-colors cursor-pointer"
                         title="Simulate infrared core forehead scan (36.6°C Normal)"
                       >
                         <Thermometer size={13} className="text-cyan-400 shrink-0" />
@@ -1108,7 +1107,7 @@ export function DemoControls() {
                             payload: { temperature: '38.9°C' }
                           });
                         }}
-                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-white border border-slate-700/60 transition-colors cursor-pointer"
                         title="Simulate infrared core forehead scan (38.9°C High Fever)"
                       >
                         <Thermometer size={13} className="text-amber-400 shrink-0" />
@@ -1128,14 +1127,14 @@ export function DemoControls() {
                           setKioskStep('pain-duration');
                         }
                       }}
-                      className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-amber-950/40 hover:bg-amber-900/50 text-[11px] font-semibold text-amber-300 border border-amber-900/60 transition-colors cursor-pointer"
+                      className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-amber-950/50 hover:bg-amber-900/60 text-[11px] font-semibold text-amber-200 border border-amber-900/80 transition-colors cursor-pointer"
                       title="Simulate finger motion artifact error (Demonstrates Error Recovery flow)"
                     >
                       <span className="flex items-center gap-1.5">
                         <AlertCircle size={12} className="text-amber-400" />
                         Simulate Motion Artifact
                       </span>
-                      <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-amber-900/60 text-amber-300 font-mono">Fault Demo</span>
+                      <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-amber-900/80 text-amber-200 font-mono">Fault Demo</span>
                     </button>
                   </div>
                 </div>
@@ -1154,7 +1153,7 @@ export function DemoControls() {
                       <Smartphone size={11} />
                       Kiosk Flow (8 Steps)
                     </label>
-                    <span className="text-[10px] text-slate-400 font-mono">
+                    <span className="text-[10px] text-slate-300 font-mono">
                       Step {KIOSK_SCREENS.findIndex(s => s.key === kioskStep) + 1} of 8
                     </span>
                   </div>
@@ -1172,7 +1171,7 @@ export function DemoControls() {
                           className={`text-left px-2.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-between cursor-pointer ${
                             isActive
                               ? 'bg-emerald-600 text-white shadow-md shadow-emerald-900/40 ring-1 ring-emerald-400'
-                              : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700/80 border border-slate-700/50'
+                              : 'bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 border border-slate-700/60'
                           }`}
                         >
                           <span className="truncate">
@@ -1186,13 +1185,13 @@ export function DemoControls() {
                 </div>
 
                 {/* ── Staff Workstation Screens ──────────────────────────── */}
-                <div className="flex flex-col gap-1.5 pt-1 border-t border-slate-800/80">
+                <div className="flex flex-col gap-1.5 pt-1 border-t border-slate-800">
                   <div className="flex items-center justify-between">
                     <label className="text-[10px] font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
                       <Monitor size={11} />
                       Staff Workstation (6 Views)
                     </label>
-                    <span className="text-[10px] text-slate-400 font-mono">
+                    <span className="text-[10px] text-slate-300 font-mono">
                       Clinical Console
                     </span>
                   </div>
@@ -1210,7 +1209,7 @@ export function DemoControls() {
                           className={`text-left px-2.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-between cursor-pointer ${
                             isActive
                               ? 'bg-blue-600 text-white shadow-md shadow-blue-900/40 ring-1 ring-blue-400'
-                              : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700/80 border border-slate-700/50'
+                              : 'bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 border border-slate-700/60'
                           }`}
                         >
                           <span className="truncate">{screen.label}</span>
@@ -1224,7 +1223,7 @@ export function DemoControls() {
             )}
 
             {/* ── Footer ──────────────────────────────────────────────── */}
-            <div className="pt-2 border-t border-slate-800/70 flex items-center justify-between text-[11px] text-slate-400">
+            <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
               <span className="flex items-center gap-1">
                 <GripHorizontal size={12} className="text-slate-500" />
                 Drag handle to reposition
@@ -1232,7 +1231,7 @@ export function DemoControls() {
               <button
                 type="button"
                 onClick={resetDemoData}
-                className="hover:text-amber-400 transition-colors flex items-center gap-1 cursor-pointer"
+                className="text-slate-300 hover:text-amber-400 transition-colors flex items-center gap-1 cursor-pointer"
                 title="Reset intake forms and sensor mocks"
               >
                 <RotateCcw size={10} />
