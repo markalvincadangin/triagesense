@@ -6,10 +6,19 @@ import { AlertBanner } from '../../components/common/AlertBanner';
 import { Server, Wifi, Sliders, RefreshCw } from 'lucide-react';
 
 export function FleetManager() {
-  const { kiosks, settings, setSettings } = useTriage();
+  const { kiosks, settings, setSettings, pingKiosk } = useTriage();
   const [cooldown, setCooldown] = useState(settings.emergencyCooldown || 60);
   const [timeoutSec, setTimeoutSec] = useState(settings.inactivityTimeout || 45);
   const [saveBanner, setSaveBanner] = useState(false);
+  const [pingingKiosks, setPingingKiosks] = useState({});
+
+  const handlePingStation = (kioskId) => {
+    setPingingKiosks((prev) => ({ ...prev, [kioskId]: true }));
+    setTimeout(() => {
+      pingKiosk(kioskId);
+      setPingingKiosks((prev) => ({ ...prev, [kioskId]: false }));
+    }, 600);
+  };
 
   const handleSaveSettings = (e) => {
     e.preventDefault();
@@ -101,10 +110,12 @@ export function FleetManager() {
               <span>Heartbeat: <strong className="text-slate-700">{kiosk.lastSync}</strong></span>
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-blue hover:underline cursor-pointer"
+                onClick={() => handlePingStation(kiosk.id)}
+                disabled={pingingKiosks[kiosk.id]}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-blue hover:text-brand-blue/80 hover:underline cursor-pointer disabled:opacity-50"
               >
-                <RefreshCw size={12} />
-                <span>Simulate Ping</span>
+                <RefreshCw size={12} className={pingingKiosks[kiosk.id] ? 'animate-spin' : ''} />
+                <span>{pingingKiosks[kiosk.id] ? 'Connecting...' : 'Check Connection'}</span>
               </button>
             </Card.Footer>
           </Card>

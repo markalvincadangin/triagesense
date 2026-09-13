@@ -321,12 +321,12 @@ export function PatientDossier() {
                 </button>
 
                 <div className="text-[11px] text-emerald-800 font-medium">
-                  * Automated pre-screening data. Licensed nurse verifies and confirms vital signs on the right assessment panel.
+                  Automated pre-screening data. Licensed nurse verifies and confirms vital signs on the right assessment panel.
                 </div>
               </div>
             )}
 
-            {/* Voice Memo Audio Player Simulation */}
+            {/* Voice Memo Audio Player */}
             {currentIntake.voiceNoteRecorded && (
               <div
                 className={`flex items-center justify-between p-3.5 rounded-xl border transition-all ${

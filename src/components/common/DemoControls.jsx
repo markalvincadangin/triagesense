@@ -29,7 +29,11 @@ import {
   Thermometer,
   AlertCircle,
   Radio,
-  Check
+  Check,
+  UserPlus,
+  RefreshCw,
+  Bell,
+  ShieldAlert
 } from 'lucide-react';
 
 // ─── Screen name maps for navigation & labels ───────────────────────────────
@@ -45,8 +49,8 @@ const KIOSK_SCREENS = [
 ];
 
 const ADMIN_SCREENS = [
-  { key: 'live-queue', label: 'Live Triage Queue' },
-  { key: 'patient-dossier', label: 'Patient Triage Chart' },
+  { key: 'live-queue', label: 'Live Queue' },
+  { key: 'patient-dossier', label: 'Patient Dossier' },
   { key: 'emergency-console', label: 'Emergency Calls' },
   { key: 'patient-directory', label: 'Patient Records' },
   { key: 'analytics', label: 'ED Analytics' },
@@ -70,6 +74,10 @@ export function DemoControls() {
     updateDraftPatientInfo,
     updateVitals,
     triggerEmergencyModal,
+    confirmEmergencyAssistance,
+    dismissEmergency,
+    pingKiosk,
+    simulateNewPatientIntake,
     activeHardwareSensor,
     triggerHardwareSensor,
     cancelHardwareSensor
@@ -381,6 +389,14 @@ export function DemoControls() {
   };
 
   // ─── Prototype Demo Simulations & Shortcuts ──────────────────────────────
+  const [simulationNotice, setSimulationNotice] = useState(null);
+  const [pingingKiosks, setPingingKiosks] = useState(false);
+
+  const showSimNotice = (msg) => {
+    setSimulationNotice(msg);
+    setTimeout(() => setSimulationNotice(null), 3500);
+  };
+
   const handleAutofillSeniorPatient = () => {
     updateDraft({ identification: 'Hospital ID' });
     updateDraftPatientInfo({
@@ -391,6 +407,7 @@ export function DemoControls() {
     });
     setViewMode('kiosk');
     setKioskStep('patient-info');
+    showSimNotice('Senior citizen intake populated in Step 1.');
   };
 
   const handleAutofillCompleteCase = () => {
@@ -419,6 +436,61 @@ export function DemoControls() {
     });
     setViewMode('kiosk');
     setKioskStep('review');
+    showSimNotice('Acute emergency case populated in Review step.');
+  };
+
+  const handleAutofillPediatricCase = () => {
+    updateDraft({
+      identification: 'Hospital ID',
+      symptoms: ['Fever', 'Cough'],
+      bodyLocations: ['Head', 'Respiratory'],
+      painLevel: 4,
+      duration: '1–3 days',
+      additionalSymptoms: ['Loss of appetite', 'Fatigue'],
+      customNotes: 'Parent reports persistent high fever since yesterday with barking cough.',
+      voiceNoteRecorded: false
+    });
+    updateDraftPatientInfo({
+      fullName: 'Maria Elena Santos',
+      dob: '2020-05-14',
+      gender: 'Female',
+      contact: '0922-441-9982 (Mother)'
+    });
+    updateVitals({
+      spo2: 98,
+      pulseRate: 98,
+      perfusionIndex: 4.8,
+      measuredAt: 'Just now',
+      skipped: false
+    });
+    setViewMode('kiosk');
+    setKioskStep('review');
+    showSimNotice('Pediatric fever scenario populated in Review step.');
+  };
+
+  const handleToggleEmergencyDuress = () => {
+    if (emergencyAlert.active) {
+      dismissEmergency();
+      showSimNotice('Emergency duress broadcast resolved & dismissed.');
+    } else {
+      confirmEmergencyAssistance('Kiosk 01 (Entrance Lobby)');
+      showSimNotice('Emergency duress distress call triggered to Admin Console!');
+    }
+  };
+
+  const handleSimulateNewIntake = () => {
+    const record = simulateNewPatientIntake();
+    showSimNotice(`Simulated patient check-in created (${record.id}) in Live Queue!`);
+  };
+
+  const handleSimulateKioskPing = () => {
+    setPingingKiosks(true);
+    setTimeout(() => {
+      pingKiosk('kiosk-01');
+      pingKiosk('kiosk-02');
+      setPingingKiosks(false);
+      showSimNotice('Kiosk station heartbeats synchronized (Just now).');
+    }, 600);
   };
 
   // Determine smart alignment for popup menu
@@ -618,7 +690,7 @@ export function DemoControls() {
                 }`}
               >
                 <Sparkles size={13} className="text-brand-gold" />
-                <span>Sensors</span>
+                <span>Simulations</span>
               </button>
 
               <button
@@ -872,14 +944,23 @@ export function DemoControls() {
             )}
 
             {/* ═══════════════════════════════════════════════════════════════
-                TAB 2: SENSORS & DEMO PRESETS
+                TAB 2: SENSORS & SIMULATIONS
             ═══════════════════════════════════════════════════════════════ */}
             {activeTab === 'sensors' && (
               <div className="flex flex-col gap-3.5 animate-fade-in">
+                {/* ── Status Feedback Banner (if simulated action triggered) ── */}
+                {simulationNotice && (
+                  <div className="p-2.5 rounded-xl bg-emerald-950/90 border border-emerald-700/80 text-emerald-200 text-xs font-bold flex items-center gap-2 animate-fade-in shadow-md">
+                    <Check size={14} className="text-emerald-400 shrink-0" />
+                    <span className="leading-tight">{simulationNotice}</span>
+                  </div>
+                )}
+
+                {/* ── Section 1: Demo Patient Intake Autofills ──────────── */}
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[10px] font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1.5">
                     <Sparkles size={11} className="text-brand-gold" />
-                    Demo Patient Scenarios
+                    Patient Intake Autofills
                   </label>
                   <div className="flex flex-col gap-1.5">
                     <button
@@ -926,6 +1007,130 @@ export function DemoControls() {
                         </div>
                         <p className="text-[10px] text-slate-300 mt-0.5 leading-snug">
                           Severe chest pain (Level 8) • 114 bpm, 93% SpO2
+                        </p>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleAutofillPediatricCase}
+                      className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-left border border-slate-700/70 transition-colors group cursor-pointer"
+                      title="Populate pediatric fever case ready for review"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-amber-950/80 border border-amber-700/60 flex items-center justify-center text-amber-400 shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
+                        <Thermometer size={15} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-semibold text-white">
+                            Pediatric Fever & Cough
+                          </span>
+                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800/80">
+                            Review
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-300 mt-0.5 leading-snug">
+                          Maria Elena Santos (6y) • 38.8°C fever, cough, Level 4 pain
+                        </p>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                {/* ── Section 2: Clinical & ED Operations Simulations ─────── */}
+                <div className="flex flex-col gap-1.5 p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-red-400 flex items-center gap-1.5">
+                    <ShieldAlert size={11} className="text-red-400" />
+                    ED Operations & Duress Simulations
+                  </label>
+
+                  <div className="flex flex-col gap-1.5">
+                    {/* Trigger/Clear Emergency Duress Call */}
+                    <button
+                      type="button"
+                      onClick={handleToggleEmergencyDuress}
+                      className={`flex items-start gap-2.5 p-2.5 rounded-xl text-left border transition-all cursor-pointer ${
+                        emergencyAlert.active
+                          ? 'bg-red-950/90 border-red-600 ring-1 ring-red-500 hover:bg-red-900/90'
+                          : 'bg-slate-800 hover:bg-slate-700 border-slate-700/70'
+                      }`}
+                      title={emergencyAlert.active ? 'Click to clear active emergency broadcast' : 'Simulate patient distress call from Kiosk 01'}
+                    >
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
+                        emergencyAlert.active
+                          ? 'bg-red-600 text-white animate-pulse'
+                          : 'bg-red-950/80 border border-red-700/60 text-red-400'
+                      }`}>
+                        <Bell size={15} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className={`text-xs font-bold ${emergencyAlert.active ? 'text-red-200' : 'text-white'}`}>
+                            {emergencyAlert.active ? 'Clear Duress Alert (Active)' : 'Simulate Kiosk Emergency Call'}
+                          </span>
+                          <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-black ${
+                            emergencyAlert.active
+                              ? 'bg-red-600 text-white animate-pulse'
+                              : 'bg-slate-950 text-slate-300 border border-slate-700'
+                          }`}>
+                            {emergencyAlert.active ? 'ACTIVE' : 'ADM-03'}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-300 mt-0.5 leading-snug">
+                          {emergencyAlert.active
+                            ? 'Broadcasting from Kiosk 01. Click to resolve/clear alarm.'
+                            : 'Dispatches urgent duress alert to Staff Emergency Console'}
+                        </p>
+                      </div>
+                    </button>
+
+                    {/* Simulate Real-Time Patient Check-In to Live Queue */}
+                    <button
+                      type="button"
+                      onClick={handleSimulateNewIntake}
+                      className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-left border border-slate-700/70 transition-colors cursor-pointer"
+                      title="Inject a real-time intake registration directly into Live Triage Queue"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-700/60 flex items-center justify-center text-blue-400 shrink-0 mt-0.5">
+                        <UserPlus size={15} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-semibold text-white">
+                            Inject Patient into Live Queue
+                          </span>
+                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-700">
+                            ADM-01
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-300 mt-0.5 leading-snug">
+                          Simulates real-time kiosk check-in appearing instantly in queue
+                        </p>
+                      </div>
+                    </button>
+
+                    {/* Simulate Kiosk Station Heartbeat Ping */}
+                    <button
+                      type="button"
+                      onClick={handleSimulateKioskPing}
+                      disabled={pingingKiosks}
+                      className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-left border border-slate-700/70 transition-colors cursor-pointer disabled:opacity-50"
+                      title="Send network heartbeat to Kiosk 01 & 02"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-emerald-950/80 border border-emerald-700/60 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
+                        <RefreshCw size={15} className={pingingKiosks ? 'animate-spin' : ''} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-semibold text-white">
+                            {pingingKiosks ? 'Pinging Kiosk Terminals...' : 'Simulate Kiosk Station Ping'}
+                          </span>
+                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-700">
+                            ADM-06
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-300 mt-0.5 leading-snug">
+                          Updates station heartbeat timestamps to &quot;Just now&quot;
                         </p>
                       </div>
                     </button>

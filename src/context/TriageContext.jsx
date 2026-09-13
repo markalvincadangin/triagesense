@@ -79,6 +79,68 @@ export function TriageProvider({ children }) {
     supportedLanguages: ['en', 'hil', 'fil', 'ceb']
   });
 
+  // Kiosk Fleet Management State
+  const [kiosks, setKiosks] = useState(INITIAL_KIOSKS);
+
+  const pingKiosk = (kioskId) => {
+    setKiosks((prev) =>
+      prev.map((k) =>
+        k.id === kioskId
+          ? { ...k, lastSync: 'Just now', status: 'Online' }
+          : k
+      )
+    );
+  };
+
+  const simulateNewPatientIntake = (preset = null) => {
+    const generatedNum = Math.floor(1000 + Math.random() * 9000);
+    const newId = `TS-2026-${generatedNum}`;
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const newRecord = preset || {
+      id: newId,
+      timestamp: timeString,
+      elapsedSeconds: 0,
+      waitTime: '0m',
+      status: 'New',
+      language: 'Hiligaynon',
+      patientInfo: {
+        fullName: 'Corazon A. Villanueva',
+        dob: '1971-08-14',
+        age: 54,
+        gender: 'Female',
+        contact: '0919-555-4821',
+        idType: 'PhilHealth QR (#PH-88421)'
+      },
+      symptoms: ['Acute Abdominal Pain', 'Nausea'],
+      bodyLocations: ['Abdomen'],
+      painLevel: 7,
+      duration: '1–6 hours',
+      additionalSymptoms: ['Feverish', 'Loss of appetite'],
+      customNotes: 'Severe right lower quadrant cramp-like pain. Onset this afternoon with low fever.',
+      voiceNoteRecorded: false,
+      vitalsTelemetry: {
+        spo2: '97%',
+        pulseRate: '88',
+        perfusionIndex: '4.1%',
+        capturedAt: timeString,
+        source: 'Kiosk PPG Sensor (Right Slot)'
+      },
+      nurseAssessment: {
+        assignedESI: null,
+        vitals: { bp: '', hr: '88 bpm', temp: '', o2: '97%', rr: '' },
+        clinicalNotes: '',
+        bedDisposition: 'Pending Nurse Assessment',
+        nurseName: '',
+        assessedAt: ''
+      }
+    };
+
+    setIntakes((prev) => [newRecord, ...prev]);
+    return newRecord;
+  };
+
   // Cooldown Countdown Timer
   useEffect(() => {
     let timer;
@@ -475,6 +537,7 @@ export function TriageProvider({ children }) {
   const resetDemoData = () => {
     setIntakes(INITIAL_INTAKES);
     setSelectedIntakeId('TS-2026-9912');
+    setKiosks(INITIAL_KIOSKS);
     resetKioskSession();
     dismissEmergency();
     cancelHardwareSensor();
@@ -525,7 +588,10 @@ export function TriageProvider({ children }) {
     activeHardwareSensor,
     triggerHardwareSensor,
     cancelHardwareSensor,
-    kiosks: INITIAL_KIOSKS,
+    kiosks,
+    setKiosks,
+    pingKiosk,
+    simulateNewPatientIntake,
     analytics: DEMO_ANALYTICS
   };
 

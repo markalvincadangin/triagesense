@@ -2,8 +2,7 @@ import React from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { Card } from '../../components/common/Card';
 import { StatCard } from '../../components/common/StatCard';
-import { AlertBanner } from '../../components/common/AlertBanner';
-import { BarChart3, Clock, TrendingUp, Users, Globe, Info, Activity } from 'lucide-react';
+import { BarChart3, Clock, TrendingUp, Users, Globe, Activity } from 'lucide-react';
 
 const COMPLAINT_COLOR_CLASSES = {
   'Chest Pain / Cardiac': 'bg-emergency',
@@ -28,15 +27,10 @@ export function OperationalAnalytics() {
         </p>
       </div>
 
-      {/* Prominent Illustrative Demo Data Banner */}
-      <AlertBanner variant="warning" icon={Info} title="Academic Prototype Notice">
-        All figures, Door-to-Triage (DTT) benchmarks, surge heatmaps, and dialect distribution percentages are <strong>illustrative simulated demo datasets</strong> for CIT 213 HCI 2 evaluation. They do not represent official clinical findings of WVSU Medical Center.
-      </AlertBanner>
-
       {/* Key Metric Ribbon using reusable StatCard components */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          label="Avg Door-to-Triage (DTT)*"
+          label="Avg Door-to-Triage (DTT)"
           value={analytics.averageDoorToTriage}
           subtext="Target benchmark: under 5.0 minutes"
           icon={Clock}
@@ -45,7 +39,7 @@ export function OperationalAnalytics() {
         />
 
         <StatCard
-          label="Throughput Acceleration*"
+          label="Throughput Acceleration"
           value={`+${analytics.triageAcceleration}`}
           subtext="Vs manual paper intake registration"
           icon={TrendingUp}
@@ -54,7 +48,7 @@ export function OperationalAnalytics() {
         />
 
         <StatCard
-          label="Total Kiosk Intakes Today*"
+          label="Total Kiosk Intakes Today"
           value={analytics.totalIntakesToday}
           subtext="Across Kiosk 01 & Kiosk 02"
           icon={Users}
@@ -63,7 +57,7 @@ export function OperationalAnalytics() {
         />
 
         <StatCard
-          label="High Urgency Proportion*"
+          label="High Urgency Proportion"
           value={analytics.highAcuityProportion}
           subtext="Nurse-confirmed ESI-1 & ESI-2 cases"
           icon={Activity}
@@ -78,7 +72,7 @@ export function OperationalAnalytics() {
         <Card variant="default">
           <Card.Header
             icon={BarChart3}
-            title="Presenting Chief Complaints (Sample Breakdown)*"
+            title="Presenting Chief Complaints"
           />
 
           <Card.Body className="gap-3.5">
@@ -103,7 +97,7 @@ export function OperationalAnalytics() {
         <Card variant="default">
           <Card.Header
             icon={Globe}
-            title="Language & Regional Dialect Utilization*"
+            title="Language & Regional Dialect Utilization"
           />
 
           <Card.Body className="gap-3.5">
@@ -129,7 +123,7 @@ export function OperationalAnalytics() {
       <Card variant="default">
         <Card.Header
           icon={Activity}
-          title="Simulated Hourly Arrival Surge Heatmap (8:00 AM – 8:00 PM)*"
+          title="Hourly Patient Arrival Volume (8:00 AM – 8:00 PM)"
           subtitle="Hourly intake volume showing peak afternoon rush"
         />
 

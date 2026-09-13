@@ -136,7 +136,7 @@ export function EmergencyConsole() {
             </Card.Body>
           </Card>
 
-          {/* Simulated Two-Way Intercom Console */}
+          {/* Two-Way Intercom Console */}
           <Card variant="default">
             <Card.Header
               icon={Radio}
