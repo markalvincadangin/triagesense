@@ -103,7 +103,7 @@ export function Symptoms() {
               onClick={() => handleToggleSymptom(symp.id)}
               className={`min-h-[148px] p-6 rounded-3xl border-2 transition-all duration-150 cursor-pointer flex items-center justify-between gap-5 select-none ${
                 isSelected
-                  ? 'bg-emerald-50/90 border-brand-green shadow-card ring-4 ring-emerald-500/25 scale-[1.01]'
+                  ? 'bg-emerald-100/80 border-brand-green shadow-card ring-4 ring-emerald-600/30 scale-[1.01]'
                   : 'bg-surface border-border-main hover:border-border-hover shadow-subtle hover:shadow-card'
               }`}
             >
@@ -138,11 +138,11 @@ export function Symptoms() {
               <div
                 className={`w-11 h-11 rounded-2xl border-2 flex items-center justify-center shrink-0 transition-all shadow-sm ${
                   isSelected
-                    ? 'bg-brand-green border-brand-green text-white shadow-md ring-2 ring-emerald-200'
+                    ? 'bg-brand-green border-brand-green text-white shadow-md ring-2 ring-emerald-300'
                     : 'border-slate-300 bg-white hover:border-slate-400'
                 }`}
               >
-                {isSelected && <Check size={24} strokeWidth={3.5} />}
+                {isSelected && <Check size={26} strokeWidth={3.5} />}
               </div>
             </div>
           );
@@ -180,18 +180,18 @@ export function Symptoms() {
           </div>
         </div>
 
-        <Button
-          variant={isRecordingVoice ? 'emergency' : 'outline'}
-          size="sm"
+        <button
+          type="button"
           onClick={handleToggleVoice}
-          className={`h-12 px-6 text-sm font-black shrink-0 rounded-2xl border-2 transition-all cursor-pointer ${
+          className={`h-12 px-6 text-sm font-black shrink-0 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm active:scale-95 ${
             isRecordingVoice
-              ? 'bg-emergency text-white shadow-md'
-              : 'bg-white hover:bg-blue-50 border-blue-300 text-brand-blue shadow-sm'
+              ? 'bg-emergency hover:bg-emergency-dark text-white border-emergency shadow-md animate-pulse'
+              : 'bg-brand-blue hover:bg-brand-blue-hover text-white border-brand-blue shadow-md'
           }`}
         >
-          {isRecordingVoice ? t('common.cancel') : t('patientInfo.voiceDictate')}
-        </Button>
+          <Mic size={18} strokeWidth={2.4} />
+          <span>{isRecordingVoice ? t('common.cancel') : t('patientInfo.voiceDictate')}</span>
+        </button>
       </div>
 
       {/* Validation Error Message */}
