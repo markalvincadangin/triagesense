@@ -451,18 +451,7 @@ export function DemoControls() {
     }
   };
 
-  // ─── Current page name helper ────────────────────────────────────────────
-  const getCurrentPageName = () => {
-    if (viewMode === 'kiosk' || viewMode === 'split') {
-      const found = KIOSK_SCREENS.find((s) => s.key === kioskStep);
-      return found ? found.label.replace(/\s+/g, '_') : kioskStep;
-    }
-    if (viewMode === 'admin') {
-      const found = ADMIN_SCREENS.find((s) => s.key === activeAdminTab);
-      return found ? found.label.replace(/\s+/g, '_') : activeAdminTab;
-    }
-    return 'Screen';
-  };
+  // ─── Current page label helper (for Screen Label Badge) ──────────────────
 
   const getCurrentPageLabel = () => {
     if (viewMode === 'kiosk' || viewMode === 'split') {
