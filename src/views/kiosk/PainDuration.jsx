@@ -11,13 +11,12 @@ import {
   CheckCircle2,
   RefreshCw,
   Info,
-  ArrowDownRight,
   ArrowDown,
   AlertCircle
 } from 'lucide-react';
 
 export function PainDuration() {
-  const { intakeDraft, updateDraft, updateVitals, setKioskStep, kioskLanguage, activeHardwareSensor, t } = useTriage();
+  const { intakeDraft, updateDraft, updateVitals, setKioskStep, activeHardwareSensor, t } = useTriage();
   const [measuringStatus, setMeasuringStatus] = useState('idle'); // 'idle' | 'measuring' | 'completed' | 'skipped'
   const [countdown, setCountdown] = useState(5);
   const [livePulse, setLivePulse] = useState(72);

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useTriage } from '../../context/TriageContext';
-import { Button } from '../../components/common/Button';
 import { KioskFooterNav } from '../../components/kiosk/KioskFooterNav';
 import {
   Thermometer,
