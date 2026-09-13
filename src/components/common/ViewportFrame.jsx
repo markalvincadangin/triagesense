@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { DemoControls } from './DemoControls';
-import { KioskEnclosure, TOTEM_WIDTH, TOTEM_HEIGHT } from '../kiosk/KioskEnclosure';
+import { KioskEnclosure, TOTEM_WIDTH, TOTEM_HEIGHT, FOCUS_HEIGHT } from '../kiosk/KioskEnclosure';
 
 export function ViewportFrame({ kioskContent, adminContent }) {
-  const { viewMode } = useTriage();
+  const { viewMode, kioskFraming } = useTriage();
   const [dimensions, setDimensions] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 1920,
     height: typeof window !== 'undefined' ? window.innerHeight : 1080
@@ -23,28 +23,29 @@ export function ViewportFrame({ kioskContent, adminContent }) {
 
   const { width: winW, height: winH } = dimensions;
 
-  // 1. STANDALONE KIOSK SCALING (Canonical Totem: TOTEM_WIDTH × TOTEM_HEIGHT)
-  // Guarantees zero vertical/horizontal overflow with balanced surrounding margins
-  const kioskPadY = 48; // 24px top & bottom margin
-  const kioskPadX = 48; // 24px left & right margin
+  // Effective Totem Reference Height based on CAD Framing Mode
+  // - 'focus': Focuses on 23.8" Touchscreen + Peripherals (FOCUS_HEIGHT = 2700 px) for optimal legibility & touch ergonomics
+  // - 'totem': Full Freestanding Totem (TOTEM_HEIGHT = 3600 px)
+  const effectiveTotemH = kioskFraming === 'totem' ? TOTEM_HEIGHT : FOCUS_HEIGHT;
+
+  // 1. STANDALONE KIOSK SCALING (Canonical Width: 1340 px, Height: effectiveTotemH)
+  const kioskPadY = 48; // Padding for comfortable top & bottom margins
+  const kioskPadX = 48; // Padding for left & right margins
   const standaloneKioskScale = Math.min(
-    (winH - kioskPadY) / TOTEM_HEIGHT,
+    (winH - kioskPadY) / effectiveTotemH,
     (winW - kioskPadX) / TOTEM_WIDTH
   );
 
-  // 2. DUAL VIEW BALANCED SCALING (~26% Kiosk / ~74% Staff Portal)
-  // Optimizes heights, gaps, and widths simultaneously for zero clipping
-  const dualPadY = 56; // 28px top & bottom margin
-  const dualPadX = 64; // 32px left & right margin
+  // 2. DUAL VIEW BALANCED SCALING (~28% Kiosk / ~72% Staff Portal)
+  const dualPadY = 48;
+  const dualPadX = 56;
   const availH = Math.max(winH - dualPadY, 300);
   const availW = Math.max(winW - dualPadX, 600);
-  const dualGap = 36; // Gap between kiosk totem and staff workstation
+  const dualGap = 32;
 
-  // Target heights for visual balance in dual mode
-  let dualKioskScale = (availH * 0.96) / TOTEM_HEIGHT;
+  let dualKioskScale = (availH * 0.95) / effectiveTotemH;
   let dualAdminScale = (availH * 0.88) / 1080;
 
-  // Verify total horizontal width fits available canvas
   const totalWidthNeeded = (TOTEM_WIDTH * dualKioskScale) + dualGap + (1920 * dualAdminScale);
   if (totalWidthNeeded > availW) {
     const widthShrinkRatio = availW / totalWidthNeeded;
@@ -53,12 +54,14 @@ export function ViewportFrame({ kioskContent, adminContent }) {
   }
 
   return (
-    <div data-viewport-root className="relative w-screen h-screen overflow-hidden select-none bg-gradient-to-b from-[#E2E8E5] via-[#EDF2EF] to-[#DFE6E2] font-sans">
-      
+    <div
+      data-viewport-root
+      className="relative w-screen h-screen overflow-hidden select-none bg-gradient-to-b from-[#F1F5F9] via-[#E2E8F0] to-[#CBD5E1] font-sans"
+    >
       {/* 1. STANDALONE PATIENT KIOSK MODE */}
       {viewMode === 'kiosk' && (
         <div className="w-full h-full flex items-center justify-center p-4 overflow-hidden">
-          <KioskEnclosure scale={standaloneKioskScale}>
+          <KioskEnclosure scale={standaloneKioskScale} framing={kioskFraming}>
             {kioskContent}
           </KioskEnclosure>
         </div>
@@ -73,11 +76,10 @@ export function ViewportFrame({ kioskContent, adminContent }) {
 
       {/* 3. DUAL VIEW (PHYSICAL CONTEXT HIERARCHY: BALANCED & OPTIMIZED VIEWPORT) */}
       {viewMode === 'split' && (
-        <div className="w-full h-full flex items-center justify-center px-8 py-4 gap-9 overflow-hidden">
-          
+        <div className="w-full h-full flex items-center justify-center px-8 py-4 gap-8 overflow-hidden">
           {/* Left Column: Freestanding Portrait Kiosk (Auto-scaled to fit viewport) */}
           <div className="flex items-center justify-center shrink-0">
-            <KioskEnclosure scale={dualKioskScale}>
+            <KioskEnclosure scale={dualKioskScale} framing={kioskFraming}>
               {kioskContent}
             </KioskEnclosure>
           </div>
@@ -108,11 +110,10 @@ export function ViewportFrame({ kioskContent, adminContent }) {
               </div>
             </div>
           </div>
-
         </div>
       )}
 
-      {/* Turbopack-Style Draggable Demo Controls */}
+      {/* Draggable Clinical Demo & Sensor Controls */}
       <DemoControls />
     </div>
   );

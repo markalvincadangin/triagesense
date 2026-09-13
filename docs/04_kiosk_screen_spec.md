@@ -157,24 +157,25 @@ To ensure total inclusivity across Western Visayas demographics (elderly patient
 
 ### Step 1: Patient Identification (`PatientInfo.jsx`)
 - **Stage in Stepper**: `(1) Identify` (Step 1 of 5).
-- **Header Prompt**: *"Step 1 of 5: Patient Identification"* | *"Please enter patient details for official hospital triage registration."*
+- **Layout Container**: `w-full max-w-[960px]` (fills $89\%$ of $296\text{ mm}$ display width).
+- **Header Prompt**: *"Step 1 of 5: Who is checking in today?"* | *"Please enter your name and birthday so the nurse can prepare your record"*.
 - **Accessible & Empathetic UI Features (Persona & HFE Grounded)**:
   - **Full Name Input**:
-    - Oversized touch input ($56\text{px}$ height, 18px text, high-contrast borders).
-    - Integrated Web Speech API **`<Mic /> Voice Dictate`** button directly on the field for patients with tremors, hand injuries, or illiteracy (*Tatay Ernesto*, *Bea*).
+    - Oversized touch input ($68\text{px}$ height, 20px bold text, high-contrast borders).
+    - Integrated Web Speech API **`<Mic /> Voice Dictate`** button ($44\text{px}$ touch pill) directly on the field for patients with tremors, hand injuries, or illiteracy (*Tatay Ernesto*, *Bea*).
   - **Date of Birth & Age Indicator**:
-    - Visual date selector with real-time computed **Age Badge** (e.g., `Age 42`).
+    - Visual date selector ($68\text{px}$ height) with real-time computed **Age Badge** (e.g., `Age 42`).
   - **Gender Selection Chips**:
-    - Large tactile touch buttons ($64\text{px}$ touch target): `[ Male / Lalaki ]`, `[ Female / Babaye ]`, `[ Other / Iban ]`.
+    - Large tactile touch buttons ($72\text{px}$ touch target, $18\text{px}$ text): `[ Male / Lalaki ]`, `[ Female / Babaye ]`, `[ Other / Iban ]`.
   - **Contact Phone Number**:
-    - Touch-optimized input with numeric mask (`09XX-XXX-XXXX`).
+    - Touch-optimized input ($68\text{px}$ height) with numeric mask (`09XX-XXX-XXXX`).
   - **ID Scan & Demo Shortcuts**:
-    - Secondary strip offering quick scan or demo fill.
+    - Secondary strip offering quick scan or demo fill ($44\text{px}$ height, $16\text{px}$ text).
   - **Error Prevention**:
     - Shake-animated validation alert if full name is missing.
-- **Navigation Controls**:
-  - `[ < Back to Home ]` returns to `welcome`.
-  - `[ Next: Select Symptoms > ]` advances to Step 2: `symptoms`.
+- **Navigation Controls (Docked Bottom Bar)**:
+  - `[ < Back to Home ]` ($64\text{px}$ height, $16\text{px}$ bold font).
+  - `[ Next: What Hurts? > ]` ($72\text{px}$ height, $20\text{px}$ extrabold font).
 
 ---
 

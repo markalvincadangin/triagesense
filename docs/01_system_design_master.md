@@ -106,17 +106,20 @@ The **TriageSense Design System (TSDS)** is the single source of truth (SSOT) go
 ---
 
 ### 2.2 Typography Specification (Inter Typeface)
-*Google Font `Inter` is specified for its tall x-height, open counters, clear numerical distinction (preventing confusion between `0`, `8`, and `9`), and high legibility at a distance.*
+*Google Font `Inter` is specified for its tall x-height, open counters, clear numerical distinction (preventing confusion between `0`, `8`, and `9`), and high legibility at standing distances ($600\text{–}900\text{ mm}$).*
 
-| Token Name | Font Size | Font Weight | Line Height | Tracking | Application Context |
+| Token Name | Font Size | Font Weight | Line Height | Tracking | Application Context & Physical Height on 23.8" Screen |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| `--font-display` | `40px` | `700` (Bold) | `48px` | `-0.02em` | Welcome Screen Headline, Final Confirmation |
-| `--font-heading-1` | `32px` | `600` (Semibold) | `40px` | `-0.01em` | Screen H1 Titles (e.g. "Select Your Language") |
-| `--font-heading-2` | `24px` | `600` (Semibold) | `32px` | `0` | Card Group Titles, Review Section Headers |
-| `--font-touch-btn` | `22px` | `600` (Semibold) | `28px` | `0` | Primary & Emergency Touch Action Buttons |
-| `--font-body-lg` | `20px` | `400` (Regular) | `28px` | `0` | Step Prompts, Field Inputs, Selection Cards |
-| `--font-body-md` | `18px` | `400` (Regular) | `26px` | `0` | Secondary Descriptions, Review Field Values |
-| `--font-caption` | `16px` | `500` (Medium) | `22px` | `+0.01em`| Stepper Step Titles, Assistive Helper Text |
+| `--font-display` | `48px` | `800` (Extrabold) | `56px` | `-0.02em` | Welcome Screen Headline, Final Confirmation ($13.15\text{ mm}$) |
+| `--font-heading-1` | `38px` | `700` (Bold) | `46px` | `-0.01em` | Screen H1 Titles (e.g. "Step 1 of 5: Who is checking in?") ($10.41\text{ mm}$) |
+| `--font-heading-2` | `26px` | `600` (Semibold) | `34px` | `0` | Subtitles, Card Group Titles, Review Headers ($7.12\text{ mm}$) |
+| `--font-touch-btn` | `24px` | `700` (Bold) | `30px` | `0` | Primary & Emergency Touch Action Buttons ($6.57\text{ mm}$) |
+| `--font-body-lg` | `22px` | `600` (Semibold) | `30px` | `0` | Field Labels, Active Inputs, Primary Prompts ($6.03\text{ mm}$) |
+| `--font-body-md` | `19px` | `500` (Medium) | `28px` | `0` | Standard Body, Symptom Titles, Review Data Values ($5.20\text{ mm}$) |
+| `--font-caption` | `16px` | `600` (Semibold) | `22px` | `+0.01em`| **Absolute Strict Floor**: Stepper, Badges, Helper Text ($4.38\text{ mm}$) |
+
+> [!IMPORTANT]
+> **Strict Kiosk Legibility Rule**: Under no circumstances should typography smaller than `16px` (`--font-caption`) be rendered on the kiosk interface. Desktop classes like `text-xs` ($12\text{px}$) and `text-[10px]` violate ISO 9241-303 legibility at $700\text{ mm}$ viewing distances and are strictly prohibited.
 
 ---
 
@@ -125,25 +128,29 @@ The **TriageSense Design System (TSDS)** is the single source of truth (SSOT) go
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ 1080 × 1920 KIOSK DISPLAY ERGONOMIC ZONES                   │
+│ 1080 × 1920 KIOSK DISPLAY ERGONOMIC ZONES (23.8" Portrait) │
 ├─────────────────────────────────────────────────────────────┤
-│ UPPER 40% (0 – 768px): PASSIVE VISUAL ZONE                  │
+│ UPPER 35% (0 – 672px): PASSIVE VISUAL ZONE                  │
 │ • Hospital Branding, Emergency Banner, Persistent Stepper   │
-│ • Screen Title and Instructions                             │
+│ • Screen Title and Instructions (1,220 – 1,377 mm from floor)│
 ├─────────────────────────────────────────────────────────────┤
-│ LOWER 60% (768 – 1920px): ACTIVE MOTOR / TOUCH ZONE         │
-│ • Touch Interaction Window (15" to 48" from floor - ADA §707)│
-│ • Selection Cards (Min height: 96px)                        │
-│ • Interactive Biometric Body Map                            │
-│ • Bottom Action Bar (Fixed height: 100px)                   │
+│ LOWER 65% (672 – 1920px): ACTIVE MOTOR / TOUCH ZONE         │
+│ • Universal Reach Window (850 to 1,220 mm from floor - ADA) │
+│ • Content Layout Container: w-full max-w-[960px] (89% width)│
+│ • Form Inputs (Min height: 68px)                            │
+│ • Selection Cards (Min height: 144px)                       │
+│ • Interactive Biometric Body Map (340 × 540px)              │
+│ • Bottom Docked Action Bar (Fixed height: 100px)            │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-#### Physical Target Metrics (on 24" 1080×1920 Screen @ 92 DPI)
-- **Minimum Interactive Touch Target**: $64 \times 64\text{ px}$ ($17.7 \times 17.7\text{ mm}$ — satisfies ISO 9241-9).
-- **Primary Buttons (`Continue`, `Start Intake`)**: $360\text{px W} \times 72\text{px H}$ ($99.6 \times 19.9\text{ mm}$).
-- **Selection Cards (Symptoms, Languages, ID)**: Min height $100\text{px}$ ($27.7\text{ mm}$) with $16\text{px}$ ($4.4\text{ mm}$) gutters.
-- **Pain Scale Rating Buttons**: $60\text{px} \times 60\text{px}$ round pills with $10\text{px}$ gutters.
+#### Physical Target Metrics (on 23.8" 1080×1920 Screen @ 92.68 DPI, 1 mm ≈ 3.65 px)
+- **Minimum Interactive Touch Target**: $64 \times 64\text{ px}$ ($17.5 \times 17.5\text{ mm}$ — satisfies ISO 9241-9).
+- **Primary Buttons (`Continue`, `Start Intake`, `Submit`)**: Height $80\text{px}$ ($21.9\text{ mm}$ — Colle & Hiszem empirical sweet spot).
+- **Form Text Inputs**: Height $68\text{px}$ ($18.6\text{ mm}$) with $20\text{px}$ font.
+- **Selection Cards (Symptoms, Languages, ID)**: Min height $144\text{px}$ ($39.5\text{ mm}$) with $16\text{px}$ ($4.4\text{ mm}$) gutters.
+- **Pain Scale Rating Buttons**: $68\text{px} \times 68\text{px}$ round pills with $12\text{px}$ gutters.
+- **Content Container Max Width**: $960\text{px}$ ($263.1\text{ mm}$, $88.9\%$ of screen width).
 
 ---
 

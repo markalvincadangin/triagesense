@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
+import { KioskFooterNav } from '../../components/kiosk/KioskFooterNav';
 import {
   Thermometer,
   Activity,
@@ -11,28 +12,32 @@ import {
   PlusSquare,
   HelpCircle,
   Mic,
-  Check,
-  ArrowRight,
-  ArrowLeft
+  Check
 } from 'lucide-react';
 
 const SYMPTOMS_LIST = [
-  { id: 'Chest Pain', label: 'Chest Pain or Pressure / Sakit sa Dughan', desc: 'Tightness, crushing, or heavy chest feeling', icon: HeartPulse, color: '#DC2626' },
-  { id: 'Shortness of Breath', label: 'Trouble Breathing / Mabudlay Magginhawa', desc: 'Short of breath, wheezing, or gasping for air', icon: Wind, color: '#0057A8' },
-  { id: 'Fever', label: 'High Fever & Chills / Mataas nga Hilanat', desc: 'Very hot body, shivering, sweating', icon: Thermometer, color: '#DC2626' },
-  { id: 'Abdominal Pain', label: 'Stomach or Belly Pain / Sakit sang Tiyan', desc: 'Severe cramps, sharp or aching stomach', icon: AlertCircle, color: '#D97706' },
-  { id: 'Headache', label: 'Severe Headache / Sakit sang Ulo', desc: 'Throbbing migraine, dizziness, confusion', icon: Zap, color: '#7C3AED' },
-  { id: 'Injury / Trauma', label: 'Accident, Cut, or Fall / Pilas o Nabali', desc: 'Deep wound, bleeding, fractured bone, fall', icon: PlusSquare, color: '#16803C' },
-  { id: 'Cough', label: 'Persistent Cough / Ubo nga Indi Mag-untat', desc: 'Constant coughing, chest phlegm, throat pain', icon: Activity, color: '#F97316' },
-  { id: 'Other', label: 'Other Concern / Iban Pa nga Balatian', desc: 'Something else you want to tell the nurse', icon: HelpCircle, color: '#505F78' }
+  { id: 'Chest Pain', icon: HeartPulse, iconColor: 'text-red-600' },
+  { id: 'Shortness of Breath', icon: Wind, iconColor: 'text-brand-blue' },
+  { id: 'Fever', icon: Thermometer, iconColor: 'text-red-600' },
+  { id: 'Abdominal Pain', icon: AlertCircle, iconColor: 'text-amber-600' },
+  { id: 'Headache', icon: Zap, iconColor: 'text-purple-600' },
+  { id: 'Injury / Trauma', icon: PlusSquare, iconColor: 'text-emerald-600' },
+  { id: 'Cough', icon: Activity, iconColor: 'text-orange-600' },
+  { id: 'Other', icon: HelpCircle, iconColor: 'text-text-secondary' }
 ];
 
 export function Symptoms() {
-  const { intakeDraft, toggleSymptom, setKioskStep } = useTriage();
+  const { intakeDraft, toggleSymptom, setKioskStep, t } = useTriage();
   const [isRecordingVoice, setIsRecordingVoice] = useState(false);
   const [voiceSeconds, setVoiceSeconds] = useState(0);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const selectedSymptoms = intakeDraft.symptoms || [];
+
+  const handleToggleSymptom = (sympId) => {
+    toggleSymptom(sympId);
+    if (errorMsg) setErrorMsg('');
+  };
 
   const handleToggleVoice = () => {
     if (!isRecordingVoice) {
@@ -54,105 +59,123 @@ export function Symptoms() {
     }
   };
 
+  const handleNext = () => {
+    if (selectedSymptoms.length === 0 && !intakeDraft.voiceNoteRecorded) {
+      setErrorMsg(t('symptoms.errorRequired'));
+      return;
+    }
+    setErrorMsg('');
+    setKioskStep('body-map');
+  };
+
   return (
-    <div className="flex flex-col h-full px-12 py-8 bg-canvas select-none">
+    <div className="flex flex-col h-full px-12 py-8 bg-canvas select-none overflow-y-auto">
       {/* Screen Title & Instruction Header */}
       <div className="text-center mb-6 shrink-0">
-        <h1 className="text-3xl font-black text-slate-900 tracking-tight">
-          What Brings You to the Emergency Room Today?
+        <h1 className="text-4xl font-black text-text-primary tracking-tight">
+          {t('symptoms.stepTitle')}
         </h1>
-        <h2 className="text-lg font-medium text-slate-600 mt-1">
-          Ano ang ginabatyag mo subong? <span className="text-slate-500 text-base font-normal">(Tap all that apply)</span>
+        <h2 className="text-xl font-bold text-text-secondary mt-2 flex items-center justify-center gap-2 flex-wrap">
+          <span>{t('symptoms.stepSubtitle')}</span>
+          <span className="text-text-secondary/80 text-lg font-normal">
+            {t('symptoms.tapAll')}
+          </span>
+          {selectedSymptoms.length > 0 && (
+            <span className="font-black text-brand-green bg-brand-green-light px-3 py-0.5 rounded-full text-sm border border-emerald-300 animate-fadeIn">
+              {selectedSymptoms.length} {t('symptoms.selectedBadge')}
+            </span>
+          )}
         </h2>
       </div>
 
-      {/* Balanced 2-Column Symptom Grid (Fills screen harmoniously with high-touch cards) */}
-      <div className="grid grid-cols-2 gap-5 w-full max-w-4xl mx-auto">
+      {/* Balanced 2-Column Symptom Grid */}
+      <div className="grid grid-cols-2 gap-6 w-full max-w-[960px] mx-auto">
         {SYMPTOMS_LIST.map((symp) => {
           const isSelected = selectedSymptoms.includes(symp.id);
           const Icon = symp.icon;
+          const translatedItem = t(`symptoms.items.${symp.id}`);
+          const label = translatedItem?.label || symp.id;
+          const desc = translatedItem?.desc || symp.desc;
 
           return (
             <div
               key={symp.id}
-              onClick={() => toggleSymptom(symp.id)}
-              className={`p-5 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between gap-4 shadow-sm hover:shadow-md ${
+              onClick={() => handleToggleSymptom(symp.id)}
+              className={`min-h-[148px] p-6 rounded-3xl border-2 transition-all duration-150 cursor-pointer flex items-center justify-between gap-5 select-none ${
                 isSelected
-                  ? 'bg-emerald-50/80 border-emerald-600 shadow-md ring-2 ring-emerald-500/30'
-                  : 'bg-white border-slate-200 hover:border-slate-300'
+                  ? 'bg-emerald-50/90 border-brand-green shadow-card ring-4 ring-emerald-500/25 scale-[1.01]'
+                  : 'bg-surface border-border-main hover:border-border-hover shadow-subtle hover:shadow-card'
               }`}
-              style={{ minHeight: '124px' }}
             >
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-5">
                 {/* Visual Icon Badge */}
                 <div
-                  className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${
+                  className={`w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-colors ${
                     isSelected
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-slate-100 text-slate-700'
+                      ? 'bg-brand-green text-white shadow-md'
+                      : `bg-slate-100 ${symp.iconColor}`
                   }`}
-                  style={{ color: isSelected ? '#FFFFFF' : symp.color }}
                 >
-                  <Icon size={28} strokeWidth={2.4} />
+                  <Icon size={32} strokeWidth={2.4} />
                 </div>
 
                 {/* Symptom Phrasing & Localized Subtext */}
                 <div className="flex flex-col text-left">
-                  <span className={`text-lg font-extrabold ${isSelected ? 'text-emerald-950' : 'text-slate-900'}`}>
-                    {symp.label.split(' / ')[0]}
+                  <span
+                    className={`text-xl font-black leading-snug transition-colors ${
+                      isSelected ? 'text-emerald-950 font-black' : 'text-text-primary'
+                    }`}
+                  >
+                    {label}
                   </span>
-                  <span className={`text-xs font-semibold ${isSelected ? 'text-emerald-800' : 'text-[#006B3F]'}`}>
-                    {symp.label.split(' / ')[1]}
-                  </span>
-                  <span className="text-[11px] text-slate-500 mt-0.5 leading-snug">
-                    {symp.desc}
+                  <span className="text-sm text-text-secondary mt-1 leading-relaxed font-medium">
+                    {desc}
                   </span>
                 </div>
               </div>
 
-              {/* Touch Checkmark Pill */}
+              {/* Touch Multi-Select Checkbox Square (44px x 44px) */}
               <div
-                className={`w-8 h-8 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
+                className={`w-11 h-11 rounded-2xl border-2 flex items-center justify-center shrink-0 transition-all shadow-sm ${
                   isSelected
-                    ? 'bg-emerald-600 border-emerald-600 text-white shadow-sm'
-                    : 'border-slate-300 bg-slate-50'
+                    ? 'bg-brand-green border-brand-green text-white shadow-md ring-2 ring-emerald-200'
+                    : 'border-slate-300 bg-white hover:border-slate-400'
                 }`}
               >
-                {isSelected && <Check size={18} strokeWidth={3} />}
+                {isSelected && <Check size={24} strokeWidth={3.5} />}
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Multimodal Voice Input Bar */}
-      <div
-        className={`w-full max-w-4xl mx-auto mt-5 p-4 rounded-2xl border transition-all flex items-center justify-between shadow-sm ${
-          isRecordingVoice
-            ? 'bg-red-50 border-red-300 ring-2 ring-red-400/20'
-            : 'bg-white border-slate-200'
-        }`}
-      >
-        <div className="flex items-center gap-3.5">
+      {/* Multimodal Voice Dictation Accessibility Utility Bar */}
+      <div className="w-full max-w-[960px] mx-auto mt-6 bg-gradient-to-r from-blue-50/90 via-indigo-50/40 to-blue-50/90 border-2 border-blue-200/90 rounded-3xl p-5 shadow-sm flex items-center justify-between gap-6 shrink-0 select-none">
+        <div className="flex items-center gap-4">
           <div
-            className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
+            className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-all ${
               isRecordingVoice
-                ? 'bg-red-600 text-white animate-pulse'
-                : 'bg-blue-50 text-blue-700 border border-blue-200'
+                ? 'bg-emergency text-white animate-pulse ring-4 ring-red-300'
+                : 'bg-brand-blue text-white'
             }`}
           >
-            <Mic size={22} />
+            <Mic size={26} strokeWidth={2.4} />
           </div>
           <div className="text-left">
-            <div className="text-sm font-extrabold text-slate-900">
-              {isRecordingVoice
-                ? `Recording voice memo... (${voiceSeconds}s / 6s)`
-                : 'Prefer to speak instead of tapping? / Mas gusto mo ihambal?'}
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="text-[11px] uppercase tracking-wider font-black text-brand-blue bg-blue-100/90 px-2.5 py-0.5 rounded-full border border-blue-200">
+                Voice Assist
+              </span>
+              <span className="text-base font-black text-slate-900">
+                {isRecordingVoice
+                  ? `${t('symptoms.voiceRecording')} (${voiceSeconds}s / 6s)`
+                  : t('symptoms.voiceCardTitle')}
+              </span>
             </div>
-            <div className="text-xs text-slate-500">
+            <div className="text-sm text-slate-600 font-medium leading-normal">
               {isRecordingVoice
-                ? 'Your voice recording will be played directly for the triage nurse.'
-                : 'Tap to record a short voice description in Hiligaynon, English, or Filipino.'}
+                ? t('symptoms.voiceRecording')
+                : t('symptoms.voiceCardSubtitle')}
             </div>
           </div>
         </div>
@@ -161,34 +184,31 @@ export function Symptoms() {
           variant={isRecordingVoice ? 'emergency' : 'outline'}
           size="sm"
           onClick={handleToggleVoice}
-          className="px-5 py-2 text-xs font-bold shrink-0"
+          className={`h-12 px-6 text-sm font-black shrink-0 rounded-2xl border-2 transition-all cursor-pointer ${
+            isRecordingVoice
+              ? 'bg-emergency text-white shadow-md'
+              : 'bg-white hover:bg-blue-50 border-blue-300 text-brand-blue shadow-sm'
+          }`}
         >
-          {isRecordingVoice ? 'Stop Recording' : 'Record Voice Memo'}
+          {isRecordingVoice ? t('common.cancel') : t('patientInfo.voiceDictate')}
         </Button>
       </div>
 
-      {/* Bottom Navigation Controls (Docked cleanly at bottom) */}
-      <div className="w-full max-w-4xl mx-auto mt-auto pt-4 border-t border-slate-200 flex items-center justify-between shrink-0">
-        <Button
-          variant="outline"
-          size="md"
-          icon={ArrowLeft}
-          onClick={() => setKioskStep('patient-info')}
-          className="px-8 py-3.5 text-sm font-bold"
-        >
-          Back / Balik
-        </Button>
+      {/* Validation Error Message */}
+      {errorMsg && (
+        <div className="w-full max-w-[960px] mx-auto mt-4 p-4 rounded-2xl bg-red-50 border border-emergency-border text-emergency-dark text-base font-bold flex items-center gap-3 animate-shake shrink-0">
+          <AlertCircle size={22} className="text-emergency shrink-0" />
+          <span>{errorMsg}</span>
+        </div>
+      )}
 
-        <Button
-          variant="primary"
-          size="lg"
-          trailingIcon={ArrowRight}
-          onClick={() => setKioskStep('body-map')}
-          className="px-10 py-4 text-base font-black shadow-lg bg-brand-green"
-        >
-          Next: Where Does It Hurt?
-        </Button>
-      </div>
+      {/* Bottom Navigation Controls */}
+      <KioskFooterNav
+        onBack={() => setKioskStep('patient-info')}
+        onNext={handleNext}
+        backLabel={t('symptoms.btnBack')}
+        nextLabel={t('symptoms.btnNext')}
+      />
     </div>
   );
 }

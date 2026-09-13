@@ -7,7 +7,6 @@ import {
   FolderArchive,
   BarChart3,
   Server,
-  AlertTriangle
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -16,7 +15,7 @@ const NAV_ITEMS = [
   { id: 'emergency-console', label: 'Emergency Help Calls', icon: SlidersHorizontal, hasAlert: true },
   { id: 'patient-directory', label: 'Patient Records & Archive', icon: FolderArchive },
   { id: 'analytics', label: 'ED Census & Metrics', icon: BarChart3 },
-  { id: 'fleet-manager', label: 'Kiosk Stations & Hardware', icon: Server }
+  { id: 'fleet-manager', label: 'Kiosk Stations & Hardware', icon: Server },
 ];
 
 export function AdminSidebar() {
@@ -25,10 +24,10 @@ export function AdminSidebar() {
   const newCount = intakes.filter((i) => i.status === 'New').length;
 
   return (
-    <aside className="w-[250px] bg-[#013b24] flex flex-col justify-between p-4 shrink-0 select-none text-white relative overflow-hidden">
+    <aside className="w-[250px] bg-brand-green-800 flex flex-col justify-between p-4 shrink-0 select-none text-white relative overflow-hidden">
       {/* Top Navigation Links */}
       <div className="flex flex-col gap-1.5 z-10">
-        <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-300/60 px-3 pt-1 pb-2">
+        <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-300 opacity-75 px-3 pt-1 pb-2">
           Clinical Navigation
         </div>
 
@@ -50,12 +49,12 @@ export function AdminSidebar() {
               key={item.id}
               type="button"
               onClick={() => setActiveAdminTab(item.id)}
-              className={`flex items-center justify-between px-3.5 py-3 rounded-xl text-[13.5px] font-semibold transition-all duration-150 text-left ${
+              className={`flex items-center justify-between w-full px-3.5 py-3 rounded-xl text-[13.5px] font-semibold transition-all duration-150 text-left ${
                 isEmergency
-                  ? 'bg-red-600 text-white font-bold animate-pulse shadow-md'
+                  ? 'bg-emergency text-white font-bold animate-pulse shadow-md'
                   : isActive
-                  ? 'bg-[#0c5838] text-white font-bold shadow-sm'
-                  : 'text-emerald-100/75 hover:bg-white/5 hover:text-white'
+                  ? 'bg-brand-green-700 text-white font-bold shadow-sm'
+                  : 'text-emerald-100 hover:bg-white/10 hover:text-white'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -66,7 +65,7 @@ export function AdminSidebar() {
                       ? 'text-white'
                       : isActive
                       ? 'text-emerald-300'
-                      : 'text-emerald-300/70'
+                      : 'text-emerald-200'
                   }
                   strokeWidth={2.2}
                 />
@@ -90,13 +89,13 @@ export function AdminSidebar() {
         })}
       </div>
 
-      {/* Bottom Slogan Branding with Subtle Wave Graphic (from Inspo) */}
+      {/* Bottom Slogan Branding with Subtle Wave Graphic */}
       <div className="pt-6 pb-2 px-3 z-10 relative">
         <div className="border-l-[3px] border-brand-gold pl-3 py-0.5">
           <div className="text-[13px] font-bold text-white tracking-tight leading-snug">
             Better Triage.
           </div>
-          <div className="text-[13px] font-medium text-emerald-200/90 tracking-tight leading-snug">
+          <div className="text-[13px] font-medium text-emerald-200 tracking-tight leading-snug">
             Safer Care.
           </div>
         </div>

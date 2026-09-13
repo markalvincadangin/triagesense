@@ -162,7 +162,7 @@ export function LiveQueue() {
   };
 
   return (
-    <div className="h-full overflow-y-auto bg-[#F8F9FA] p-6 flex flex-col gap-5 select-none font-sans">
+    <div className="h-full overflow-y-auto bg-canvas p-6 flex flex-col gap-5 select-none font-sans">
       {/* Top Title Bar */}
       <div className="flex items-center justify-between">
         <div>
@@ -269,7 +269,7 @@ export function LiveQueue() {
                 }}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-150 ${
                   isActive
-                    ? 'bg-[#006B3F] text-white shadow-xs'
+                    ? 'bg-brand-green text-white shadow-xs'
                     : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                 }`}
               >
@@ -379,7 +379,7 @@ export function LiveQueue() {
                           <div className="font-bold text-slate-900 text-[13px]">
                             {patient.fullName || 'Patient Intake'}
                           </div>
-                          <div className="text-[11px] text-slate-400 mt-0.5">
+                          <div className="text-[11px] text-slate-600 font-medium mt-0.5">
                             {patient.age ? `${patient.age}y` : ''}
                             {patient.gender ? ` • ${patient.gender}` : ''}
                             {item.language ? ` • ${item.language}` : ''}
@@ -387,13 +387,23 @@ export function LiveQueue() {
                         </td>
 
                         {/* Chief Complaint */}
-                        <td className="py-4 px-4 max-w-[240px]">
-                          <div className="font-semibold text-slate-800 truncate">
+                        <td className="py-4 px-4 max-w-[260px]">
+                          <div className="font-black text-slate-950 text-[13px] tracking-tight leading-snug truncate" title={symptomsStr}>
                             {symptomsStr || 'Subjective complaints'}
                           </div>
-                          <div className="text-[11px] text-slate-400 mt-0.5 truncate">
-                            {locationStr ? `Loc: ${locationStr}` : ''}
-                            {item.duration ? ` • ${item.duration}` : ''}
+                          <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                            {locationStr && (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 font-bold text-[10.5px] border border-slate-300 shadow-2xs">
+                                <span className="text-slate-500 uppercase text-[9px] font-black tracking-wider">Loc</span>
+                                <span>{locationStr}</span>
+                              </span>
+                            )}
+                            {item.duration && (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 font-bold text-[10.5px] border border-slate-300 shadow-2xs">
+                                <span className="text-slate-500 uppercase text-[9px] font-black tracking-wider">Dur</span>
+                                <span>{item.duration}</span>
+                              </span>
+                            )}
                           </div>
                         </td>
 
@@ -404,8 +414,8 @@ export function LiveQueue() {
 
                         {/* Wait Time */}
                         <td className="py-4 px-4 whitespace-nowrap">
-                          <div className="flex items-center gap-1.5 text-slate-600 font-medium">
-                            <Clock size={13} className="text-slate-400" />
+                          <div className="flex items-center gap-1.5 text-slate-700 font-semibold">
+                            <Clock size={13} className="text-slate-500" />
                             <span>{item.waitTime || '12m'}</span>
                           </div>
                         </td>
@@ -428,7 +438,7 @@ export function LiveQueue() {
                               e.stopPropagation();
                               selectIntakeForDossier(item.id);
                             }}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#006B3F] hover:bg-[#005230] text-white text-xs font-bold shadow-xs transition-colors"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-brand-green hover:bg-brand-green-hover text-white text-xs font-bold shadow-xs transition-colors"
                           >
                             <span>Assess</span>
                             <ChevronRight size={13} />
@@ -463,20 +473,23 @@ export function LiveQueue() {
               >
                 <ChevronLeft size={14} />
               </button>
-              {Array.from({ length: totalPages }).map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setCurrentPage(i + 1)}
-                  className={`w-7 h-7 rounded-lg text-xs font-bold transition-colors ${
-                    currentPage === i + 1
-                      ? 'bg-[#006B3F] text-white'
-                      : 'border border-slate-200 text-slate-700 hover:bg-slate-50'
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
+              {Array.from({ length: totalPages }).map((_, i) => {
+                const page = i + 1;
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`w-7 h-7 rounded-lg text-xs font-bold transition-colors ${
+                      currentPage === page
+                        ? 'bg-brand-green text-white'
+                        : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                );
+              })}
               <button
                 type="button"
                 disabled={currentPage >= totalPages}

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { INITIAL_INTAKES, INITIAL_KIOSKS, DEMO_ANALYTICS } from '../data/demoData';
+import { getTranslation, translations } from '../i18n/translations';
 
 const TriageContext = createContext(null);
 
@@ -13,6 +14,7 @@ const DEFAULT_INTAKE_DRAFT = {
   },
   symptoms: [],
   bodyLocations: [],
+  bodyLocationOrientations: {},
   painLevel: 0,
   duration: '1–6 hours',
   additionalSymptoms: [],
@@ -31,6 +33,7 @@ const DEFAULT_INTAKE_DRAFT = {
 export function TriageProvider({ children }) {
   // Top-level Viewport & Presentation Mode
   const [viewMode, setViewMode] = useState('kiosk'); // 'kiosk' | 'admin' | 'split'
+  const [kioskFraming, setKioskFraming] = useState('focus'); // 'focus' (Interactive Screen Focus) | 'totem' (Full 1,780mm CAD Blueprint Totem)
 
   // Central Patient Intakes Repository
   const [intakes, setIntakes] = useState(INITIAL_INTAKES);
@@ -58,6 +61,14 @@ export function TriageProvider({ children }) {
     status: 'idle', // 'idle' | 'triggered' | 'acknowledged' | 'dispatched'
     elapsedSeconds: 0,
     acknowledgedBy: null
+  });
+
+  // Physical Hardware Sensor Simulation State (NN/g Heuristic #1: Visibility of System Status)
+  const [activeHardwareSensor, setActiveHardwareSensor] = useState({
+    type: null, // 'qr' | 'nfc' | 'ppg' | 'thermal' | null
+    status: 'idle', // 'idle' | 'active' | 'success' | 'error'
+    message: '',
+    data: null
   });
 
   // Settings Simulation
@@ -129,14 +140,24 @@ export function TriageProvider({ children }) {
     });
   };
 
-  const toggleBodyLocation = (location) => {
+  const toggleBodyLocation = (location, view = null) => {
     setIntakeDraft((prev) => {
       const exists = prev.bodyLocations.includes(location);
+      const newLocations = exists
+        ? prev.bodyLocations.filter((l) => l !== location)
+        : [...prev.bodyLocations, location];
+
+      const newOrientations = { ...(prev.bodyLocationOrientations || {}) };
+      if (exists) {
+        delete newOrientations[location];
+      } else {
+        newOrientations[location] = location === 'Back' ? 'back' : (location === 'Chest' || location === 'Abdomen' ? 'front' : (view || 'front'));
+      }
+
       return {
         ...prev,
-        bodyLocations: exists
-          ? prev.bodyLocations.filter((l) => l !== location)
-          : [...prev.bodyLocations, location]
+        bodyLocations: newLocations,
+        bodyLocationOrientations: newOrientations
       };
     });
   };
@@ -324,16 +345,146 @@ export function TriageProvider({ children }) {
     setActiveAdminTab('patient-dossier');
   };
 
+  // Physical Hardware Sensor Simulation Engine (NN/g Heuristic #1 & #9)
+  const triggerHardwareSensor = (sensorType, options = {}) => {
+    const isError = Boolean(options.isError);
+
+    setActiveHardwareSensor({
+      type: sensorType,
+      status: 'active',
+      message: options.activeMessage || (
+        sensorType === 'qr' ? 'Optical Scanner active: Aligning barcode / QR code...' :
+        sensorType === 'nfc' ? 'NFC field active: Reading 13.56 MHz RFID card...' :
+        sensorType === 'ppg' ? 'Optical chamber engaged: Reading pulse & oxygen saturation...' :
+        sensorType === 'thermal' ? 'Infrared thermopile reading core forehead temperature...' :
+        'Hardware sensor active...'
+      ),
+      data: options.payload || null
+    });
+
+    setTimeout(() => {
+      if (isError) {
+        setActiveHardwareSensor({
+          type: sensorType,
+          status: 'error',
+          message: options.errorMessage || (
+            sensorType === 'qr' ? 'Scan Unsuccessful: Barcode obscured or unreadable. Please hold steady.' :
+            sensorType === 'nfc' ? 'Card Read Error: Card removed too quickly. Please tap and hold for 1s.' :
+            sensorType === 'ppg' ? 'Motion Artifact Detected: Please keep finger still in sensor cradle.' :
+            'Sensor reading timed out. Please try again.'
+          ),
+          data: null
+        });
+
+        setTimeout(() => {
+          setActiveHardwareSensor((prev) => (prev.status === 'error' ? { type: null, status: 'idle', message: '', data: null } : prev));
+        }, 4500);
+        return;
+      }
+
+      const now = new Date();
+      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' PST';
+
+      if (sensorType === 'qr') {
+        const payload = options.payload || {
+          fullName: 'Maria Elena C. Lopez',
+          dob: '1978-08-14',
+          gender: 'Female',
+          contact: '0917-882-9014',
+          identification: 'PhilHealth QR'
+        };
+        updateDraft({ identification: payload.identification || 'PhilHealth QR' });
+        updateDraftPatientInfo({
+          fullName: payload.fullName,
+          dob: payload.dob,
+          gender: payload.gender,
+          contact: payload.contact
+        });
+        setViewMode('kiosk');
+        setKioskStep('patient-info');
+      } else if (sensorType === 'nfc') {
+        const payload = options.payload || {
+          fullName: 'Juan Dela Cruz y Santos',
+          dob: '1956-04-12',
+          gender: 'Male',
+          contact: '0917-555-1234',
+          identification: 'PhilSys National ID NFC'
+        };
+        updateDraft({ identification: payload.identification || 'PhilSys NFC' });
+        updateDraftPatientInfo({
+          fullName: payload.fullName,
+          dob: payload.dob,
+          gender: payload.gender,
+          contact: payload.contact
+        });
+        setViewMode('kiosk');
+        setKioskStep('patient-info');
+      } else if (sensorType === 'ppg') {
+        const payload = options.payload || {
+          spo2: 98,
+          pulseRate: 74,
+          perfusionIndex: '4.2%',
+          temperature: '36.8°C'
+        };
+        updateVitals({
+          spo2: payload.spo2,
+          pulseRate: payload.pulseRate,
+          perfusionIndex: payload.perfusionIndex,
+          temperature: payload.temperature,
+          measuredAt: timeString,
+          method: 'kiosk-ppg-sensor',
+          skipped: false
+        });
+      } else if (sensorType === 'thermal') {
+        const payload = options.payload || { temperature: '36.6°C' };
+        updateVitals({
+          temperature: payload.temperature,
+          measuredAt: timeString,
+          method: 'overhead-infrared-sensor'
+        });
+      }
+
+      setActiveHardwareSensor({
+        type: sensorType,
+        status: 'success',
+        message: options.successMessage || (
+          sensorType === 'qr' ? 'PhilHealth QR Verified: Credentials loaded into intake record.' :
+          sensorType === 'nfc' ? 'PhilSys Smart Card Authenticated via 13.56 MHz NFC.' :
+          sensorType === 'ppg' ? 'Vitals Telemetry Captured: SpO₂ and Pulse Rate recorded.' :
+          sensorType === 'thermal' ? `Forehead Temperature Verified: ${options.payload?.temperature || '36.6°C'}.` :
+          'Sensor reading successfully captured.'
+        ),
+        data: options.payload || null
+      });
+
+      setTimeout(() => {
+        setActiveHardwareSensor((prev) => (prev.status === 'success' ? { type: null, status: 'idle', message: '', data: null } : prev));
+      }, 3500);
+    }, 1200);
+  };
+
+  const cancelHardwareSensor = () => {
+    setActiveHardwareSensor({
+      type: null,
+      status: 'idle',
+      message: '',
+      data: null
+    });
+  };
+
   const resetDemoData = () => {
     setIntakes(INITIAL_INTAKES);
     setSelectedIntakeId('TS-2026-9912');
     resetKioskSession();
     dismissEmergency();
+    cancelHardwareSensor();
   };
 
   const value = {
     viewMode,
     setViewMode,
+    kioskFraming,
+    setKioskFraming,
     intakes,
     selectedIntakeId,
     setSelectedIntakeId,
@@ -343,6 +494,8 @@ export function TriageProvider({ children }) {
     setKioskStep,
     kioskLanguage,
     setKioskLanguage,
+    t: (key, fallback) => getTranslation(kioskLanguage, key, fallback),
+    translations,
     intakeDraft,
     updateDraft,
     updateDraftPatientInfo,
@@ -369,6 +522,9 @@ export function TriageProvider({ children }) {
     updateWorkflowStatus,
     selectIntakeForDossier,
     resetDemoData,
+    activeHardwareSensor,
+    triggerHardwareSensor,
+    cancelHardwareSensor,
     kiosks: INITIAL_KIOSKS,
     analytics: DEMO_ANALYTICS
   };

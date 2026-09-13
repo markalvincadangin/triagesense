@@ -15,6 +15,8 @@ export default {
           100: '#DCFCE7',
           600: '#006B3F',
           700: '#005230',
+          800: '#013b24',
+          900: '#012b1a',
         },
         'brand-gold': {
           DEFAULT: '#F2B705',
@@ -83,7 +85,7 @@ export default {
         'card': '0 4px 16px rgba(0, 107, 63, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04)',
         'card-hover': '0 8px 24px rgba(0, 107, 63, 0.12)',
         'modal': '0 24px 64px rgba(23, 43, 77, 0.25)',
-        'emergency': '0 8px 24px rgba(220, 38, 38, 0.22)',
+        'emergency': '0 4px 14px rgba(220, 38, 38, 0.28), 0 1px 3px rgba(220, 38, 38, 0.16)',
       },
       minHeight: {
         'touch': '64px',

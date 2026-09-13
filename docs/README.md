@@ -68,6 +68,8 @@ The **TriageSense Documentation Suite** is organized into three symmetric, inter
   Deep research into acute emergency distress, cognitive tunneling, and user friction. Contains detailed personas (*Tatay Ernesto & Grace*, *Bea*) and human factors engineering (HFE) countermeasures for panic, tremor, and regional dialect barriers.
 * **`04_kiosk_screen_spec.md` (`TS-KSK-002`)**:  
   The complete interaction blueprint for Screens 01 to 11 (Welcome, Language, ID, Basic Info, Main Symptoms, Biometric Body Map, 0–10 Numeric Pain Level & Duration, Additional Details, Review, Submit, Confirmation) plus System Transition handoff to staff. Includes ASCII wireframes, state machines, and validation rules.
+* **`07_kiosk_ergonomic_audit_and_research.md` (`TS-SYS-007`)**:  
+  Empirical ergonomic audit and human factors engineering research grounded in the 23.8" portrait kiosk prototype ($1,780\text{ mm}$ height, $296 \times 527\text{ mm}$ active screen, 92.68 DPI, 1 mm ≈ 3.65 px). Mathematical visual angle proofs (ISO 9241-303), touch target optimization (ISO 9241-9 / Colle & Hiszem), and ADA §707 reach compliance.
 
 ### Tier 3: Admin Staff Suite (Triage Nurse & Charge Admin)
 * **`05_admin_research_and_workflow.md` (`TS-ADM-001`)**:  

@@ -20,14 +20,22 @@ import {
   Eye,
   EyeOff,
   Navigation,
-  ChevronRight
+  ChevronRight,
+  Sparkles,
+  UserCheck,
+  HeartPulse,
+  Activity,
+  QrCode,
+  Wifi,
+  Thermometer,
+  AlertCircle,
+  Radio,
+  Check
 } from 'lucide-react';
 
 // ─── Screen name maps for navigation & labels ───────────────────────────────
 const KIOSK_SCREENS = [
   { key: 'welcome', label: 'Welcome' },
-  { key: 'language', label: 'Language Select' },
-  { key: 'identification', label: 'ID Method' },
   { key: 'patient-info', label: 'Patient Info' },
   { key: 'symptoms', label: 'Symptoms' },
   { key: 'body-map', label: 'Body Map' },
@@ -51,12 +59,21 @@ export function DemoControls() {
   const {
     viewMode,
     setViewMode,
+    kioskFraming,
+    setKioskFraming,
     emergencyAlert,
     setActiveAdminTab,
     activeAdminTab,
     kioskStep,
     setKioskStep,
-    resetDemoData
+    resetDemoData,
+    updateDraft,
+    updateDraftPatientInfo,
+    updateVitals,
+    triggerEmergencyModal,
+    activeHardwareSensor,
+    triggerHardwareSensor,
+    cancelHardwareSensor
   } = useTriage();
 
   // ─── Zoom state ──────────────────────────────────────────────────────────
@@ -361,6 +378,47 @@ export function DemoControls() {
     setIsOpen(false);
   };
 
+  // ─── Prototype Demo Simulations & Shortcuts ──────────────────────────────
+  const handleAutofillSeniorPatient = () => {
+    updateDraft({ identification: 'Hospital ID' });
+    updateDraftPatientInfo({
+      fullName: 'Juan Dela Cruz y Santos',
+      dob: '1956-04-12',
+      gender: 'Male',
+      contact: '0917-555-1234'
+    });
+    setViewMode('kiosk');
+    setKioskStep('patient-info');
+  };
+
+  const handleAutofillCompleteCase = () => {
+    updateDraft({
+      identification: 'PhilHealth QR',
+      symptoms: ['Chest Pain / Discomfort', 'Shortness of Breath', 'Cold Sweats'],
+      bodyLocations: ['Chest'],
+      painLevel: 8,
+      duration: '1–6 hours',
+      additionalSymptoms: ['Diabetic', 'Hypertension'],
+      customNotes: 'Patient reports acute squeezing retrosternal chest pain radiating to left shoulder and arm while climbing stairs.',
+      voiceNoteRecorded: true
+    });
+    updateDraftPatientInfo({
+      fullName: 'Roberto Gonzales Ramos',
+      dob: '1965-11-23',
+      gender: 'Male',
+      contact: '0918-771-4432'
+    });
+    updateVitals({
+      spo2: 93,
+      pulseRate: 114,
+      perfusionIndex: 3.8,
+      measuredAt: 'Just now',
+      skipped: false
+    });
+    setViewMode('kiosk');
+    setKioskStep('review');
+  };
+
   // Determine smart alignment for popup menu
   const isNearRight = position.x > (typeof window !== 'undefined' ? window.innerWidth / 2 : 600);
   const isNearBottom = position.y > (typeof window !== 'undefined' ? window.innerHeight / 2 : 400);
@@ -369,7 +427,7 @@ export function DemoControls() {
     <>
       {/* Screenshot camera-flash overlay */}
       {screenshotFlash && (
-        <div className="fixed inset-0 z-[99999] bg-white/70 pointer-events-none animate-pulse" style={{ animationDuration: '200ms' }} />
+        <div className="fixed inset-0 z-[99999] bg-white/70 pointer-events-none" />
       )}
 
       {/* Page label overlay (pinned to top-center of viewport) */}
@@ -379,6 +437,43 @@ export function DemoControls() {
           <span>{viewMode === 'kiosk' ? 'Kiosk' : viewMode === 'admin' ? 'Staff Portal' : 'Dual View'}</span>
           <span className="text-slate-500">|</span>
           <span className="text-brand-gold">{getCurrentPageLabel()}</span>
+        </div>
+      )}
+
+      {/* NN/g Heuristic #1: Visibility of System Status (Hardware Sensor Telemetry Toast) */}
+      {activeHardwareSensor?.status !== 'idle' && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[99998] px-5 py-2.5 rounded-2xl shadow-2xl border backdrop-blur-2xl flex items-center gap-3 animate-fade-in pointer-events-none transition-all duration-200 bg-slate-900/95 text-white border-slate-700/80">
+          <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
+            activeHardwareSensor.status === 'error'
+              ? 'bg-red-500 text-white animate-shake'
+              : activeHardwareSensor.status === 'success'
+              ? 'bg-emerald-500 text-white'
+              : 'bg-[#0060DF] text-white animate-pulse'
+          }`}>
+            {activeHardwareSensor.type === 'qr' && <QrCode size={18} />}
+            {activeHardwareSensor.type === 'nfc' && <Wifi size={18} className="rotate-90" />}
+            {activeHardwareSensor.type === 'ppg' && <Activity size={18} />}
+            {activeHardwareSensor.type === 'thermal' && <Thermometer size={18} />}
+            {!['qr', 'nfc', 'ppg', 'thermal'].includes(activeHardwareSensor.type) && <Radio size={18} />}
+          </div>
+
+          <div className="flex flex-col text-left">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-400">
+                Hardware Sensor • {activeHardwareSensor.type?.toUpperCase()}
+              </span>
+              <span className={`text-[9px] px-1.5 py-0.2 rounded font-bold uppercase ${
+                activeHardwareSensor.status === 'error' ? 'bg-red-900/80 text-red-200' :
+                activeHardwareSensor.status === 'success' ? 'bg-emerald-900/80 text-emerald-200' :
+                'bg-blue-900/80 text-blue-200 animate-pulse'
+              }`}>
+                {activeHardwareSensor.status}
+              </span>
+            </div>
+            <span className="text-xs font-semibold text-slate-100 max-w-sm truncate">
+              {activeHardwareSensor.message}
+            </span>
+          </div>
         </div>
       )}
 
@@ -431,10 +526,9 @@ export function DemoControls() {
         ═══════════════════════════════════════════════════════════════════ */}
         {isOpen && (
           <div
-            className={`absolute w-80 bg-slate-900/95 text-slate-100 rounded-2xl shadow-2xl border border-slate-700/80 backdrop-blur-2xl p-4 animate-fade-in flex flex-col gap-3 ${
+            className={`absolute w-80 max-w-[90vw] max-h-[85vh] overflow-y-auto bg-slate-900/95 text-slate-100 rounded-2xl shadow-2xl border border-slate-700/80 backdrop-blur-2xl p-4 animate-fade-in flex flex-col gap-3 ${
               isNearRight ? 'right-0' : 'left-0'
             } ${isNearBottom ? 'bottom-14' : 'top-14'}`}
-            style={{ maxWidth: '90vw', maxHeight: '85vh', overflowY: 'auto' }}
           >
             {/* ── Top Bar ─────────────────────────────────────────────── */}
             <div className="flex items-center justify-between pb-2 border-b border-slate-800">
@@ -500,6 +594,47 @@ export function DemoControls() {
                 </button>
               </div>
             </div>
+
+            {/* ── Kiosk CAD Framing Switcher ─────────────────────────────── */}
+            {(viewMode === 'kiosk' || viewMode === 'split') && (
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    Kiosk CAD View
+                  </label>
+                  <span className="text-[9px] font-mono text-emerald-400 font-semibold">
+                    {kioskFraming === 'totem' ? '1,780mm Spec' : '23.8" Touch'}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => setKioskFraming('focus')}
+                    className={`py-2 px-2 rounded-lg text-xs font-semibold transition-all flex flex-col items-center gap-1 ${
+                      kioskFraming === 'focus'
+                        ? 'bg-brand-green text-white shadow'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    }`}
+                  >
+                    <Smartphone size={14} />
+                    <span>Screen Focus</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setKioskFraming('totem')}
+                    className={`py-2 px-2 rounded-lg text-xs font-semibold transition-all flex flex-col items-center gap-1 ${
+                      kioskFraming === 'totem'
+                        ? 'bg-brand-blue text-white shadow'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    }`}
+                  >
+                    <Monitor size={14} />
+                    <span>Full Totem (CAD)</span>
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* ── Zoom Controls ────────────────────────────────────────── */}
             <div className="flex flex-col gap-1.5">
@@ -596,6 +731,248 @@ export function DemoControls() {
                   </button>
                 </div>
               )}
+            </div>
+
+            {/* ── Demo Shortcuts & Presets (Evaluator Tools) ──────────────── */}
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1.5">
+                <Sparkles size={11} className="text-brand-gold" />
+                Demo Simulations & Presets
+              </label>
+              <div className="flex flex-col gap-1">
+                <button
+                  type="button"
+                  onClick={handleAutofillSeniorPatient}
+                  className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700/90 text-xs font-semibold text-slate-200 border border-slate-700/60 transition-colors group cursor-pointer"
+                  title="Populate Step 1 with senior patient (Juan Dela Cruz, 70yo)"
+                >
+                  <div className="flex items-center gap-2">
+                    <UserCheck size={14} className="text-emerald-400 group-hover:scale-110 transition-transform" />
+                    <span>Autofill Patient (Juan, 70yo)</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400">Step 1</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleAutofillCompleteCase}
+                  className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700/90 text-xs font-semibold text-slate-200 border border-slate-700/60 transition-colors group cursor-pointer"
+                  title="Populate complete emergency case with vitals, pain level, and notes ready for review"
+                >
+                  <div className="flex items-center gap-2">
+                    <HeartPulse size={14} className="text-red-400 group-hover:scale-110 transition-transform" />
+                    <span>Autofill Acute Case (Chest Pain)</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400">Review</span>
+                </button>
+              </div>
+            </div>
+
+            {/* ── Hardware Sensor Simulation Bay (NN/g Heuristics #1, #2, #7, #9) ── */}
+            <div className="flex flex-col gap-1.5 p-2 rounded-xl bg-slate-950/70 border border-slate-800">
+              <div className="flex items-center justify-between">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
+                  <Radio size={11} className="text-blue-400" />
+                  Hardware Sensor Triggers
+                </label>
+                {activeHardwareSensor?.status && activeHardwareSensor.status !== 'idle' && (
+                  <button
+                    type="button"
+                    onClick={cancelHardwareSensor}
+                    className="text-[9px] font-bold text-red-400 hover:text-red-300 underline cursor-pointer"
+                    title="Cancel active sensor reading (NN/g #3 User Control)"
+                  >
+                    Cancel / Eject
+                  </button>
+                )}
+              </div>
+
+              {/* Active Sensor Status Pill */}
+              {activeHardwareSensor?.status && activeHardwareSensor.status !== 'idle' && (
+                <div className={`p-2 rounded-lg text-[11px] font-semibold flex items-center gap-2 ${
+                  activeHardwareSensor.status === 'error' ? 'bg-red-950/80 text-red-300 border border-red-800/80' :
+                  activeHardwareSensor.status === 'success' ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-800/80' :
+                  'bg-blue-950/80 text-blue-300 border border-blue-800/80 animate-pulse'
+                }`}>
+                  <div className={`w-2 h-2 rounded-full ${
+                    activeHardwareSensor.status === 'error' ? 'bg-red-400' :
+                    activeHardwareSensor.status === 'success' ? 'bg-emerald-400' : 'bg-blue-400 animate-ping'
+                  }`} />
+                  <span className="truncate">{activeHardwareSensor.message}</span>
+                </div>
+              )}
+
+              {/* Identity Sensors */}
+              <div className="flex flex-col gap-1 mt-0.5">
+                <span className="text-[9px] font-bold uppercase text-slate-400 px-1">
+                  1. Identification Sensors (NFC & QR)
+                </span>
+                <div className="grid grid-cols-2 gap-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      triggerHardwareSensor('qr', {
+                        payload: {
+                          fullName: 'Maria Elena C. Lopez',
+                          dob: '1978-08-14',
+                          gender: 'Female',
+                          contact: '0917-882-9014',
+                          identification: 'PhilHealth QR'
+                        }
+                      });
+                    }}
+                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                    title="Simulate presenting QR code to optical scanner bay"
+                  >
+                    <QrCode size={13} className="text-blue-400 shrink-0" />
+                    <span className="truncate">Scan QR Code</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      triggerHardwareSensor('nfc', {
+                        payload: {
+                          fullName: 'Juan Dela Cruz y Santos',
+                          dob: '1956-04-12',
+                          gender: 'Male',
+                          contact: '0917-555-1234',
+                          identification: 'PhilSys National ID NFC'
+                        }
+                      });
+                    }}
+                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                    title="Simulate tapping 13.56 MHz PhilSys smart card on NFC wave pad"
+                  >
+                    <Wifi size={13} className="text-emerald-400 rotate-90 shrink-0" />
+                    <span className="truncate">Tap NFC Card</span>
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    triggerHardwareSensor('qr', {
+                      isError: true,
+                      errorMessage: 'Scanner Bay: Barcode obscured or unreadable. Please wipe code and hold steady.'
+                    });
+                  }}
+                  className="flex items-center justify-between px-2 py-1 rounded-lg bg-red-950/40 hover:bg-red-900/50 text-[10px] font-semibold text-red-300 border border-red-900/60 transition-colors cursor-pointer"
+                  title="Simulate unreadable barcode (Demonstrates NN/g Heuristic #9 Error Recovery)"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <AlertCircle size={11} className="text-red-400" />
+                    Simulate Scan Error (NN/g #9)
+                  </span>
+                  <span className="text-[9px] text-red-400/80">Fault</span>
+                </button>
+              </div>
+
+              {/* Medical Vitals Sensors */}
+              <div className="flex flex-col gap-1 mt-1">
+                <span className="text-[9px] font-bold uppercase text-slate-400 px-1">
+                  2. Vitals Sensors (PPG Bay & Thermal)
+                </span>
+                <div className="grid grid-cols-2 gap-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      triggerHardwareSensor('ppg', {
+                        payload: {
+                          spo2: 98,
+                          pulseRate: 74,
+                          perfusionIndex: '4.2%',
+                          temperature: '36.8°C'
+                        }
+                      });
+                      if (kioskStep !== 'pain-duration') {
+                        setViewMode('kiosk');
+                        setKioskStep('pain-duration');
+                      }
+                    }}
+                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                    title="Simulate inserting finger into Vital Signs Bay with normal healthy metrics"
+                  >
+                    <Activity size={13} className="text-emerald-400 shrink-0" />
+                    <span className="truncate">PPG Vitals (Normal)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      triggerHardwareSensor('ppg', {
+                        payload: {
+                          spo2: 91,
+                          pulseRate: 122,
+                          perfusionIndex: '2.1%',
+                          temperature: '38.5°C'
+                        }
+                      });
+                      if (kioskStep !== 'pain-duration') {
+                        setViewMode('kiosk');
+                        setKioskStep('pain-duration');
+                      }
+                    }}
+                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                    title="Simulate inserting finger with acute hypoxic tachycardia (91% SpO2, 122 bpm)"
+                  >
+                    <Activity size={13} className="text-red-400 shrink-0" />
+                    <span className="truncate">PPG Vitals (Acute)</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      triggerHardwareSensor('thermal', {
+                        payload: { temperature: '36.6°C' }
+                      });
+                    }}
+                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                    title="Simulate overhead infrared core forehead scan (36.6°C Normal)"
+                  >
+                    <Thermometer size={13} className="text-cyan-400 shrink-0" />
+                    <span className="truncate">Temp (36.6°C)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      triggerHardwareSensor('thermal', {
+                        payload: { temperature: '38.9°C' }
+                      });
+                    }}
+                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-medium text-slate-200 border border-slate-700/60 transition-colors cursor-pointer"
+                    title="Simulate overhead infrared core forehead scan (38.9°C High Fever)"
+                  >
+                    <Thermometer size={13} className="text-amber-400 shrink-0" />
+                    <span className="truncate">Fever (38.9°C)</span>
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    triggerHardwareSensor('ppg', {
+                      isError: true,
+                      errorMessage: 'Vital Signs Bay: Motion artifact / loose finger contact. Please remain steady.'
+                    });
+                    if (kioskStep !== 'pain-duration') {
+                      setViewMode('kiosk');
+                      setKioskStep('pain-duration');
+                    }
+                  }}
+                  className="flex items-center justify-between px-2 py-1 rounded-lg bg-amber-950/40 hover:bg-amber-900/50 text-[10px] font-semibold text-amber-300 border border-amber-900/60 transition-colors cursor-pointer"
+                  title="Simulate finger motion artifact error (Demonstrates NN/g Heuristic #9 Error Recovery)"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <AlertCircle size={11} className="text-amber-400" />
+                    Simulate Motion Artifact (NN/g #9)
+                  </span>
+                  <span className="text-[9px] text-amber-400/80">Artifact</span>
+                </button>
+              </div>
             </div>
 
             {/* ── Quick Page Navigation ─────────────────────────────────── */}

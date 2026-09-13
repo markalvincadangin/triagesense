@@ -4,7 +4,7 @@ import { useTriage } from '../../context/TriageContext';
 import wvsumcLogo from '../../assets/wvsumc-logo.png';
 
 export function KioskHeader({ onLogoClick }) {
-  const { kioskLanguage, setKioskLanguage, triggerEmergencyModal } = useTriage();
+  const { kioskLanguage, setKioskLanguage, triggerEmergencyModal, t } = useTriage();
   const [currentTime, setCurrentTime] = useState('');
   const [isSpeaking, setIsSpeaking] = useState(false);
 
@@ -12,7 +12,7 @@ export function KioskHeader({ onLogoClick }) {
     const update = () => {
       const now = new Date();
       setCurrentTime(
-        now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' PST'
+        now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       );
     };
     update();
@@ -55,11 +55,11 @@ export function KioskHeader({ onLogoClick }) {
   ];
 
   return (
-    <header className="w-full h-24 bg-surface border-b border-border-main flex items-center justify-between px-10 shrink-0 select-none">
+    <header className="w-full h-24 bg-surface border-b border-border-main flex items-center justify-between px-6 shrink-0 select-none">
       {/* Brand Cluster */}
       <div
         onClick={onLogoClick}
-        className={`flex items-center gap-4 ${onLogoClick ? 'cursor-pointer hover:opacity-95' : 'cursor-default'}`}
+        className={`flex items-center gap-3 shrink-0 ${onLogoClick ? 'cursor-pointer hover:opacity-95' : 'cursor-default'}`}
       >
         {/* Official WVSUMC Emblem Seal */}
         <img
@@ -68,30 +68,30 @@ export function KioskHeader({ onLogoClick }) {
           className="w-14 h-14 object-contain drop-shadow-sm shrink-0"
         />
 
-        <div>
-          <div className="text-[15px] font-bold text-brand-green tracking-wide leading-tight">
-            WEST VISAYAS STATE UNIVERSITY
+        <div className="flex flex-col justify-center shrink-0">
+          <div className="text-lg font-black text-brand-green tracking-wide leading-tight whitespace-nowrap">
+            {t('header.title')}
           </div>
-          <div className="text-[13px] font-semibold text-text-secondary tracking-wider mt-0.5">
-            MEDICAL CENTER • EMERGENCY ROOM CHECK-IN
+          <div className="text-xs font-semibold text-text-secondary tracking-wider mt-0.5 whitespace-nowrap">
+            {t('header.subtitle')}
           </div>
         </div>
       </div>
 
       {/* Multimodal Accessibility & System Status Controls */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2.5 shrink-0">
         {/* Dialect Quick Toggle */}
-        <div className="flex items-center bg-slate-100 rounded-full p-1 border border-slate-200 shadow-inner">
-          <div className="px-2 text-slate-400">
-            <Globe size={15} />
+        <div className="flex items-center bg-slate-100 rounded-full p-1 border border-slate-200/90 shadow-inner shrink-0">
+          <div className="pl-2.5 pr-1 text-slate-400">
+            <Globe size={16} />
           </div>
           {LANGUAGES.map((lang) => (
             <button
               key={lang.code}
               onClick={() => setKioskLanguage(lang.code)}
-              className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${
+              className={`h-11 min-h-[44px] px-3 text-xs font-bold rounded-full transition-all flex items-center justify-center cursor-pointer ${
                 kioskLanguage === lang.code
-                  ? 'bg-brand-green text-white shadow-sm'
+                  ? 'bg-brand-green text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -103,29 +103,29 @@ export function KioskHeader({ onLogoClick }) {
         {/* Read-Aloud Audio Guidance Button */}
         <button
           onClick={handleReadAloud}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border ${
+          className={`flex items-center gap-1.5 h-11 min-h-[44px] px-3.5 rounded-full text-xs font-bold transition-all border shrink-0 cursor-pointer ${
             isSpeaking
               ? 'bg-amber-100 text-amber-900 border-amber-300 ring-2 ring-amber-400/40 animate-pulse'
-              : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+              : 'bg-surface text-text-primary border-border-main hover:bg-canvas'
           }`}
-          title="Read screen instructions aloud"
+          title={t('header.readAloudPrompt')}
         >
           {isSpeaking ? <VolumeX size={16} className="text-amber-600" /> : <Volume2 size={16} className="text-brand-green" />}
-          <span>{isSpeaking ? 'Speaking...' : 'Read Aloud'}</span>
+          <span>{isSpeaking ? t('common.speaking') : t('common.readAloud')}</span>
         </button>
 
         {/* Emergency Immediate Nurse Assistance Call Button */}
         <button
           onClick={triggerEmergencyModal}
-          className="flex items-center gap-2 px-4 py-1.5 bg-red-600 hover:bg-red-700 active:scale-95 text-white rounded-full text-xs font-black tracking-wide shadow-md transition-all"
+          className="flex items-center gap-1.5 h-11 min-h-[44px] px-4 bg-emergency hover:bg-emergency-dark active:scale-95 text-white rounded-full text-xs font-black tracking-wide shadow-md shadow-red-600/25 transition-all cursor-pointer shrink-0 ring-2 ring-red-200"
         >
-          <AlertCircle size={16} strokeWidth={2.6} />
-          <span>HELP / TABANG</span>
+          <AlertCircle size={16} strokeWidth={2.6} className="animate-pulse" />
+          <span>{t('header.emergencyHelp')}</span>
         </button>
 
         {/* Live System Time */}
-        <div className="text-xs font-semibold text-text-secondary tabular-nums pl-2 border-l border-slate-200">
-          {currentTime || '17:40:00 PST'}
+        <div className="text-xs font-bold text-text-secondary tabular-nums pl-2.5 border-l border-border-main shrink-0 whitespace-nowrap">
+          {currentTime}
         </div>
       </div>
     </header>

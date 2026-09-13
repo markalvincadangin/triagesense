@@ -163,7 +163,7 @@ export function FleetManager() {
                   step={15}
                   value={timeoutSec}
                   onChange={(e) => setTimeoutSec(e.target.value)}
-                  className="w-full accent-[#006B3F] cursor-pointer"
+                  className="w-full accent-brand-green cursor-pointer"
                 />
                 <div className="text-[11px] text-text-secondary">
                   Auto-purges session if terminal is abandoned without input to protect patient privacy.
@@ -179,7 +179,7 @@ export function FleetManager() {
               <div className="flex gap-4 flex-wrap">
                 {['Hiligaynon (Ilonggo)', 'English (Standard)', 'Filipino (Tagalog)', 'Cebuano (Bisaya)'].map((lang) => (
                   <label key={lang} className="flex items-center gap-2 text-xs font-semibold text-text-primary cursor-pointer select-none">
-                    <input type="checkbox" defaultChecked className="accent-[#006B3F] w-4 h-4 rounded" />
+                    <input type="checkbox" defaultChecked className="accent-brand-green w-4 h-4 rounded" />
                     <span>{lang}</span>
                   </label>
                 ))}

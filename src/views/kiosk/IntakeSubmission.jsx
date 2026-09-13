@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useTriage } from '../../context/TriageContext';
 import { Button } from '../../components/common/Button';
-import { ShieldCheck, Lock, Send, ArrowLeft, AlertCircle, Sparkles } from 'lucide-react';
+import { Card } from '../../components/common/Card';
+import { KioskFooterNav } from '../../components/kiosk/KioskFooterNav';
+import { ShieldCheck, Lock, Send, AlertCircle, Sparkles } from 'lucide-react';
 
 export function IntakeSubmission() {
-  const { submitKioskIntake, setKioskStep } = useTriage();
+  const { submitKioskIntake, setKioskStep, t } = useTriage();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = () => {
@@ -15,131 +17,46 @@ export function IntakeSubmission() {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        height: '100%',
-        padding: '36px 48px',
-        backgroundColor: 'var(--color-bg-canvas)',
-        overflowY: 'auto'
-      }}
-    >
+    <div className="flex flex-col justify-between h-full px-12 py-8 bg-canvas overflow-y-auto select-none font-sans">
       {/* Header */}
-      <div style={{ textAlign: 'center' }}>
-        <h1
-          style={{
-            fontSize: '32px',
-            fontWeight: '800',
-            color: 'var(--color-text-primary)'
-          }}
-        >
-          Submit Intake Record
+      <div className="text-center shrink-0 mb-4">
+        <h1 className="text-4xl font-black text-text-primary tracking-tight">
+          {t('submission.stepTitle')}
         </h1>
-        <h2
-          style={{
-            fontSize: '18px',
-            fontWeight: '500',
-            color: 'var(--color-text-secondary)',
-            marginTop: '4px'
-          }}
-        >
-          Ipasa ang imo impormasyon direkta sa triage staff station
-        </h2>
       </div>
 
-      {/* Main Submission Card */}
-      <div
-        style={{
-          maxWidth: '720px',
-          width: '100%',
-          margin: '0 auto',
-          backgroundColor: 'var(--color-bg-surface)',
-          padding: '36px',
-          borderRadius: 'var(--radius-xl)',
-          border: '1.5px solid var(--color-border)',
-          boxShadow: 'var(--shadow-card)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-          gap: '24px'
-        }}
-      >
-        {/* Animated Icon Container */}
-        <div
-          style={{
-            width: '80px',
-            height: '80px',
-            borderRadius: 'var(--radius-full)',
-            backgroundColor: isSubmitting ? 'var(--color-wvsu-gold-light)' : 'var(--color-wvsu-primary-light)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: isSubmitting ? 'var(--color-wvsu-gold)' : 'var(--color-wvsu-primary)',
-            transition: 'all 0.3s'
-          }}
-        >
-          {isSubmitting ? (
-            <Sparkles size={44} strokeWidth={2.4} />
-          ) : (
-            <ShieldCheck size={48} strokeWidth={2.4} />
-          )}
+      {/* Main Container */}
+      <Card variant="kiosk" className="max-w-2xl w-full mx-auto my-auto text-center gap-6 p-10">
+        <div className="w-20 h-20 rounded-full bg-brand-green-light flex items-center justify-center text-brand-green mx-auto shadow-subtle animate-bounce">
+          <Sparkles size={40} />
         </div>
 
         <div>
-          <h2 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--color-text-primary)' }}>
-            {isSubmitting ? 'Packaging & Transmitting Record...' : 'Ready to Send to Triage Desk'}
+          <h2 className="text-2xl font-black text-text-primary">
+            {isSubmitting ? t('submission.transmittingTitle') : t('submission.readyTitle')}
           </h2>
-          <p
-            style={{
-              fontSize: '16px',
-              color: 'var(--color-text-secondary)',
-              marginTop: '8px',
-              lineHeight: '24px'
-            }}
-          >
-            Upon clicking submit, your patient-reported intake will be securely transmitted to the Authorized Nurse Workstation in the Emergency Department.
+          <p className="text-base text-text-secondary mt-2 leading-relaxed max-w-lg mx-auto">
+            {t('submission.description')}
           </p>
         </div>
 
         {/* Mandatory Clinical Non-Diagnostic Disclaimer Box */}
-        <div
-          style={{
-            width: '100%',
-            padding: '20px 24px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--color-bg-canvas)',
-            border: '1.5px solid var(--color-border)',
-            display: 'flex',
-            alignItems: 'flex-start',
-            gap: '14px',
-            textAlign: 'left'
-          }}
-        >
-          <AlertCircle size={24} color="var(--color-wvsu-blue)" style={{ flexShrink: 0, marginTop: '2px' }} />
+        <div className="w-full p-5 rounded-2xl bg-canvas border border-border-main flex items-start gap-4 text-left">
+          <AlertCircle size={24} className="text-brand-blue shrink-0 mt-0.5" />
           <div>
-            <div style={{ fontSize: '15px', fontWeight: '700', color: 'var(--color-text-primary)' }}>
-              Important Clinical Notice / Pahibalo:
+            <div className="text-base font-bold text-text-primary">
+              {t('submission.disclaimerTitle')}
             </div>
-            <div
-              style={{
-                fontSize: '14px',
-                color: 'var(--color-text-secondary)',
-                lineHeight: '22px',
-                marginTop: '4px'
-              }}
-            >
-              "TriageSense provides preliminary patient-reported information only. It does not diagnose medical conditions or replace clinical triage."
+            <div className="text-sm text-text-secondary leading-relaxed mt-1">
+              {t('submission.disclaimerText')}
             </div>
           </div>
         </div>
 
         {/* Encryption & Privacy Assurance */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--color-text-secondary)' }}>
-          <Lock size={15} color="var(--color-wvsu-primary)" />
-          <span>Compliant with DOH Healthcare Privacy & Data Protection Protocols</span>
+        <div className="flex items-center gap-2 text-sm text-text-secondary">
+          <Lock size={16} className="text-brand-green" />
+          <span>{t('submission.privacyAssurance')}</span>
         </div>
 
         {/* Submit Button */}
@@ -150,36 +67,18 @@ export function IntakeSubmission() {
           disabled={isSubmitting}
           icon={Send}
           onClick={handleSubmit}
-          style={{ height: '74px', fontSize: '20px' }}
+          className="h-18 text-xl font-black shadow-xl rounded-2xl"
         >
-          {isSubmitting ? 'TRANSMITTING INTAKE...' : 'SUBMIT INTAKE TO TRIAGE DESK'}
+          {isSubmitting ? t('submission.submittingBtn') : t('submission.submitBtn')}
         </Button>
-      </div>
+      </Card>
 
-      {/* Back Navigation */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          maxWidth: '720px',
-          width: '100%',
-          margin: '20px auto 0',
-          paddingTop: '20px',
-          borderTop: '1px solid var(--color-border)'
-        }}
-      >
-        <Button
-          variant="outline"
-          size="md"
-          icon={ArrowLeft}
-          disabled={isSubmitting}
-          onClick={() => setKioskStep('review')}
-          style={{ width: '180px' }}
-        >
-          Back to Review
-        </Button>
-      </div>
+      {/* Standardized Bottom Navigation */}
+      <KioskFooterNav
+        onBack={() => setKioskStep('review')}
+        backDisabled={isSubmitting}
+        backLabel={t('submission.backBtn')}
+      />
     </div>
   );
 }

@@ -1,15 +1,18 @@
 import React from 'react';
+import { useTriage } from '../../context/TriageContext';
 import { Check } from 'lucide-react';
 
-const STAGES = [
-  { id: 1, name: 'Your Info', key: 'patient-info' },
-  { id: 2, name: 'What Hurts', key: 'symptoms' },
-  { id: 3, name: 'Where It Hurts', key: 'body-map' },
-  { id: 4, name: 'Pain & Pulse', key: 'pain-duration' },
-  { id: 5, name: 'Review & Send', key: 'review' }
+const STAGE_KEYS = [
+  { id: 1, key: 'info' },
+  { id: 2, key: 'symptoms' },
+  { id: 3, key: 'bodyMap' },
+  { id: 4, key: 'painVitals' },
+  { id: 5, key: 'review' }
 ];
 
 export function ProgressStepper({ currentStep }) {
+  const { t } = useTriage();
+
   // Map step code to 1-based stage number
   const getActiveStageNumber = () => {
     switch (currentStep) {
@@ -46,70 +49,79 @@ export function ProgressStepper({ currentStep }) {
   };
 
   const getSubstepIndicator = () => {
-    if (currentStep === 'patient-info') return 'Step 1 of 5 • Your Name & Details';
-    if (currentStep === 'symptoms') return 'Step 2 of 5 • Tell Us What You Feel';
-    if (currentStep === 'body-map') return 'Step 3 of 5 • Tap Where It Hurts';
-    if (currentStep === 'pain-duration') return 'Step 4 of 5 • Pain Level & Finger Check';
-    if (currentStep === 'review') return 'Step 5 of 5 • Review & Let the Nurse Know';
-    return null;
+    switch (currentStep) {
+      case 'patient-info':
+        return t('stepper.substeps.patient-info');
+      case 'symptoms':
+        return t('stepper.substeps.symptoms');
+      case 'body-map':
+        return t('stepper.substeps.body-map');
+      case 'pain-duration':
+        return t('stepper.substeps.pain-duration');
+      case 'review':
+        return t('stepper.substeps.review');
+      default:
+        return null;
+    }
   };
 
   const activeStage = getActiveStageNumber();
   const substepText = getSubstepIndicator();
 
   return (
-    <div className="w-full bg-surface border-b border-border-main px-10 py-3.5 flex flex-col gap-2 shrink-0 select-none">
-      {/* 6 Stage Indicators */}
+    <div className="w-full bg-surface border-b border-border-main px-12 py-5 flex flex-col gap-3 shrink-0 select-none">
+      {/* 5 Stage Indicators */}
       <div className="flex items-center justify-between relative">
         {/* Background Connecting Line */}
-        <div className="absolute top-[18px] left-8 right-8 h-[3px] bg-border-main z-0" />
+        <div className="absolute top-[24px] left-10 right-10 h-[4px] bg-border-main z-0" />
 
         {/* Dynamic Progress Fill Line */}
         <div
-          className="absolute top-[18px] left-8 h-[3px] bg-brand-green z-[1] transition-all duration-300 ease-in-out"
-          style={{ width: `${((activeStage - 1) / (STAGES.length - 1)) * 100}%` }}
+          className="absolute top-[24px] left-10 h-[4px] bg-brand-green z-[1] transition-all duration-300 ease-in-out"
+          style={{ width: `${((activeStage - 1) / (STAGE_KEYS.length - 1)) * 100}%` }}
         />
 
-        {STAGES.map((stage) => {
+        {STAGE_KEYS.map((stage) => {
           const isCompleted = stage.id < activeStage;
           const isCurrent = stage.id === activeStage;
+          const stageName = t(`stepper.stages.${stage.key}`);
 
           return (
-            <div key={stage.id} className="flex flex-col items-center gap-1.5 z-[2]">
-              {/* Node Circle */}
+            <div key={stage.id} className="flex flex-col items-center gap-2 z-[2]">
+              {/* Node Circle (48px touch-sized orientation node) */}
               <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-200 ${
+                className={`w-12 h-12 rounded-full flex items-center justify-center text-base font-black transition-all duration-200 ${
                   isCompleted
-                    ? 'bg-brand-green text-white border-2 border-brand-green'
+                    ? 'bg-brand-green text-white border-2 border-brand-green shadow-sm'
                     : isCurrent
-                    ? 'bg-surface text-brand-green border-[3px] border-brand-green ring-4 ring-brand-gold-light'
+                    ? 'bg-surface text-brand-green border-[3px] border-brand-green ring-4 ring-emerald-100 shadow-md'
                     : 'bg-surface text-text-secondary border-2 border-border-main'
                 }`}
               >
-                {isCompleted ? <Check size={18} strokeWidth={3} /> : stage.id}
+                {isCompleted ? <Check size={22} strokeWidth={3} /> : stage.id}
               </div>
 
               {/* Stage Label */}
               <span
-                className={`text-[13px] whitespace-nowrap ${
+                className={`text-[15px] whitespace-nowrap ${
                   isCurrent
                     ? 'font-bold text-brand-green'
                     : isCompleted
-                    ? 'font-medium text-text-primary'
-                    : 'font-normal text-text-secondary'
+                    ? 'font-bold text-text-primary'
+                    : 'font-medium text-text-secondary'
                 }`}
               >
-                {stage.name}
+                {stageName}
               </span>
             </div>
           );
         })}
       </div>
 
-      {/* Substep Clarification Indicator if in Stage 4 */}
+      {/* Substep Clarification Indicator */}
       {substepText && (
-        <div className="flex items-center justify-center mt-0.5">
-          <span className="text-xs font-semibold px-3 py-0.5 rounded-full bg-brand-gold-light text-text-primary border border-amber-200">
+        <div className="flex items-center justify-center mt-1">
+          <span className="text-sm font-bold px-4 py-1 rounded-full bg-emerald-50 text-brand-green border border-emerald-200 shadow-sm">
             {substepText}
           </span>
         </div>
@@ -117,3 +129,4 @@ export function ProgressStepper({ currentStep }) {
     </div>
   );
 }
+

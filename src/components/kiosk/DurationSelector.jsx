@@ -1,96 +1,67 @@
 import React from 'react';
+import { useTriage } from '../../context/TriageContext';
 import { Check, Clock } from 'lucide-react';
 
-const DURATIONS = [
-  { id: 'Less than 1 hour', label: 'Less than 1 hour', dialect: 'Wala pa isa ka oras', urgent: true },
-  { id: '1–6 hours', label: '1–6 hours', dialect: '1 tubtob 6 ka oras', urgent: false },
-  { id: '6–24 hours', label: '6–24 hours', dialect: '6 tubtob 24 ka oras', urgent: false },
-  { id: '1–3 days', label: '1–3 days', dialect: '1 tubtob 3 ka adlaw', urgent: false },
-  { id: 'More than 3 days', label: 'More than 3 days', dialect: 'Sobra 3 ka adlaw', urgent: false },
-  { id: 'Not sure', label: 'Not sure / Indeterminate', dialect: 'Wala sigurado', urgent: false }
+const DURATION_KEYS = [
+  'Less than 1 hour',
+  '1–6 hours',
+  '6–24 hours',
+  '1–3 days',
+  'More than 3 days',
+  'Not sure'
 ];
 
 export function DurationSelector({ value, onChange }) {
+  const { t } = useTriage();
+
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '16px',
-        width: '100%',
-        maxWidth: '840px'
-      }}
-    >
-      {DURATIONS.map((item) => {
-        const isSelected = value === item.id;
+    <div className="grid grid-cols-2 gap-4 w-full max-w-[880px] mx-auto select-none">
+      {DURATION_KEYS.map((key) => {
+        const isSelected = value === key;
+        const localizedLabel = t(`durations.${key}`, key);
 
         return (
           <button
-            key={item.id}
+            key={key}
             type="button"
-            onClick={() => onChange(item.id)}
-            style={{
-              minHeight: '74px',
-              padding: '14px 20px',
-              borderRadius: 'var(--radius-lg)',
-              backgroundColor: isSelected ? 'var(--color-wvsu-primary-light)' : 'var(--color-bg-surface)',
-              border: isSelected ? '2.5px solid var(--color-wvsu-primary)' : '1.5px solid var(--color-border)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              cursor: 'pointer',
-              textAlign: 'left',
-              boxShadow: isSelected ? 'var(--shadow-card)' : 'none',
-              transition: 'all 0.16s ease-in-out'
-            }}
+            onClick={() => onChange(key)}
+            className={`min-h-[80px] p-5 sm:px-6 rounded-2xl flex items-center justify-between cursor-pointer text-left transition-all duration-150 border-2 group ${
+              isSelected
+                ? 'bg-emerald-50/90 border-brand-green shadow-card ring-2 ring-brand-green/25'
+                : 'bg-surface border-border-main hover:border-border-hover hover:bg-canvas shadow-subtle'
+            }`}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div className="flex items-center gap-4 flex-1">
               <div
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: 'var(--radius-full)',
-                  backgroundColor: isSelected ? 'var(--color-wvsu-primary)' : 'var(--color-bg-canvas)',
-                  color: isSelected ? '#FFFFFF' : 'var(--color-text-secondary)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}
+                className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 transition-colors ${
+                  isSelected
+                    ? 'bg-brand-green text-white shadow-sm'
+                    : 'bg-canvas text-text-secondary'
+                }`}
               >
-                <Clock size={20} strokeWidth={2.2} />
+                <Clock size={24} strokeWidth={2.2} />
               </div>
 
-              <div>
+              <div className="flex-1">
                 <div
-                  style={{
-                    fontSize: '17px',
-                    fontWeight: isSelected ? '700' : '600',
-                    color: isSelected ? 'var(--color-wvsu-primary)' : 'var(--color-text-primary)'
-                  }}
+                  className={`text-xl leading-snug ${
+                    isSelected ? 'font-black text-brand-green' : 'font-bold text-text-primary'
+                  }`}
                 >
-                  {item.label}
-                </div>
-                <div style={{ fontSize: '13px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
-                  {item.dialect}
+                  {localizedLabel}
                 </div>
               </div>
             </div>
 
+            {/* Checkbox Icon Pill - Vertically Centered with Card */}
             <div
-              style={{
-                width: '26px',
-                height: '26px',
-                borderRadius: 'var(--radius-full)',
-                border: isSelected ? 'none' : '1.5px solid var(--color-border)',
-                backgroundColor: isSelected ? 'var(--color-wvsu-primary)' : 'transparent',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#FFFFFF'
-              }}
+              className={`w-9 h-9 rounded-xl shrink-0 flex items-center justify-center transition-all duration-150 ${
+                isSelected
+                  ? 'bg-brand-green text-white shadow-sm ring-2 ring-brand-green/30'
+                  : 'border-2 border-slate-300 bg-surface/60 group-hover:border-slate-400'
+              }`}
             >
-              {isSelected && <Check size={18} strokeWidth={3} />}
+              {isSelected && <Check size={20} strokeWidth={3.5} />}
             </div>
           </button>
         );

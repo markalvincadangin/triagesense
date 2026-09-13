@@ -21,7 +21,8 @@ export function FormInput({
   const sizeClasses = {
     sm: 'h-9 text-xs px-3',
     md: 'h-11 text-sm px-3.5',
-    lg: 'h-14 text-base px-4'
+    lg: 'h-14 text-base px-4',
+    kiosk: 'h-[72px] text-2xl px-6 rounded-2xl font-bold'
   };
 
   const alignClasses = {
@@ -30,17 +31,19 @@ export function FormInput({
     right: 'text-right'
   };
 
+  const isKiosk = size === 'kiosk';
+
   return (
-    <div className={`flex flex-col gap-1.5 ${className}`}>
+    <div className={`flex flex-col gap-2 ${className}`}>
       {label && (
-        <label className="flex items-center justify-between text-xs font-bold text-text-secondary tracking-wide uppercase">
-          <span className="flex items-center gap-1.5">
-            {Icon && <Icon size={13} className="text-brand-green shrink-0" />}
+        <label className={`flex items-center justify-between ${isKiosk ? 'text-xl font-black text-text-primary' : 'text-xs font-bold text-text-secondary tracking-wide uppercase'}`}>
+          <span className="flex items-center gap-2">
+            {Icon && <Icon size={isKiosk ? 22 : 13} className="text-brand-green shrink-0" />}
             <span>{label}</span>
             {required && <span className="text-emergency font-bold">*</span>}
           </span>
           {unit && (
-            <span className="text-[10px] font-mono text-slate-400 lowercase">
+            <span className={`${isKiosk ? 'text-sm' : 'text-[10px]'} font-mono text-slate-400 lowercase`}>
               ({unit})
             </span>
           )}
@@ -55,19 +58,19 @@ export function FormInput({
           placeholder={placeholder}
           disabled={disabled}
           readOnly={readOnly}
-          className={`w-full rounded-lg border font-semibold transition-all outline-none ${
+          className={`w-full border-2 transition-all outline-none rounded-lg ${
             sizeClasses[size] || sizeClasses.md
           } ${alignClasses[align] || alignClasses.left} ${
             error
-              ? 'border-emergency bg-red-50/50 text-red-950 focus:ring-2 focus:ring-red-400/30'
-              : 'border-border-main bg-white text-text-primary focus:border-brand-green focus:ring-2 focus:ring-emerald-500/20'
+              ? 'border-emergency bg-red-50/50 text-red-950 focus:ring-4 focus:ring-red-400/30'
+              : 'border-slate-300 hover:border-slate-400 bg-white text-slate-900 font-semibold placeholder:text-slate-400 placeholder:font-normal focus:border-brand-green focus:ring-2 focus:ring-emerald-500/20 shadow-xs'
           } ${disabled ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : ''} ${inputClassName}`}
           {...props}
         />
       </div>
 
       {error && (
-        <span className="text-[11px] font-semibold text-emergency">{error}</span>
+        <span className={`${isKiosk ? 'text-sm' : 'text-[11px]'} font-semibold text-emergency`}>{error}</span>
       )}
     </div>
   );

@@ -21,7 +21,9 @@ import {
   Calendar,
   Phone,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  Download,
+  Sparkles
 } from 'lucide-react';
 
 export function PatientDossier() {
@@ -43,6 +45,27 @@ export function PatientDossier() {
 
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [transferFlash, setTransferFlash] = useState(false);
+  const [transferToast, setTransferToast] = useState(null);
+
+  // 1-Click Vitals Transfer from Kiosk Hardware Telemetry to Nurse Assessment Record
+  const handlePullKioskTelemetry = () => {
+    if (!currentIntake) return;
+    const telemetry = currentIntake.vitalsTelemetry || {};
+    const kioskPulse = telemetry.pulseRate || currentIntake.nurseAssessment?.vitals?.hr || '';
+    const kioskSpo2 = telemetry.spo2 || currentIntake.nurseAssessment?.vitals?.o2 || '';
+
+    const cleanHr = kioskPulse ? kioskPulse.toString().replace(/[^0-9]/g, '') : '';
+    const cleanSpo2 = kioskSpo2 ? (kioskSpo2.toString().includes('%') ? kioskSpo2 : `${kioskSpo2}%`) : '';
+
+    if (cleanHr) setHr(cleanHr);
+    if (cleanSpo2) setO2(cleanSpo2);
+
+    setTransferFlash(true);
+    setTransferToast(`Kiosk vitals transferred: Pulse/HR ${cleanHr || '—'} bpm, SpO₂ ${cleanSpo2 || '—'}`);
+    setTimeout(() => setTransferFlash(false), 2200);
+    setTimeout(() => setTransferToast(null), 5000);
+  };
 
   // Sync state if selected intake changes
   useEffect(() => {
@@ -259,7 +282,7 @@ export function PatientDossier() {
 
             {/* Objective Kiosk Telemetry Card using StatCard components */}
             {(currentIntake.vitalsTelemetry?.spo2 || currentIntake.nurseAssessment?.vitals?.o2) && (
-              <div className="bg-emerald-50/70 border border-emerald-300 rounded-xl p-4 flex flex-col gap-2.5">
+              <div className="bg-emerald-50/70 border border-emerald-300 rounded-xl p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-xs font-black text-emerald-900 uppercase tracking-wider">
                     <Activity size={16} className="text-brand-green" />
@@ -291,7 +314,18 @@ export function PatientDossier() {
                   />
                 </div>
 
-                <div className="text-[11px] text-emerald-800">
+                {/* 1-Click Accept Kiosk Vitals Action Button */}
+                <button
+                  type="button"
+                  onClick={handlePullKioskTelemetry}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-brand-green hover:bg-brand-green-hover text-white font-black text-xs shadow-xs hover:shadow transition-all active:scale-[0.99] border border-emerald-700 cursor-pointer"
+                  id="accept-kiosk-vitals-btn"
+                >
+                  <Sparkles size={15} className="text-emerald-200 shrink-0" />
+                  <span>Accept Kiosk Vitals (Pull to Nurse Assessment) →</span>
+                </button>
+
+                <div className="text-[11px] text-emerald-800 font-medium">
                   * Automated pre-screening data. Licensed nurse verifies and confirms vital signs on the right assessment panel.
                 </div>
               </div>
@@ -341,7 +375,7 @@ export function PatientDossier() {
               title="Nurse Triage Assessment & ESI Scoring"
               variant="brand"
               action={
-                <span className="text-xs font-bold bg-[#005230] text-white px-2.5 py-1 rounded-full border border-emerald-400/30">
+                <span className="text-xs font-bold bg-brand-green-hover text-white px-2.5 py-1 rounded-full border border-emerald-400/30">
                   Nurse Kristine, RN
                 </span>
               }
@@ -353,11 +387,37 @@ export function PatientDossier() {
                 TriageSense does not calculate ESI. Acuity must be manually evaluated and assigned by the licensed triage nurse.
               </AlertBanner>
 
-              {/* Vitals Input Grid using standardized FormInput components */}
+              {/* Vitals Input Grid using standardized FormInput components with Boosted Contrast */}
               <div>
-                <div className="text-xs font-black text-text-primary uppercase tracking-wider mb-2.5">
-                  Objective Vitals (Desk Measurement):
+                <div className="flex items-center justify-between flex-wrap gap-2 mb-2.5">
+                  <div className="text-xs font-black text-slate-900 uppercase tracking-wider">
+                    Objective Vitals (Desk Measurement):
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handlePullKioskTelemetry}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-brand-green border-2 border-emerald-300 text-xs font-black transition-all active:scale-95 shadow-2xs cursor-pointer"
+                    title="Automatically copy kiosk pulse and SpO2 to desk fields"
+                    id="pull-kiosk-vitals-badge-btn"
+                  >
+                    <Download size={13} className="text-brand-green stroke-[2.5]" />
+                    <span>Pull Kiosk Vitals</span>
+                  </button>
                 </div>
+
+                {/* Quick Transfer Toast Feedback Banner */}
+                {transferToast && (
+                  <div className="animate-fade-in p-2.5 mb-2.5 rounded-xl bg-emerald-100/90 border border-emerald-400 text-emerald-950 text-xs font-bold flex items-center justify-between shadow-2xs">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 size={16} className="text-emerald-700 shrink-0" />
+                      <span>{transferToast}</span>
+                    </div>
+                    <span className="text-[10px] uppercase font-black tracking-wider text-emerald-800 bg-emerald-200/80 px-2 py-0.5 rounded-md">
+                      Transferred
+                    </span>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-5 gap-2">
                   <FormInput
                     label="BP"
@@ -367,6 +427,7 @@ export function PatientDossier() {
                     onChange={(e) => setBp(e.target.value)}
                     align="center"
                     size="sm"
+                    inputClassName="border-slate-400 text-slate-950 font-black text-sm placeholder:text-slate-400 placeholder:font-normal bg-white hover:border-slate-500 focus:border-brand-green focus:ring-2 focus:ring-emerald-500/20"
                   />
                   <FormInput
                     label="HR"
@@ -376,6 +437,11 @@ export function PatientDossier() {
                     onChange={(e) => setHr(e.target.value)}
                     align="center"
                     size="sm"
+                    inputClassName={`text-slate-950 font-black text-sm placeholder:text-slate-400 placeholder:font-normal transition-all ${
+                      transferFlash
+                        ? 'border-emerald-500 bg-emerald-50/70 ring-2 ring-emerald-500'
+                        : 'border-slate-400 bg-white hover:border-slate-500 focus:border-brand-green focus:ring-2 focus:ring-emerald-500/20'
+                    }`}
                   />
                   <FormInput
                     label="Temp"
@@ -385,6 +451,7 @@ export function PatientDossier() {
                     onChange={(e) => setTemp(e.target.value)}
                     align="center"
                     size="sm"
+                    inputClassName="border-slate-400 text-slate-950 font-black text-sm placeholder:text-slate-400 placeholder:font-normal bg-white hover:border-slate-500 focus:border-brand-green focus:ring-2 focus:ring-emerald-500/20"
                   />
                   <FormInput
                     label="SpO₂"
@@ -394,6 +461,11 @@ export function PatientDossier() {
                     onChange={(e) => setO2(e.target.value)}
                     align="center"
                     size="sm"
+                    inputClassName={`text-slate-950 font-black text-sm placeholder:text-slate-400 placeholder:font-normal transition-all ${
+                      transferFlash
+                        ? 'border-emerald-500 bg-emerald-50/70 ring-2 ring-emerald-500'
+                        : 'border-slate-400 bg-white hover:border-slate-500 focus:border-brand-green focus:ring-2 focus:ring-emerald-500/20'
+                    }`}
                   />
                   <FormInput
                     label="RR"
@@ -403,11 +475,12 @@ export function PatientDossier() {
                     onChange={(e) => setRr(e.target.value)}
                     align="center"
                     size="sm"
+                    inputClassName="border-slate-400 text-slate-950 font-black text-sm placeholder:text-slate-400 placeholder:font-normal bg-white hover:border-slate-500 focus:border-brand-green focus:ring-2 focus:ring-emerald-500/20"
                   />
                 </div>
               </div>
 
-              {/* Manually Assigned ESI Dropdown */}
+              {/* Manually Assigned ESI Dropdown with High Contrast */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-black text-text-primary uppercase tracking-wider">
                   Nurse-Assigned ESI Acuity:
@@ -415,7 +488,7 @@ export function PatientDossier() {
                 <select
                   value={assignedESI}
                   onChange={(e) => setAssignedESI(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-lg border-2 border-brand-green text-sm font-bold text-text-primary bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                  className="w-full h-11 px-3.5 rounded-lg border-2 border-brand-green text-sm font-bold text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 shadow-2xs"
                 >
                   <option value="">-- Select Clinician ESI Rating --</option>
                   <option value="ESI-1">ESI-1 Resuscitation (Immediate life-saving intervention)</option>
@@ -426,16 +499,16 @@ export function PatientDossier() {
                 </select>
               </div>
 
-              {/* Bed Disposition & Workflow Status */}
+              {/* Bed Disposition & Workflow Status with High Contrast */}
               <div className="grid grid-cols-2 gap-3.5">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-bold text-text-secondary uppercase tracking-wider">
+                  <label className="text-xs font-black text-slate-700 uppercase tracking-wider">
                     Bed Disposition:
                   </label>
                   <select
                     value={bedDisposition}
                     onChange={(e) => setBedDisposition(e.target.value)}
-                    className="w-full h-10 px-3 rounded-lg border border-border-main text-xs font-semibold bg-white focus:border-brand-green focus:outline-none"
+                    className="w-full h-10 px-3 rounded-lg border-2 border-slate-300 hover:border-slate-400 text-xs font-bold text-slate-900 bg-white focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                   >
                     <option value="Pending Assessment">Pending Assessment</option>
                     <option value="Resuscitation Bay 1">Resuscitation Bay 1</option>
@@ -449,13 +522,13 @@ export function PatientDossier() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-bold text-text-secondary uppercase tracking-wider">
+                  <label className="text-xs font-black text-slate-700 uppercase tracking-wider">
                     Workflow Status:
                   </label>
                   <select
                     value={workflowStatus}
                     onChange={(e) => setWorkflowStatus(e.target.value)}
-                    className="w-full h-10 px-3 rounded-lg border border-border-main text-xs font-semibold bg-white focus:border-brand-green focus:outline-none"
+                    className="w-full h-10 px-3 rounded-lg border-2 border-slate-300 hover:border-slate-400 text-xs font-bold text-slate-900 bg-white focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                   >
                     <option value="New">New Intake</option>
                     <option value="Waiting">Waiting in Lounge</option>
@@ -465,9 +538,9 @@ export function PatientDossier() {
                 </div>
               </div>
 
-              {/* Nurse Clinical Notes */}
+              {/* Nurse Clinical Notes with High Contrast */}
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-bold text-text-secondary uppercase tracking-wider">
+                <label className="text-xs font-black text-slate-700 uppercase tracking-wider">
                   Clinical Notes & Immediate Actions:
                 </label>
                 <textarea
@@ -475,7 +548,7 @@ export function PatientDossier() {
                   placeholder="Document nurse assessment findings, ordered labs/ECG, or interventions..."
                   value={clinicalNotes}
                   onChange={(e) => setClinicalNotes(e.target.value)}
-                  className="w-full p-3 rounded-lg border border-border-main text-xs font-medium focus:border-brand-green focus:outline-none resize-y"
+                  className="w-full p-3 rounded-lg border-2 border-slate-300 hover:border-slate-400 text-xs font-semibold text-slate-900 bg-white placeholder:text-slate-400 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-emerald-500/20 resize-y"
                 />
               </div>
 

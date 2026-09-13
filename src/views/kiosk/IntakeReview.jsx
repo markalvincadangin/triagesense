@@ -1,222 +1,190 @@
 import React from 'react';
 import { useTriage } from '../../context/TriageContext';
-import { Button } from '../../components/common/Button';
-import { Edit3, Check, ArrowLeft, ArrowRight, User, Activity, MapPin, HeartPulse, ShieldCheck } from 'lucide-react';
+import { Card } from '../../components/common/Card';
+import { KioskFooterNav } from '../../components/kiosk/KioskFooterNav';
+import { Edit3, User, Activity, MapPin, HeartPulse, ShieldCheck } from 'lucide-react';
 
 export function IntakeReview() {
-  const { intakeDraft, submitKioskIntake, setKioskStep, kioskLanguage } = useTriage();
+  const { intakeDraft, submitKioskIntake, setKioskStep, t } = useTriage();
 
   const patient = intakeDraft.patientInfo || {};
   const symptoms = intakeDraft.symptoms || [];
   const locations = intakeDraft.bodyLocations || [];
   const vitals = intakeDraft.vitals || {};
 
+  // P3: Anatomical Orientation Resolver
+  const getOrientationLabel = (loc) => {
+    const orientation = intakeDraft.bodyLocationOrientations?.[loc] || (loc === 'Back' ? 'back' : 'front');
+    return orientation === 'back' ? (t('bodyMap.backShort') || 'Back') : (t('bodyMap.frontShort') || 'Front');
+  };
+
+  // P1: Contextual Edit Button with >= 48px Touch Target
+  const renderSectionHeader = (Icon, title, targetStep) => (
+    <div className="flex items-center justify-between border-b border-border-main pb-2.5 mb-3.5">
+      <div className="flex items-center gap-2.5 text-lg font-black text-text-primary">
+        <Icon size={22} className="text-brand-green" />
+        <span>{title}</span>
+      </div>
+      <button
+        type="button"
+        onClick={() => setKioskStep(targetStep)}
+        className="min-h-[48px] px-4 py-2 rounded-xl border-2 border-slate-300 hover:border-brand-green bg-surface hover:bg-emerald-50/70 text-brand-green text-sm font-black flex items-center gap-2 cursor-pointer transition-all shadow-subtle hover:shadow-sm active:scale-95 shrink-0"
+        title={`${t('common.edit')}: ${title}`}
+      >
+        <Edit3 size={18} strokeWidth={2.5} />
+        <span>{t('common.edit')}</span>
+      </button>
+    </div>
+  );
+
   return (
-    <div className="flex flex-col h-full px-12 py-8 bg-canvas select-none">
+    <div className="flex flex-col h-full px-12 py-8 bg-canvas select-none overflow-y-auto">
       {/* Header */}
-      <div className="text-center shrink-0 mb-3">
-        <h1 className="text-3xl font-extrabold text-slate-900 leading-tight">
-          Step 5 of 5: Check Your Answers Before Sending
+      <div className="text-center shrink-0 mb-4">
+        <h1 className="text-4xl font-black text-text-primary tracking-tight">
+          {t('review.stepTitle')}
         </h1>
-        <h2 className="text-base font-semibold text-brand-green mt-1">
-          {kioskLanguage === 'hil'
-            ? 'Lantawa ang imo mga sabat bag-o ipadala sa nurse'
-            : 'Review your information below so the triage nurse receives accurate details'}
+        <h2 className="text-xl font-bold text-brand-green mt-2">
+          {t('review.stepSubtitle')}
         </h2>
       </div>
 
       {/* Review Summary Grid */}
-      <div className="w-full max-w-4xl mx-auto my-3 grid grid-cols-2 gap-4">
+      <div className="w-full max-w-[960px] mx-auto my-3 grid grid-cols-2 gap-6">
         {/* Card 1: Patient Details */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <Card variant="kiosk" className="justify-between">
           <div>
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
-              <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
-                <User size={18} />
-                <span>Patient Details</span>
-              </div>
-              <button
-                onClick={() => setKioskStep('patient-info')}
-                className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-brand-green"
-              >
-                <Edit3 size={13} />
-                <span>EDIT</span>
-              </button>
-            </div>
+            {renderSectionHeader(User, t('review.patientSection'), 'patient-info')}
 
-            <div className="text-sm text-slate-800 space-y-1.5">
-              <div><strong>Name:</strong> {patient.fullName || 'Juan Dela Cruz'}</div>
-              <div><strong>Birthdate:</strong> {patient.dob || '1984-05-22'}</div>
-              <div><strong>Gender:</strong> {patient.gender || 'Male'}</div>
-              <div><strong>Contact:</strong> {patient.contact || '0917-555-0192'}</div>
-              <div><strong>ID Method:</strong> {intakeDraft.identification || 'Hospital ID'}</div>
+            <div className="text-base text-text-primary space-y-2">
+              <div><strong>{t('review.nameLabel')}</strong> {patient.fullName || 'Juan Dela Cruz'}</div>
+              <div><strong>{t('review.dobLabel')}</strong> {patient.dob || '1984-05-22'}</div>
+              <div><strong>{t('review.genderLabel')}</strong> {patient.gender ? t(`patientInfo.gender${patient.gender}`, patient.gender) : t('patientInfo.genderMale')}</div>
+              <div><strong>{t('review.contactLabel')}</strong> {patient.contact || '0917-555-0192'}</div>
+              <div><strong>{t('review.idMethodLabel')}</strong> {intakeDraft.identification || 'Hospital ID'}</div>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Card 2: Main Symptoms */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <Card variant="kiosk" className="justify-between">
           <div>
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
-              <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
-                <Activity size={18} />
-                <span>What Hurts</span>
-              </div>
-              <button
-                onClick={() => setKioskStep('symptoms')}
-                className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-brand-green"
-              >
-                <Edit3 size={13} />
-                <span>EDIT</span>
-              </button>
-            </div>
+            {renderSectionHeader(Activity, t('review.symptomsSection'), 'symptoms')}
 
-            <div className="flex flex-wrap gap-1.5 my-2">
+            <div className="flex flex-wrap gap-2 my-2">
               {symptoms.length > 0 ? (
                 symptoms.map((s) => (
-                  <span key={s} className="px-2.5 py-1 bg-emerald-50 text-brand-green border border-emerald-200 rounded-lg text-xs font-bold">
-                    {s}
+                  <span key={s} className="px-4 py-2 bg-emerald-50 text-brand-green border-2 border-emerald-300 rounded-xl text-sm font-black shadow-2xs">
+                    {t(`symptoms.items.${s}.label`, s)}
                   </span>
                 ))
               ) : (
-                <span className="text-xs text-slate-400 italic">No symptoms selected</span>
+                <span className="text-sm text-text-disabled italic">{t('review.noSymptomsSelected')}</span>
               )}
             </div>
 
-            <div className="text-xs text-slate-600 mt-2">
-              <strong>Voice Memo:</strong> {intakeDraft.voiceNoteRecorded ? 'Attached for nurse audio playback' : 'None recorded'}
+            <div className="text-sm text-text-secondary mt-3 font-medium">
+              <strong>{t('review.voiceMemoLabel')}</strong> {intakeDraft.voiceNoteRecorded ? t('review.voiceMemoAttached') : t('review.voiceMemoNone')}
             </div>
           </div>
-        </div>
+        </Card>
 
-        {/* Card 3: Anatomical Body Location */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        {/* Card 3: Anatomical Body Location with P3 Orientation */}
+        <Card variant="kiosk" className="justify-between">
           <div>
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
-              <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
-                <MapPin size={18} />
-                <span>Where It Hurts</span>
-              </div>
-              <button
-                onClick={() => setKioskStep('body-map')}
-                className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-brand-green"
-              >
-                <Edit3 size={13} />
-                <span>EDIT</span>
-              </button>
-            </div>
+            {renderSectionHeader(MapPin, t('review.locationsSection'), 'body-map')}
 
-            <div className="flex flex-wrap gap-1.5 my-2">
+            <div className="flex flex-wrap gap-2.5 my-2">
               {locations.length > 0 ? (
                 locations.map((loc) => (
-                  <span key={loc} className="px-2.5 py-1 bg-slate-100 text-slate-800 rounded-lg text-xs font-bold">
-                    {loc}
+                  <span
+                    key={loc}
+                    className="px-4 py-2 bg-brand-green-50/70 border-2 border-emerald-300 text-emerald-950 rounded-xl text-base font-black shadow-2xs flex items-center gap-2"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-brand-green shrink-0" />
+                    <span>{t(`bodyMap.regions.${loc}`, loc)} ({getOrientationLabel(loc)})</span>
                   </span>
                 ))
               ) : (
-                <span className="text-xs text-slate-400 italic">General / Whole Body</span>
+                <span className="text-sm text-text-disabled italic">{t('review.generalBody')}</span>
               )}
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Card 4: Pain & Quick Finger Check */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <Card variant="kiosk" className="justify-between">
           <div>
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
-              <div className="flex items-center gap-2 font-bold text-sm text-brand-green">
-                <HeartPulse size={18} />
-                <span>Pain Level & Finger Check</span>
-              </div>
-              <button
-                onClick={() => setKioskStep('pain-duration')}
-                className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-brand-green"
-              >
-                <Edit3 size={13} />
-                <span>EDIT</span>
-              </button>
-            </div>
+            {renderSectionHeader(HeartPulse, t('review.painSection'), 'pain-duration')}
 
-            <div className="text-sm text-slate-800 space-y-1.5">
-              <div className="flex items-center gap-2">
-                <strong>Pain Score:</strong>
-                <span className="px-2 py-0.5 rounded-full text-xs font-black bg-amber-100 text-amber-900">
+            <div className="text-base text-text-primary space-y-2">
+              <div className="flex items-center gap-2.5">
+                <strong>{t('review.painScoreLabel')}</strong>
+                <span className="px-3.5 py-1 rounded-full text-xs font-black bg-brand-gold-50 text-amber-900 border border-brand-gold-500/40">
                   {intakeDraft.painLevel || 0} / 10
                 </span>
               </div>
-              <div><strong>Duration:</strong> {intakeDraft.duration || '1–6 hours'}</div>
-              <div className="border-t border-slate-100 pt-1.5 mt-1.5">
-                <div className="text-xs font-bold text-slate-700">Quick Finger Check:</div>
+              <div>
+                <strong>{t('review.durationLabel')}</strong> {intakeDraft.duration ? t(`durations.${intakeDraft.duration}`, intakeDraft.duration) : t('durations.1–6 hours')}
+              </div>
+              <div className="border-t border-border-main pt-2 mt-2">
+                <div className="text-xs font-black text-text-secondary uppercase tracking-wide">
+                  {t('review.quickFingerCheckLabel')}
+                </div>
                 {vitals.spo2 ? (
-                  <div className="flex items-center gap-3 mt-1">
-                    <span className="text-xs font-bold text-emerald-800">SpO₂: {vitals.spo2}%</span>
-                    <span className="text-slate-300">•</span>
-                    <span className="text-xs font-bold text-emerald-800">Pulse: {vitals.pulseRate} BPM</span>
-                    <span className="text-slate-300">•</span>
-                    <span className="text-xs text-emerald-700">PI: {vitals.perfusionIndex || '4.2%'}</span>
+                  <div className="flex items-center gap-3 mt-1.5">
+                    <span className="text-sm font-bold text-emerald-800">SpO₂: {vitals.spo2}%</span>
+                    <span className="text-border-main">•</span>
+                    <span className="text-sm font-bold text-emerald-800">Pulse: {vitals.pulseRate} BPM</span>
+                    <span className="text-border-main">•</span>
+                    <span className="text-sm text-emerald-700 font-semibold">PI: {vitals.perfusionIndex || '4.2%'}</span>
                   </div>
                 ) : (
-                  <div className="text-xs text-slate-500 italic mt-0.5">
-                    Sensor skipped — Triage nurse will record vitals manually
+                  <div className="text-xs text-text-disabled italic mt-1">
+                    {t('review.sensorSkippedText')}
                   </div>
                 )}
               </div>
             </div>
           </div>
+        </Card>
+      </div>
+
+      {/* P2: Empathetic Patient Reassurance: What Happens Next? - Boosted Typography & Contrast */}
+      <div className="w-full max-w-[960px] mx-auto my-3 p-6 rounded-3xl bg-emerald-50/90 border-2 border-emerald-300 text-text-primary shadow-subtle">
+        <div className="text-lg font-black text-emerald-950 flex items-center gap-2.5 mb-4">
+          <ShieldCheck size={24} className="text-brand-green" />
+          <span>{t('review.whatHappensNext')}</span>
+        </div>
+        <div className="grid grid-cols-3 gap-5 text-sm leading-relaxed">
+          <div className="bg-surface p-5 rounded-2xl border-2 border-emerald-100 shadow-2xs flex flex-col gap-2">
+            <span className="font-black text-text-primary text-base">{t('review.step1Title')}</span>
+            <span className="text-slate-800 font-semibold text-base leading-snug">{t('review.step1Desc')}</span>
+          </div>
+          <div className="bg-surface p-5 rounded-2xl border-2 border-emerald-100 shadow-2xs flex flex-col gap-2">
+            <span className="font-black text-text-primary text-base">{t('review.step2Title')}</span>
+            <span className="text-slate-800 font-semibold text-base leading-snug">{t('review.step2Desc')}</span>
+          </div>
+          <div className="bg-surface p-5 rounded-2xl border-2 border-emerald-100 shadow-2xs flex flex-col gap-2">
+            <span className="font-black text-text-primary text-base">{t('review.step3Title')}</span>
+            <span className="text-slate-800 font-semibold text-base leading-snug">{t('review.step3Desc')}</span>
+          </div>
         </div>
       </div>
 
-      {/* Empathetic Patient Reassurance: What Happens Next? (Balances vertical portrait layout) */}
-      <div className="w-full max-w-4xl mx-auto my-3 p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-slate-800">
-        <div className="text-sm font-extrabold text-[#006B3F] flex items-center gap-2 mb-3">
-          <ShieldCheck size={18} className="text-[#006B3F]" />
-          <span>What Happens When You Tap "Send to Triage Nurse"? / Ano ang Masunod?</span>
-        </div>
-        <div className="grid grid-cols-3 gap-4 text-xs leading-relaxed">
-          <div className="bg-white p-3.5 rounded-xl border border-emerald-100 shadow-xs flex flex-col gap-1">
-            <span className="font-extrabold text-slate-900 text-xs">1. Nurse Receives Details</span>
-            <span className="text-slate-600">Your information appears immediately on the triage nurse's station screen.</span>
+      {/* Confirmation & Submission Navigation */}
+      <KioskFooterNav
+        onBack={() => setKioskStep('pain-duration')}
+        onNext={submitKioskIntake}
+        backLabel={t('review.btnBack')}
+        nextLabel={t('review.btnSubmit')}
+        centerContent={
+          <div className="flex items-center gap-2 text-xs text-text-secondary font-semibold">
+            <ShieldCheck size={16} className="text-brand-green" />
+            <span>{t('review.ticketPrintNote')}</span>
           </div>
-          <div className="bg-white p-3.5 rounded-xl border border-emerald-100 shadow-xs flex flex-col gap-1">
-            <span className="font-extrabold text-slate-900 text-xs">2. Take Your Paper Ticket</span>
-            <span className="text-slate-600">A ticket slip with your queue number prints automatically from the slot below.</span>
-          </div>
-          <div className="bg-white p-3.5 rounded-xl border border-emerald-100 shadow-xs flex flex-col gap-1">
-            <span className="font-extrabold text-slate-900 text-xs">3. Relax in Waiting Area</span>
-            <span className="text-slate-600">Please take a seat. The triage nurse will call your ticket number for in-person evaluation.</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Confirmation & Submission Zone */}
-      <div className="w-full max-w-4xl mx-auto flex items-center justify-between mt-auto pt-4 border-t border-slate-200 shrink-0">
-        <Button
-          variant="outline"
-          size="md"
-          icon={ArrowLeft}
-          onClick={() => setKioskStep('pain-duration')}
-          className="px-8 py-3.5 text-sm font-bold"
-        >
-          Back / Balik
-        </Button>
-
-        <div className="flex items-center gap-2 text-xs text-slate-500">
-          <ShieldCheck size={16} className="text-brand-green" />
-          <span>Ticket will print automatically at lower slot</span>
-        </div>
-
-        <Button
-          variant="primary"
-          size="lg"
-          trailingIcon={ArrowRight}
-          onClick={submitKioskIntake}
-          className="px-10 py-4 text-base font-black shadow-xl bg-brand-green hover:bg-brand-green-hover"
-        >
-          {kioskLanguage === 'hil'
-            ? 'IPADALA SA TRIAGE NURSE'
-            : 'SEND TO TRIAGE NURSE'}
-        </Button>
-      </div>
+        }
+      />
     </div>
   );
 }

@@ -42,10 +42,10 @@ export function AdminHeader() {
       {/* Left: TriageSense Logomark + WVSUMC Hospital Identifier */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-xl bg-[#013b24] flex items-center justify-center text-emerald-400 shadow-sm">
+          <div className="w-10 h-10 rounded-xl bg-brand-green-800 flex items-center justify-center text-emerald-400 shadow-sm">
             <Activity size={24} strokeWidth={2.6} />
           </div>
-          <span className="text-[22px] font-extrabold text-[#013b24] tracking-tight">
+          <span className="text-[22px] font-extrabold text-brand-green-800 tracking-tight">
             TriageSense
           </span>
         </div>

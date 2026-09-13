@@ -2,7 +2,7 @@ import React from 'react';
 
 export function Card({
   children,
-  variant = 'default', // 'default' | 'highlight' | 'emergency' | 'canvas' | 'bordered'
+  variant = 'default', // 'default' | 'highlight' | 'emergency' | 'canvas' | 'bordered' | 'kiosk'
   className = '',
   onClick,
   ...props
@@ -12,13 +12,16 @@ export function Card({
     highlight: 'bg-surface border-2 border-brand-green shadow-md',
     emergency: 'bg-surface border-2 border-emergency shadow-emergency',
     canvas: 'bg-canvas border border-border-main',
-    bordered: 'bg-surface border-2 border-slate-200 shadow-sm'
+    bordered: 'bg-surface border-2 border-slate-200 shadow-sm',
+    kiosk: 'bg-surface border border-border-main rounded-3xl shadow-md p-6'
   };
 
   return (
     <div
       onClick={onClick}
-      className={`rounded-2xl overflow-hidden flex flex-col transition-all ${variantClasses[variant] || variantClasses.default} ${className}`}
+      className={`overflow-hidden flex flex-col transition-all ${
+        variant === 'kiosk' ? '' : 'rounded-2xl'
+      } ${variantClasses[variant] || variantClasses.default} ${className}`}
       {...props}
     >
       {children}

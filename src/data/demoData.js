@@ -27,6 +27,13 @@ export const INITIAL_INTAKES = [
     additionalSymptoms: ['Dizziness', 'Fatigue'],
     customNotes: 'Severe crushing chest pain radiating to left arm. Started 2 hours ago while gardening.',
     voiceNoteRecorded: true,
+    vitalsTelemetry: {
+      spo2: '94%',
+      pulseRate: '104',
+      perfusionIndex: '3.8%',
+      capturedAt: '17:43',
+      source: 'Kiosk PPG Sensor (Right Slot)'
+    },
     nurseAssessment: {
       assignedESI: 'ESI-2', // strictly nurse-assigned
       vitals: {
@@ -64,6 +71,13 @@ export const INITIAL_INTAKES = [
     additionalSymptoms: ['Chills', 'Fatigue'],
     customNotes: 'Persistent high-grade fever with productive cough. Responsive to paracetamol temporarily.',
     voiceNoteRecorded: false,
+    vitalsTelemetry: {
+      spo2: '97%',
+      pulseRate: '84',
+      perfusionIndex: '4.5%',
+      capturedAt: '17:37',
+      source: 'Kiosk PPG Sensor (Right Slot)'
+    },
     nurseAssessment: {
       assignedESI: 'ESI-3',
       vitals: { bp: '118/76', hr: '84', temp: '38.4', o2: '97%', rr: '18' },
@@ -95,6 +109,13 @@ export const INITIAL_INTAKES = [
     additionalSymptoms: ['Nausea', 'Loss of appetite'],
     customNotes: 'Right lower quadrant pain worsening with movement. Localized guarding.',
     voiceNoteRecorded: true,
+    vitalsTelemetry: {
+      spo2: '98%',
+      pulseRate: '88',
+      perfusionIndex: '4.0%',
+      capturedAt: '17:29',
+      source: 'Kiosk PPG Sensor (Right Slot)'
+    },
     nurseAssessment: {
       assignedESI: 'ESI-3',
       vitals: { bp: '138/86', hr: '88', temp: '38.1', o2: '98%', rr: '18' },
@@ -343,6 +364,13 @@ export const INITIAL_INTAKES = [
     additionalSymptoms: ['Diaphoresis', 'Syncope'],
     customNotes: 'Severe substernal pressure with cold diaphoresis. Prior MI in 2021.',
     voiceNoteRecorded: true,
+    vitalsTelemetry: {
+      spo2: '91%',
+      pulseRate: '116',
+      perfusionIndex: '4.2%',
+      capturedAt: '14:49',
+      source: 'Kiosk PPG Sensor (Right Slot)'
+    },
     nurseAssessment: {
       assignedESI: 'ESI-1',
       vitals: { bp: '92/58', hr: '116', temp: '36.4', o2: '91%', rr: '26' },
