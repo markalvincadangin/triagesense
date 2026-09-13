@@ -16,8 +16,6 @@ import {
   FolderArchive,
   BarChart3,
   Server,
-  Star,
-  Activity,
   Layers
 } from 'lucide-react';
 

@@ -15,22 +15,16 @@ export function AdminApp() {
   const renderActiveTab = () => {
     switch (activeAdminTab) {
       case 'live-queue':
-      case 'ADM01':
         return <LiveQueue />;
       case 'patient-dossier':
-      case 'ADM02':
         return <PatientDossier />;
       case 'emergency-console':
-      case 'ADM03':
         return <EmergencyConsole />;
       case 'patient-directory':
-      case 'ADM04':
         return <PatientDirectory />;
       case 'analytics':
-      case 'ADM05':
         return <OperationalAnalytics />;
       case 'fleet-manager':
-      case 'ADM06':
         return <FleetManager />;
       default:
         return <LiveQueue />;

@@ -32,15 +32,7 @@ export function AdminSidebar() {
         </div>
 
         {NAV_ITEMS.map((item) => {
-          const isActive =
-            activeAdminTab === item.id ||
-            (activeAdminTab === 'ADM01' && item.id === 'live-queue') ||
-            (activeAdminTab === 'ADM02' && item.id === 'patient-dossier') ||
-            (activeAdminTab === 'ADM03' && item.id === 'emergency-console') ||
-            (activeAdminTab === 'ADM04' && item.id === 'patient-directory') ||
-            (activeAdminTab === 'ADM05' && item.id === 'analytics') ||
-            (activeAdminTab === 'ADM06' && item.id === 'fleet-manager');
-
+          const isActive = activeAdminTab === item.id;
           const Icon = item.icon;
           const isEmergency = item.id === 'emergency-console' && emergencyAlert.active;
 

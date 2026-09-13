@@ -7,10 +7,7 @@ import { FormInput } from '../../components/common/FormInput';
 import { StatCard } from '../../components/common/StatCard';
 import { AlertBanner } from '../../components/common/AlertBanner';
 import {
-  Heart,
-  Thermometer,
   Activity,
-  Wind,
   ShieldAlert,
   Play,
   Pause,

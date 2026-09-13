@@ -3,7 +3,7 @@ import { useTriage } from '../../context/TriageContext';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { Button } from '../../components/common/Button';
 import { Card } from '../../components/common/Card';
-import { Search, FolderArchive, ArrowUpRight, Calendar, User, Eye, X } from 'lucide-react';
+import { Search, ArrowUpRight, Eye, X } from 'lucide-react';
 
 export function PatientDirectory() {
   const { intakes, selectIntakeForDossier } = useTriage();
