@@ -343,7 +343,7 @@ export const translations = {
     confirmation: {
       hospitalDept: 'WVSU MEDICAL CENTER • EMERGENCY DEPARTMENT',
       title: 'You Are Checked In!',
-      ticketReady: 'Please take your printed ticket below',
+      ticketReady: 'Process Complete',
       queueLabel: 'YOUR QUEUE TICKET NUMBER:',
       nurseWaiting: 'Please take a seat in the waiting area. A triage nurse will call your ticket number shortly.',
       nextStepAssessment: 'Next Step: In-Person Nurse Assessment',
@@ -696,7 +696,7 @@ export const translations = {
     confirmation: {
       hospitalDept: 'WVSU MEDICAL CENTER • DEPARTAMENTO SANG EMERGENCY',
       title: 'Nakapalista Ka Na!',
-      ticketReady: 'Palihog kuhaa ang imo tiket sa idalom sang screen',
+      ticketReady: 'Tapos Na ang Pagpalista',
       queueLabel: 'NUMERO SANG IMO LINYA:',
       nurseWaiting: 'Palihog pungko sa waiting area. Tawgon sang triage nurse ang imo numero sa indi madugay.',
       nextStepAssessment: 'Masunod nga Tikang: Personal nga Pagtantiya sang Nurse',
@@ -1049,7 +1049,7 @@ export const translations = {
     confirmation: {
       hospitalDept: 'WVSU MEDICAL CENTER • KAGAWARAN NG EMERGENCY',
       title: 'Matagumpay ang Pagpapalista!',
-      ticketReady: 'Pakikuha ang iyong nakalimbag na tiket sa ibaba ng screen',
+      ticketReady: 'Kumpleto na ang Pagpapalista',
       queueLabel: 'NUMERO SA PILA:',
       nurseWaiting: 'Mangyaring maupo sa waiting area. Tatawagin ng triage nurse ang iyong numero sa lalong madaling panahon.',
       nextStepAssessment: 'Susunod na Hakbang: Personal na Pagsusuri ng Nurse',
@@ -1402,7 +1402,7 @@ export const translations = {
     confirmation: {
       hospitalDept: 'WVSU MEDICAL CENTER • DEPARTAMENTO SA EMERGENCY',
       title: 'Malampuson ang Pagpatala!',
-      ticketReady: 'Palihug kuhaa ang imong gi-print nga tiket sa ubos sa screen',
+      ticketReady: 'Kompleto na ang Pagpatala',
       queueLabel: 'NUMERO SA IMONG LINYA:',
       nurseWaiting: 'Palihug lingkod sa waiting area. Tawgon sa triage nurse ang imong numero sa dili madugay.',
       nextStepAssessment: 'Sunod nga Lakang: Personal nga Pagsusi sa Nurse',

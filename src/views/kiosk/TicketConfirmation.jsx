@@ -110,39 +110,39 @@ export function TicketConfirmation() {
         </div>
 
         {/* 3. Waiting Area Guidance Grid: Fills Void with High-Value Reassurance */}
-        <div className="w-full bg-white/90 border-2 border-slate-200 rounded-3xl p-5 shadow-subtle">
-          <div className="text-xs font-black uppercase tracking-wider text-text-secondary mb-3 flex items-center gap-2">
-            <Clock size={16} className="text-brand-green" />
+        <div className="w-full bg-white border-2 border-slate-200 rounded-3xl p-5 sm:p-6 shadow-subtle">
+          <div className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700 mb-3.5 flex items-center gap-2">
+            <Clock size={18} className="text-brand-green shrink-0" />
             <span>{t('confirmation.guideTitle')}</span>
           </div>
 
-          <div className="grid grid-cols-3 gap-3.5 text-left">
-            <div className="bg-canvas p-3.5 rounded-2xl border border-border-main flex flex-col gap-1 shadow-2xs">
-              <div className="flex items-center gap-2 text-brand-green font-black text-sm">
-                <FileText size={18} />
+          <div className="grid grid-cols-3 gap-3 sm:gap-4 text-left">
+            <div className="bg-canvas p-4 rounded-2xl border border-border-main flex flex-col gap-1.5 shadow-2xs">
+              <div className="flex items-center gap-2 text-brand-green font-black text-sm sm:text-base">
+                <FileText size={20} className="shrink-0" />
                 <span>{t('confirmation.guideStep1Title')}</span>
               </div>
-              <p className="text-xs text-text-secondary font-medium leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">
                 {t('confirmation.guideStep1Desc')}
               </p>
             </div>
 
-            <div className="bg-canvas p-3.5 rounded-2xl border border-border-main flex flex-col gap-1 shadow-2xs">
-              <div className="flex items-center gap-2 text-brand-green font-black text-sm">
-                <Tv size={18} />
+            <div className="bg-canvas p-4 rounded-2xl border border-border-main flex flex-col gap-1.5 shadow-2xs">
+              <div className="flex items-center gap-2 text-brand-green font-black text-sm sm:text-base">
+                <Tv size={20} className="shrink-0" />
                 <span>{t('confirmation.guideStep2Title')}</span>
               </div>
-              <p className="text-xs text-text-secondary font-medium leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">
                 {t('confirmation.guideStep2Desc')}
               </p>
             </div>
 
-            <div className="bg-canvas p-3.5 rounded-2xl border border-amber-200 bg-amber-50/40 flex flex-col gap-1 shadow-2xs">
-              <div className="flex items-center gap-2 text-amber-900 font-black text-sm">
-                <AlertTriangle size={18} className="text-amber-600" />
+            <div className="p-4 rounded-2xl border-2 border-amber-300 bg-amber-50/90 flex flex-col gap-1.5 shadow-2xs">
+              <div className="flex items-center gap-2 text-amber-950 font-black text-sm sm:text-base">
+                <AlertTriangle size={20} className="text-amber-600 shrink-0" />
                 <span>{t('confirmation.guideStep3Title')}</span>
               </div>
-              <p className="text-xs text-amber-950 font-medium leading-relaxed">
+              <p className="text-xs sm:text-sm text-amber-950 font-bold leading-relaxed">
                 {t('confirmation.guideStep3Desc')}
               </p>
             </div>
@@ -154,26 +154,28 @@ export function TicketConfirmation() {
       <div className="w-full max-w-[820px] mx-auto flex flex-col items-center gap-3.5 mt-auto shrink-0 pb-2">
         {/* Dynamic Countdown Status Pill */}
         <div
-          className={`flex items-center gap-3 px-6 py-2.5 rounded-full border-2 text-base font-bold transition-all ${
+          className={`flex items-center gap-3 px-6 sm:px-8 py-3 rounded-full border-2 text-base sm:text-lg font-bold transition-all shadow-subtle ${
             countdown <= 10
               ? 'bg-amber-50 border-amber-400 text-amber-950 shadow-md animate-pulse'
-              : 'bg-surface border-border-main text-text-secondary shadow-subtle'
+              : 'bg-white border-slate-300 text-slate-700'
           }`}
         >
           <Clock
-            size={22}
+            size={24}
             className={countdown <= 10 ? 'text-amber-600' : 'text-brand-green'}
             strokeWidth={2.5}
           />
-          <span>
-            {t('confirmation.resetTimerPrefix')}{' '}
-            <strong
-              className={`text-xl font-black font-mono ml-1 ${
-                countdown <= 10 ? 'text-emergency-dark' : 'text-brand-green'
+          <span className="flex items-center gap-2 flex-wrap justify-center">
+            <span className="font-extrabold text-slate-700">{t('confirmation.resetTimerPrefix')}</span>
+            <span
+              className={`inline-flex items-center justify-center px-2.5 py-0.5 rounded-lg border-2 text-xl sm:text-2xl font-black font-mono leading-none ${
+                countdown <= 10
+                  ? 'bg-red-100 text-red-700 border-red-400 animate-pulse'
+                  : 'bg-emerald-100 text-brand-green border-brand-green/40'
               }`}
             >
               {countdown}s
-            </strong>
+            </span>
           </span>
         </div>
 
