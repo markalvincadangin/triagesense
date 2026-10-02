@@ -6,8 +6,7 @@
 
 ## 🌐 Live Prototype Demos & Links
 
-* **Permanent Live Prototype (GitHub Pages)**: [https://markalvincadangin.github.io/triagesense/](https://markalvincadangin.github.io/triagesense/)
-* **Temporary Cloudflare Tunnel**: [https://forgotten-forests-passengers-poem.trycloudflare.com](https://forgotten-forests-passengers-poem.trycloudflare.com)
+* **Live Prototype (GitHub Pages)**: [https://markalvincadangin.github.io/triagesense/](https://markalvincadangin.github.io/triagesense/)
 * **GitHub Repository**: [https://github.com/markalvincadangin/triagesense](https://github.com/markalvincadangin/triagesense)
 * **Local Development**: `http://localhost:5173/`
 
